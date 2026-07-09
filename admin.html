@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="ms">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin — Sukan Tahunan SK Al-Ibnu Khaldun 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { poppins: ['Poppins', 'sans-serif'] },
+                    colors: { brand: { DEFAULT: '#16a34a', dark: '#14532d', light: '#bbf7d0', xlight: '#f0fdf4' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0fdf4;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 1rem;
+            border: 1px solid #d1fae5;
+            padding: 1.5rem;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, .06);
+        }
+
+        .badge-live {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .badge-done {
+            background: #16a34a;
+            color: #fff;
+        }
+
+        .badge-soon {
+            background: #3b82f6;
+            color: #fff;
+        }
+
+        .badge-now {
+            background: #f59e0b;
+            color: #fff;
+        }
+
+        input[type=number]::-webkit-inner-spin-button {
+            opacity: 1;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: #14532d;
+            color: #fff;
+            padding: .75rem 1.25rem;
+            border-radius: .75rem;
+            font-size: .85rem;
+            font-weight: 600;
+            z-index: 9999;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: .35s ease;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        #lock-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #14532d, #16a34a);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <!-- ══════════════════════════════ LOCK SCREEN ══════════════════════════════ -->
+    <div id="lock-screen">
+        <div class="bg-white rounded-3xl shadow-2xl p-10 w-full max-w-sm text-center mx-4">
+            <div class="text-5xl mb-4">🔐</div>
+            <h1 class="font-extrabold text-2xl text-green-900 mb-1">Panel Admin</h1>
+            <p class="text-gray-500 text-sm mb-6">SK Al-Ibnu Khaldun — Sukan 2026</p>
+            <input id="pin-input" type="password" maxlength="6" placeholder="Masukkan PIN (lalai: 1234)"
+                class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-center text-xl tracking-widest font-bold focus:outline-none focus:border-green-500 mb-3"
+                onkeydown="if(event.key==='Enter') checkPin()" />
+            <button onclick="checkPin()"
+                class="w-full bg-green-600 text-white font-bold py-3 rounded-xl hover:bg-green-800 transition text-sm">
+                Log Masuk →
+            </button>
+            <p id="pin-error" class="text-red-500 text-xs mt-3 hidden">PIN tidak betul. Cuba lagi.</p>
+            <p class="text-gray-300 text-xs mt-4">PIN lalai: <strong>1234</strong></p>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════ TOPBAR ══════════════════════════════════ -->
+    <header class="sticky top-0 z-40 bg-green-900 shadow-lg px-4 py-3">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl">⚙️</span>
+                <div>
+                    <p class="text-green-300 text-xs font-medium">Panel Pentadbir</p>
+                    <p class="text-white font-bold text-sm">Sukan Tahunan 2026</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="index.html" target="_blank"
+                    class="text-xs bg-white/15 hover:bg-white/25 text-white font-semibold px-4 py-2 rounded-full transition flex items-center gap-1.5">
+                    👁 Lihat Paparan Ibu Bapa
+                </a>
+                <button onclick="logout()"
+                    class="text-xs bg-red-500/80 hover:bg-red-600 text-white font-semibold px-3 py-2 rounded-full transition">
+                    Log Keluar
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ══════════════════════════════ MAIN CONTENT ════════════════════════════ -->
+    <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+
+        <!-- Status bar -->
+        <div
+            class="bg-green-800 rounded-2xl px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <span class="relative flex h-3 w-3">
+                    <span
+                        class="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping"></span>
+                    <span class="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
+                </span>
+                <div>
+                    <p class="text-white font-bold text-sm">Panel Aktif</p>
+                    <p class="text-green-300 text-xs">Semua perubahan disimpan secara automatik</p>
+                </div>
+            </div>
+            <div class="flex gap-3 text-xs">
+                <div class="bg-white/10 rounded-xl px-3 py-2 text-center">
+                    <p class="text-green-300">Terakhir Disimpan</p>
+                    <p class="text-white font-bold" id="last-save-time">—</p>
+                </div>
+                <button onclick="resetAll()"
+                    class="bg-red-500/70 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-xl transition">
+                    🗑 Reset Semua
+                </button>
+            </div>
+        </div>
+
+        <!-- ── GRID: Mata Rumah Sukan + Live Streaming ── -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- MATA RUMAH SUKAN -->
+            <div class="card">
+                <h2 class="font-extrabold text-green-900 text-lg mb-5 flex items-center gap-2">
+                    🏆 Kemaskini Mata Rumah Sukan
+                </h2>
+                <div class="grid grid-cols-2 gap-4 mb-5">
+                    <!-- Merah -->
+                    <div class="bg-gradient-to-br from-red-50 to-red-100 border border-red-200 rounded-2xl p-4">
+                        <p class="text-xs font-bold text-red-600 mb-2">🔴 Rumah Merah</p>
+                        <p id="disp-merah" class="text-4xl font-extrabold text-red-700 mb-3">0</p>
+                        <div class="flex items-center gap-2 mb-2">
+                            <button onclick="adj('merah',-1)"
+                                class="w-9 h-9 bg-red-200 hover:bg-red-300 rounded-lg font-bold text-red-700 text-lg transition">−</button>
+                            <button onclick="adj('merah',1)"
+                                class="w-9 h-9 bg-red-500 hover:bg-red-700 rounded-lg font-bold text-white text-lg transition">+</button>
+                            <button onclick="adj('merah',5)"
+                                class="flex-1 h-9 bg-red-500/20 hover:bg-red-300 rounded-lg font-bold text-red-700 text-xs transition">+5</button>
+                        </div>
+                        <div class="flex gap-1">
+                            <input id="input-merah" type="number" min="0" value="0"
+                                class="w-full border border-red-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-red-400" />
+                            <button onclick="setExact('merah')"
+                                class="bg-red-600 text-white px-3 rounded-lg text-xs font-bold hover:bg-red-800 transition">Set</button>
+                        </div>
+                    </div>
+                    <!-- Biru -->
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-2xl p-4">
+                        <p class="text-xs font-bold text-blue-600 mb-2">🔵 Rumah Biru</p>
+                        <p id="disp-biru" class="text-4xl font-extrabold text-blue-700 mb-3">0</p>
+                        <div class="flex items-center gap-2 mb-2">
+                            <button onclick="adj('biru',-1)"
+                                class="w-9 h-9 bg-blue-200 hover:bg-blue-300 rounded-lg font-bold text-blue-700 text-lg transition">−</button>
+                            <button onclick="adj('biru',1)"
+                                class="w-9 h-9 bg-blue-500 hover:bg-blue-700 rounded-lg font-bold text-white text-lg transition">+</button>
+                            <button onclick="adj('biru',5)"
+                                class="flex-1 h-9 bg-blue-500/20 hover:bg-blue-300 rounded-lg font-bold text-blue-700 text-xs transition">+5</button>
+                        </div>
+                        <div class="flex gap-1">
+                            <input id="input-biru" type="number" min="0" value="0"
+                                class="w-full border border-blue-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-blue-400" />
+                            <button onclick="setExact('biru')"
+                                class="bg-blue-600 text-white px-3 rounded-lg text-xs font-bold hover:bg-blue-800 transition">Set</button>
+                        </div>
+                    </div>
+                    <!-- Kuning -->
+                    <div
+                        class="bg-gradient-to-br from-yellow-50 to-yellow-100 border border-yellow-200 rounded-2xl p-4">
+                        <p class="text-xs font-bold text-yellow-600 mb-2">🟡 Rumah Kuning</p>
+                        <p id="disp-kuning" class="text-4xl font-extrabold text-yellow-600 mb-3">0</p>
+                        <div class="flex items-center gap-2 mb-2">
+                            <button onclick="adj('kuning',-1)"
+                                class="w-9 h-9 bg-yellow-200 hover:bg-yellow-300 rounded-lg font-bold text-yellow-700 text-lg transition">−</button>
+                            <button onclick="adj('kuning',1)"
+                                class="w-9 h-9 bg-yellow-500 hover:bg-yellow-700 rounded-lg font-bold text-white text-lg transition">+</button>
+                            <button onclick="adj('kuning',5)"
+                                class="flex-1 h-9 bg-yellow-500/20 hover:bg-yellow-300 rounded-lg font-bold text-yellow-700 text-xs transition">+5</button>
+                        </div>
+                        <div class="flex gap-1">
+                            <input id="input-kuning" type="number" min="0" value="0"
+                                class="w-full border border-yellow-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-yellow-400" />
+                            <button onclick="setExact('kuning')"
+                                class="bg-yellow-600 text-white px-3 rounded-lg text-xs font-bold hover:bg-yellow-800 transition">Set</button>
+                        </div>
+                    </div>
+                    <!-- Hijau -->
+                    <div class="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-2xl p-4">
+                        <p class="text-xs font-bold text-green-600 mb-2">🟢 Rumah Hijau</p>
+                        <p id="disp-hijau" class="text-4xl font-extrabold text-green-700 mb-3">0</p>
+                        <div class="flex items-center gap-2 mb-2">
+                            <button onclick="adj('hijau',-1)"
+                                class="w-9 h-9 bg-green-200 hover:bg-green-300 rounded-lg font-bold text-green-700 text-lg transition">−</button>
+                            <button onclick="adj('hijau',1)"
+                                class="w-9 h-9 bg-green-500 hover:bg-green-700 rounded-lg font-bold text-white text-lg transition">+</button>
+                            <button onclick="adj('hijau',5)"
+                                class="flex-1 h-9 bg-green-500/20 hover:bg-green-300 rounded-lg font-bold text-green-700 text-xs transition">+5</button>
+                        </div>
+                        <div class="flex gap-1">
+                            <input id="input-hijau" type="number" min="0" value="0"
+                                class="w-full border border-green-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-green-400" />
+                            <button onclick="setExact('hijau')"
+                                class="bg-green-600 text-white px-3 rounded-lg text-xs font-bold hover:bg-green-800 transition">Set</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Juara preview -->
+                <div id="juara-preview"
+                    class="bg-green-xlight border border-green-200 rounded-xl p-3 text-center text-sm text-green-800 font-semibold">
+                </div>
+            </div>
+
+            <!-- LIVE STREAMING -->
+            <div class="card">
+                <h2 class="font-extrabold text-green-900 text-lg mb-5 flex items-center gap-2">
+                    📺 Kawalan Live Streaming
+                </h2>
+                <!-- Status indicator -->
+                <div class="flex items-center justify-between bg-gray-50 rounded-xl p-3 mb-5">
+                    <div class="flex items-center gap-2">
+                        <span id="stream-dot" class="w-3 h-3 rounded-full bg-gray-400"></span>
+                        <span id="stream-status-text" class="font-semibold text-gray-700 text-sm">OFFLINE</span>
+                    </div>
+                    <button id="stream-toggle-btn" onclick="toggleStream()"
+                        class="text-xs font-bold px-4 py-2 rounded-full transition bg-green-600 text-white hover:bg-green-800">
+                        Aktifkan Siaran
+                    </button>
+                </div>
+
+                <!-- YouTube preset -->
+                <div class="mb-4">
+                    <label class="text-xs font-bold text-gray-600 block mb-1.5">📌 ID Video YouTube</label>
+                    <div class="flex gap-2">
+                        <input id="yt-id" type="text" placeholder="cth: dQw4w9WgXcQ"
+                            class="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-red-400" />
+                        <button onclick="setYoutube()"
+                            class="bg-red-600 text-white font-bold px-4 rounded-xl text-xs hover:bg-red-800 transition flex items-center gap-1">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                            </svg>
+                            Set
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Facebook preset -->
+                <div class="mb-4">
+                    <label class="text-xs font-bold text-gray-600 block mb-1.5">📌 URL Embed Facebook Live</label>
+                    <div class="flex gap-2">
+                        <input id="fb-url" type="url" placeholder="https://www.facebook.com/plugins/video.php?..."
+                            class="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-400" />
+                        <button onclick="setFacebook()"
+                            class="bg-blue-600 text-white font-bold px-4 rounded-xl text-xs hover:bg-blue-800 transition">Set</button>
+                    </div>
+                </div>
+
+                <!-- Custom URL -->
+                <div class="mb-5">
+                    <label class="text-xs font-bold text-gray-600 block mb-1.5">🔗 URL Custom / Embed Lain</label>
+                    <div class="flex gap-2">
+                        <input id="custom-url" type="url" placeholder="https://..."
+                            class="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-400" />
+                        <button onclick="setCustomUrl()"
+                            class="bg-green-600 text-white font-bold px-4 rounded-xl text-xs hover:bg-green-800 transition">Set</button>
+                    </div>
+                </div>
+
+                <!-- URL preview -->
+                <div class="bg-gray-50 rounded-xl p-3 text-xs text-gray-500 break-all">
+                    <span class="font-bold text-gray-700">URL Aktif: </span>
+                    <span id="active-stream-url">Tiada</span>
+                </div>
+
+                <button onclick="stopStream()"
+                    class="mt-4 w-full bg-gray-200 hover:bg-red-100 hover:text-red-600 text-gray-600 font-bold py-2.5 rounded-xl text-sm transition">
+                    ⏹ Hentikan & Padam Siaran
+                </button>
+            </div>
+        </div>
+
+        <!-- ── STATUS JADUAL ACARA ── -->
+        <div class="card">
+            <h2 class="font-extrabold text-green-900 text-lg mb-5 flex items-center gap-2">
+                📅 Kemaskini Status Jadual Acara
+            </h2>
+            <p class="text-gray-500 text-xs mb-4">Tukar status setiap acara supaya ibu bapa tahu acara mana sedang
+                berlangsung</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-green-700 text-white">
+                        <tr>
+                            <th class="py-2.5 px-4 text-left font-semibold">Acara</th>
+                            <th class="py-2.5 px-4 text-left font-semibold hidden sm:table-cell">Masa</th>
+                            <th class="py-2.5 px-4 text-left font-semibold hidden md:table-cell">Kategori</th>
+                            <th class="py-2.5 px-4 text-center font-semibold">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="event-table-body" class="divide-y divide-green-50"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── PENGUMUMAN ── -->
+        <div class="card">
+            <h2 class="font-extrabold text-green-900 text-lg mb-5 flex items-center gap-2">
+                📢 Urus Pengumuman
+            </h2>
+
+            <!-- Add form -->
+            <div class="bg-green-xlight border border-green-200 rounded-2xl p-5 mb-5">
+                <h3 class="text-green-dark font-bold text-sm mb-3">+ Tambah Pengumuman Baru</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs font-bold text-gray-600">Emoji / Ikon</label>
+                        <select id="ann-icon"
+                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none bg-white">
+                            <option>🔔</option>
+                            <option>⚠️</option>
+                            <option>✅</option>
+                            <option>📍</option>
+                            <option>🚗</option>
+                            <option>🥗</option>
+                            <option>☔</option>
+                            <option>🎉</option>
+                            <option>💡</option>
+                            <option>📢</option>
+                            <option>🆕</option>
+                            <option>⏳</option>
+                        </select>
+                    </div>
+                    <div class="sm:col-span-2 flex flex-col gap-1">
+                        <label class="text-xs font-bold text-gray-600">Teks Pengumuman</label>
+                        <input id="ann-text" type="text" placeholder="Taip pengumuman di sini..."
+                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+                            onkeydown="if(event.key==='Enter') addAnnouncement()" />
+                    </div>
+                </div>
+                <button onclick="addAnnouncement()"
+                    class="mt-3 bg-green-600 text-white font-bold text-sm px-6 py-2.5 rounded-xl hover:bg-green-800 transition">
+                    Hantar Pengumuman
+                </button>
+            </div>
+
+            <!-- Announcements list -->
+            <div id="ann-list" class="flex flex-col gap-3"></div>
+        </div>
+
+        <!-- ── KEPUTUSAN ACARA ── -->
+        <div class="card">
+            <h2 class="font-extrabold text-green-900 text-lg mb-5 flex items-center gap-2">
+                🥇 Rekod Keputusan Acara
+            </h2>
+
+            <!-- Add result form -->
+            <div class="bg-green-xlight border border-green-200 rounded-2xl p-5 mb-5">
+                <h3 class="text-green-dark font-bold text-sm mb-3">+ Tambah Keputusan Baru</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs font-bold text-gray-600">Nama Acara *</label>
+                        <input id="res-acara" type="text" placeholder="cth: Lari 100m Lelaki"
+                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500" />
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs font-bold text-gray-600">🥇 Tempat Pertama *</label>
+                        <input id="res-1" type="text" placeholder="cth: Ahmad bin Razif (Merah)"
+                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500" />
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs font-bold text-gray-600">🥈 Tempat Kedua</label>
+                        <input id="res-2" type="text" placeholder="cth: Haziq (Biru)"
+                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500" />
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs font-bold text-gray-600">🥉 Tempat Ketiga</label>
+                        <input id="res-3" type="text" placeholder="cth: Siti Nur (Hijau)"
+                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500" />
+                    </div>
+                </div>
+                <button onclick="addResult()"
+                    class="bg-green-600 text-white font-bold text-sm px-6 py-2.5 rounded-xl hover:bg-green-800 transition">
+                    Simpan Keputusan
+                </button>
+            </div>
+
+            <!-- Results table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-green-700 text-white">
+                        <tr>
+                            <th class="py-2.5 px-4 text-left font-semibold">Acara</th>
+                            <th class="py-2.5 px-4 text-left font-semibold">🥇 Pertama</th>
+                            <th class="py-2.5 px-4 text-left font-semibold hidden sm:table-cell">🥈 Kedua</th>
+                            <th class="py-2.5 px-4 text-left font-semibold hidden sm:table-cell">🥉 Ketiga</th>
+                            <th class="py-2.5 px-4 text-center font-semibold">Padam</th>
+                        </tr>
+                    </thead>
+                    <tbody id="res-table-body" class="divide-y divide-green-50">
+                        <tr id="res-empty">
+                            <td colspan="5" class="py-6 text-center text-gray-400 text-sm">Tiada rekod lagi</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── TUKAR PIN ── -->
+        <div class="card">
+            <h2 class="font-extrabold text-green-900 text-lg mb-4 flex items-center gap-2">🔑 Tukar PIN Admin</h2>
+            <div class="flex flex-col sm:flex-row gap-3 max-w-md">
+                <input id="new-pin" type="password" maxlength="8" placeholder="PIN baru (4–8 digit)"
+                    class="flex-1 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-green-500" />
+                <input id="confirm-pin" type="password" maxlength="8" placeholder="Ulang PIN"
+                    class="flex-1 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-green-500" />
+                <button onclick="changePin()"
+                    class="bg-green-600 text-white font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-green-800 transition whitespace-nowrap">
+                    Simpan PIN
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast">✅ Disimpan</div>
+
+    <!-- ══════════════════════════════ JAVASCRIPT ══════════════════════════════ -->
+    <script>
+        /* ═══════════════════════════════════════════════
+           DATA STORE — localStorage key: sukan_data
+        ═══════════════════════════════════════════════ */
+        const STORE_KEY = 'sukan_data_2026';
+        const PIN_KEY = 'sukan_admin_pin';
+        const DEFAULT_PIN = '1234';
+
+        const EVENTS_PADANG = [
+            { id: 'p1', masa: '7:30 pg', nama: 'Perarakan & Upacara Pembukaan', kategori: 'Semua' },
+            { id: 'p2', masa: '8:00 pg', nama: 'Lari 100m (Lelaki)', kategori: 'Tahun 4–6' },
+            { id: 'p3', masa: '8:15 pg', nama: 'Lari 100m (Perempuan)', kategori: 'Tahun 4–6' },
+            { id: 'p4', masa: '9:00 pg', nama: 'Lompat Jauh', kategori: 'Tahun 3–5' },
+            { id: 'p5', masa: '10:00 pg', nama: 'Lari Berganti-ganti 4×100m', kategori: 'Tahun 4–6' },
+            { id: 'p6', masa: '11:30 pg', nama: 'Majlis Penyampaian Hadiah', kategori: 'Semua' },
+        ];
+        const EVENTS_BERPETAK = [
+            { id: 'b1', masa: '8:00 pg', nama: 'Bola Jaring (Perempuan)', kategori: 'Tahun 4–6' },
+            { id: 'b2', masa: '8:45 pg', nama: 'Futsal (Lelaki)', kategori: 'Tahun 4–6' },
+            { id: 'b3', masa: '9:30 pg', nama: 'Tarik Tali', kategori: 'Tahun 1–3' },
+            { id: 'b4', masa: '10:30 pg', nama: 'Badminton Beregu', kategori: 'Tahun 5–6' },
+        ];
+        const ALL_EVENTS = [...EVENTS_PADANG, ...EVENTS_BERPETAK];
+
+        const STATUS_OPTIONS = [
+            { val: 'akan-datang', label: 'Akan Datang', cls: 'bg-blue-100 text-blue-700' },
+            { val: 'sedang', label: 'Sedang Berlangsung', cls: 'bg-amber-400 text-white' },
+            { val: 'selesai', label: 'Selesai ✓', cls: 'bg-green-500 text-white' },
+            { val: 'tangguh', label: 'Ditangguhkan ⚠️', cls: 'bg-red-100 text-red-700' },
+        ];
+
+        function loadData() {
+            try { return JSON.parse(localStorage.getItem(STORE_KEY)) || defaultData(); }
+            catch { return defaultData(); }
+        }
+        function defaultData() {
+            return {
+                scores: { merah: 0, biru: 0, kuning: 0, hijau: 0 },
+                results: [],
+                announcements: [
+                    { id: 1, icon: '🔔', text: 'Perbarisan akan bermula tepat pada pukul 7:30 pagi. Ibu bapa diminta berada di kawasan penonton sebelum 7:15 pagi.', ts: '18 Jul 2026 · 6:45 pagi' },
+                    { id: 2, icon: '🥗', text: 'Gerai makanan mula beroperasi pada pukul 8:00 pagi. Terdapat 12 gerai.', ts: '17 Jul 2026 · 5:00 petang' },
+                    { id: 3, icon: '🚗', text: 'Kawasan parkir ibu bapa disediakan di hadapan Dewan Serbaguna.', ts: '15 Jul 2026 · 2:00 petang' },
+                ],
+                streamUrl: '',
+                streamActive: false,
+                eventStatus: {},
+                lastUpdated: null,
+            };
+        }
+        function saveData(d) {
+            d.lastUpdated = new Date().toISOString();
+            localStorage.setItem(STORE_KEY, JSON.stringify(d));
+            document.getElementById('last-save-time').textContent =
+                new Date().toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            showToast('✅ Disimpan & dikemas kini');
+        }
+
+        /* ═══════════════════════════════════════════════
+           PIN / AUTH
+        ═══════════════════════════════════════════════ */
+        function checkPin() {
+            const pin = document.getElementById('pin-input').value;
+            const stored = localStorage.getItem(PIN_KEY) || DEFAULT_PIN;
+            if (pin === stored) {
+                document.getElementById('lock-screen').style.display = 'none';
+                initAdmin();
+            } else {
+                document.getElementById('pin-error').classList.remove('hidden');
+                document.getElementById('pin-input').value = '';
+            }
+        }
+        function logout() {
+            document.getElementById('lock-screen').style.display = 'flex';
+            document.getElementById('pin-input').value = '';
+            document.getElementById('pin-error').classList.add('hidden');
+        }
+        function changePin() {
+            const np = document.getElementById('new-pin').value;
+            const cp = document.getElementById('confirm-pin').value;
+            if (np.length < 4) { showToast('⚠️ PIN mesti sekurang-kurangnya 4 digit', true); return; }
+            if (np !== cp) { showToast('⚠️ PIN tidak sepadan', true); return; }
+            localStorage.setItem(PIN_KEY, np);
+            document.getElementById('new-pin').value = '';
+            document.getElementById('confirm-pin').value = '';
+            showToast('🔑 PIN berjaya ditukar!');
+        }
+
+        /* ═══════════════════════════════════════════════
+           SCORES
+        ═══════════════════════════════════════════════ */
+        const houses = ['merah', 'biru', 'kuning', 'hijau'];
+        function adj(h, delta) {
+            const d = loadData();
+            d.scores[h] = Math.max(0, d.scores[h] + delta);
+            saveData(d);
+            renderAll(d);
+        }
+        function setExact(h) {
+            const val = parseInt(document.getElementById('input-' + h).value) || 0;
+            const d = loadData();
+            d.scores[h] = Math.max(0, val);
+            saveData(d);
+            renderAll(d);
+        }
+        function renderScores(d) {
+            houses.forEach(h => {
+                document.getElementById('disp-' + h).textContent = d.scores[h];
+                document.getElementById('input-' + h).value = d.scores[h];
+            });
+            const max = Math.max(...Object.values(d.scores));
+            const winners = max > 0 ? houses.filter(h => d.scores[h] === max) : [];
+            const nameMap = { merah: 'Merah 🔴', biru: 'Biru 🔵', kuning: 'Kuning 🟡', hijau: 'Hijau 🟢' };
+            const prev = document.getElementById('juara-preview');
+            if (winners.length) {
+                prev.textContent = '👑 Teratas: Rumah ' + winners.map(h => nameMap[h]).join(' & ') + ' — ' + max + ' mata';
+            } else {
+                prev.textContent = 'Tiada mata direkodkan lagi';
+            }
+        }
+
+        /* ═══════════════════════════════════════════════
+           STREAMING
+        ═══════════════════════════════════════════════ */
+        function setYoutube() {
+            const id = document.getElementById('yt-id').value.trim();
+            if (!id) return;
+            const url = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+            setStreamUrl(url);
+            document.getElementById('yt-id').value = '';
+        }
+        function setFacebook() {
+            const url = document.getElementById('fb-url').value.trim();
+            if (!url) return;
+            setStreamUrl(url);
+            document.getElementById('fb-url').value = '';
+        }
+        function setCustomUrl() {
+            let url = document.getElementById('custom-url').value.trim();
+            if (!url) return;
+            // Auto parse YT full URL
+            const yt = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|live\/)|youtu\.be\/)([\w-]{11})/);
+            if (yt) url = `https://www.youtube.com/embed/${yt[1]}?autoplay=1&rel=0`;
+            setStreamUrl(url);
+            document.getElementById('custom-url').value = '';
+        }
+        function setStreamUrl(url) {
+            const d = loadData();
+            d.streamUrl = url;
+            d.streamActive = true;
+            saveData(d);
+            renderStream(d);
+        }
+        function toggleStream() {
+            const d = loadData();
+            d.streamActive = !d.streamActive;
+            saveData(d);
+            renderStream(d);
+        }
+        function stopStream() {
+            const d = loadData();
+            d.streamUrl = '';
+            d.streamActive = false;
+            saveData(d);
+            renderStream(d);
+        }
+        function renderStream(d) {
+            const dot = document.getElementById('stream-dot');
+            const txt = document.getElementById('stream-status-text');
+            const btn = document.getElementById('stream-toggle-btn');
+            const urlEl = document.getElementById('active-stream-url');
+            if (d.streamActive && d.streamUrl) {
+                dot.className = 'w-3 h-3 rounded-full bg-red-500 animate-ping';
+                txt.textContent = 'LIVE — Siaran Aktif';
+                txt.className = 'font-semibold text-red-600 text-sm';
+                btn.textContent = 'Hentikan Siaran';
+                btn.className = 'text-xs font-bold px-4 py-2 rounded-full transition bg-red-500 text-white hover:bg-red-700';
+            } else {
+                dot.className = 'w-3 h-3 rounded-full bg-gray-400';
+                txt.textContent = 'OFFLINE';
+                txt.className = 'font-semibold text-gray-700 text-sm';
+                btn.textContent = 'Aktifkan Siaran';
+                btn.className = 'text-xs font-bold px-4 py-2 rounded-full transition bg-green-600 text-white hover:bg-green-800';
+            }
+            urlEl.textContent = d.streamUrl || 'Tiada';
+        }
+
+        /* ═══════════════════════════════════════════════
+           EVENT STATUS
+        ═══════════════════════════════════════════════ */
+        function buildEventTable() {
+            const tbody = document.getElementById('event-table-body');
+            tbody.innerHTML = '';
+            const d = loadData();
+            ALL_EVENTS.forEach(ev => {
+                const current = d.eventStatus[ev.id] || 'akan-datang';
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-green-50 transition-colors';
+                tr.innerHTML = `
+      <td class="py-2.5 px-4 font-medium text-gray-800">${ev.nama}</td>
+      <td class="py-2.5 px-4 text-gray-500 hidden sm:table-cell">${ev.masa}</td>
+      <td class="py-2.5 px-4 text-gray-500 hidden md:table-cell">${ev.kategori}</td>
+      <td class="py-2.5 px-4 text-center">
+        <select data-id="${ev.id}" onchange="setEventStatus(this)"
+                class="text-xs font-bold border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none bg-white">
+          ${STATUS_OPTIONS.map(s =>
+                    `<option value="${s.val}" ${current === s.val ? 'selected' : ''}>${s.label}</option>`
+                ).join('')}
+        </select>
+      </td>`;
+                tbody.appendChild(tr);
+            });
+        }
+        function setEventStatus(sel) {
+            const d = loadData();
+            d.eventStatus[sel.dataset.id] = sel.value;
+            saveData(d);
+        }
+
+        /* ═══════════════════════════════════════════════
+           ANNOUNCEMENTS
+        ═══════════════════════════════════════════════ */
+        function addAnnouncement() {
+            const icon = document.getElementById('ann-icon').value;
+            const text = document.getElementById('ann-text').value.trim();
+            if (!text) return;
+            const d = loadData();
+            const now = new Date().toLocaleString('ms-MY', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+            d.announcements.unshift({ id: Date.now(), icon, text, ts: now });
+            saveData(d);
+            document.getElementById('ann-text').value = '';
+            renderAnnouncements(d);
+        }
+        function deleteAnn(id) {
+            const d = loadData();
+            d.announcements = d.announcements.filter(a => a.id !== id);
+            saveData(d);
+            renderAnnouncements(d);
+        }
+        function renderAnnouncements(d) {
+            const list = document.getElementById('ann-list');
+            if (!d.announcements.length) {
+                list.innerHTML = '<p class="text-gray-400 text-sm text-center py-4">Tiada pengumuman.</p>';
+                return;
+            }
+            list.innerHTML = d.announcements.map(a => `
+    <div class="flex items-start gap-3 bg-gray-50 border border-gray-200 rounded-xl p-4">
+      <span class="text-2xl">${a.icon}</span>
+      <div class="flex-1">
+        <p class="text-gray-800 font-medium text-sm">${a.text}</p>
+        <p class="text-gray-400 text-xs mt-1">🕐 ${a.ts}</p>
+      </div>
+      <button onclick="deleteAnn(${a.id})"
+              class="text-red-400 hover:text-red-600 text-xs font-bold px-2 py-1 rounded hover:bg-red-50 transition whitespace-nowrap">
+        🗑 Padam
+      </button>
+    </div>`).join('');
+        }
+
+        /* ═══════════════════════════════════════════════
+           RESULTS
+        ═══════════════════════════════════════════════ */
+        function addResult() {
+            const acara = document.getElementById('res-acara').value.trim();
+            const p1 = document.getElementById('res-1').value.trim();
+            if (!acara || !p1) { showToast('⚠️ Nama Acara & Tempat Pertama wajib diisi', true); return; }
+            const p2 = document.getElementById('res-2').value.trim();
+            const p3 = document.getElementById('res-3').value.trim();
+            const d = loadData();
+            d.results.push({ id: Date.now(), acara, p1, p2, p3 });
+            saveData(d);
+            ['res-acara', 'res-1', 'res-2', 'res-3'].forEach(id => document.getElementById(id).value = '');
+            renderResults(d);
+        }
+        function deleteResult(id) {
+            const d = loadData();
+            d.results = d.results.filter(r => r.id !== id);
+            saveData(d);
+            renderResults(d);
+        }
+        function renderResults(d) {
+            const tbody = document.getElementById('res-table-body');
+            const empty = document.getElementById('res-empty');
+            Array.from(tbody.querySelectorAll('tr.res-row')).forEach(r => r.remove());
+            if (!d.results.length) { empty.style.display = ''; return; }
+            empty.style.display = 'none';
+            d.results.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.className = 'res-row hover:bg-green-50 transition-colors';
+                tr.innerHTML = `
+      <td class="py-2.5 px-4 font-semibold text-gray-800">${r.acara}</td>
+      <td class="py-2.5 px-4 text-gray-700">${r.p1 || '—'}</td>
+      <td class="py-2.5 px-4 text-gray-500 hidden sm:table-cell">${r.p2 || '—'}</td>
+      <td class="py-2.5 px-4 text-gray-500 hidden sm:table-cell">${r.p3 || '—'}</td>
+      <td class="py-2.5 px-4 text-center">
+        <button onclick="deleteResult(${r.id})"
+                class="text-red-400 hover:text-red-600 text-xs font-bold px-2 py-1 rounded hover:bg-red-50 transition">
+          🗑
+        </button>
+      </td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        /* ═══════════════════════════════════════════════
+           RESET ALL
+        ═══════════════════════════════════════════════ */
+        function resetAll() {
+            if (!confirm('Adakah anda pasti ingin memadam SEMUA data? Tindakan ini tidak boleh dibatalkan.')) return;
+            localStorage.removeItem(STORE_KEY);
+            renderAll(loadData());
+            buildEventTable();
+            showToast('🗑 Semua data telah dipadamkan');
+        }
+
+        /* ═══════════════════════════════════════════════
+           TOAST
+        ═══════════════════════════════════════════════ */
+        let toastTimer;
+        function showToast(msg, isWarn = false) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.style.background = isWarn ? '#b91c1c' : '#14532d';
+            t.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        /* ═══════════════════════════════════════════════
+           RENDER ALL
+        ═══════════════════════════════════════════════ */
+        function renderAll(d) {
+            renderScores(d);
+            renderStream(d);
+            renderAnnouncements(d);
+            renderResults(d);
+        }
+
+        /* ═══════════════════════════════════════════════
+           INIT
+        ═══════════════════════════════════════════════ */
+        function initAdmin() {
+            const d = loadData();
+            renderAll(d);
+            buildEventTable();
+            if (d.lastUpdated) {
+                document.getElementById('last-save-time').textContent =
+                    new Date(d.lastUpdated).toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit' });
+            }
+        }
+
+        // Allow Enter on PIN field
+        document.getElementById('pin-input').addEventListener('keydown', e => {
+            if (e.key === 'Enter') checkPin();
+        });
+    </script>
+</body>
+
+</html>
