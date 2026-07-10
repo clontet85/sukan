@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin — Sukan Tahunan SK Al-Ibnu Khaldun 2026</title>
+    <title>Admin — Sukan Tahunan SK Agama Ibnu Khaldun 2026</title>
 
     <!-- Tailwind CSS & Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -88,7 +88,7 @@
         <div class="bg-white rounded-3xl shadow-2xl p-10 w-full max-w-sm text-center mx-4">
             <div class="text-5xl mb-4">🔐</div>
             <h1 class="font-extrabold text-2xl text-green-900 mb-1">Panel Admin</h1>
-            <p class="text-gray-500 text-sm mb-6">SK Al-Ibnu Khaldun — Sukan 2026</p>
+            <p class="text-gray-500 text-sm mb-6">SK Agama Ibnu Khaldun — Sukan 2026</p>
             <input id="pin-input" type="password" maxlength="6" placeholder="Masukkan PIN (lalai: 1234)"
                 class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-center text-xl tracking-widest font-bold focus:outline-none focus:border-green-500 mb-3"
                 onkeydown="if(event.key==='Enter') checkPin()" />
@@ -97,7 +97,7 @@
                 Log Masuk →
             </button>
             <p id="pin-error" class="text-red-500 text-xs mt-3 hidden">PIN tidak betul. Cuba lagi.</p>
-            <p class="text-gray-300 text-xs mt-4">PIN lalai: <strong>1234</strong></p>
+
         </div>
     </div>
 
@@ -138,7 +138,7 @@
                 </span>
                 <div>
                     <p class="text-white font-bold text-sm">Sambungan Cloud: Aktif</p>
-                    <p class="text-green-300 text-xs">Menyegerakkan data ke Firebase secara langsung</p>
+
                 </div>
             </div>
             <div class="flex gap-3 text-xs">
@@ -262,7 +262,7 @@
 
                 <!-- YouTube preset -->
                 <div class="mb-4">
-                    <label class="text-xs font-bold text-gray-600 block mb-1.5">📌 tJS09TW8ATI</label>
+                    <label class="text-xs font-bold text-gray-600 block mb-1.5">📌 ID Video YouTube</label>
                     <div class="flex gap-2">
                         <input id="yt-id" type="text" placeholder="cth: dQw4w9WgXcQ"
                             class="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-red-400" />
@@ -280,16 +280,17 @@
                             class="bg-blue-600 text-white font-bold px-4 rounded-xl text-xs hover:bg-blue-800 transition">Set</button>
                     </div>
                 </div>
-                <!-- Custom URL -->
+                <!-- TikTok Live URL -->
                 <div class="mb-5">
-                    <label class="text-xs font-bold text-gray-600 block mb-1.5">🔗 URL Custom</label>
+                    <label class="text-xs font-bold text-gray-600 block mb-1.5">🎵 URL TikTok Live</label>
                     <div class="flex gap-2">
-                        <input id="custom-url" type="url" placeholder="https://..."
-                            class="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-green-400" />
-                        <button onclick="setCustomUrl()"
-                            class="bg-green-600 text-white font-bold px-4 rounded-xl text-xs hover:bg-green-800 transition">Set</button>
+                        <input id="tiktok-url" type="url" placeholder="cth: https://www.tiktok.com/@username/live"
+                            class="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-black" />
+                        <button onclick="setTiktok()"
+                            class="bg-black text-white font-bold px-4 rounded-xl text-xs hover:bg-gray-800 transition flex items-center gap-1">Set</button>
                     </div>
                 </div>
+
                 <!-- URL preview -->
                 <div class="bg-gray-50 rounded-xl p-3 text-xs text-gray-500 break-all">
                     <span class="font-bold text-gray-700">URL Aktif: </span><span id="active-stream-url">Tiada</span>
@@ -303,20 +304,67 @@
 
         <!-- ── STATUS JADUAL ACARA ── -->
         <div class="card">
-            <h2 class="font-extrabold text-green-900 text-lg mb-5 flex items-center gap-2">📅 Kemaskini Status Jadual
-                Acara</h2>
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead class="bg-green-700 text-white">
-                        <tr>
-                            <th class="py-2.5 px-4 text-left font-semibold">Acara</th>
-                            <th class="py-2.5 px-4 text-left font-semibold hidden sm:table-cell">Masa</th>
-                            <th class="py-2.5 px-4 text-left font-semibold hidden md:table-cell">Kategori</th>
-                            <th class="py-2.5 px-4 text-center font-semibold">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="event-table-body" class="divide-y divide-green-50"></tbody>
-                </table>
+            <h2 class="font-extrabold text-green-900 text-lg mb-5 flex items-center gap-2">📅 Urus Jadual Acara</h2>
+
+            <!-- TABS MENU -->
+            <div class="flex rounded-xl bg-green-light p-1 mb-6 max-w-xs sm:mx-0">
+                <button id="tab-status-acara" onclick="switchEventTab('status')"
+                    class="flex-1 py-1.5 text-xs font-semibold rounded-lg text-green-dark bg-white shadow transition-all">Kemaskini
+                    Status</button>
+                <button id="tab-tambah-acara" onclick="switchEventTab('tambah')"
+                    class="flex-1 py-1.5 text-xs font-semibold rounded-lg text-green-700 transition-all">Tambah Acara
+                    Baru</button>
+            </div>
+
+            <!-- TAB 1: KEMASKINI STATUS (TABLE) -->
+            <div id="panel-status-acara" class="block">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-green-700 text-white">
+                            <tr>
+                                <th class="py-2.5 px-4 text-left font-semibold">Acara</th>
+                                <th class="py-2.5 px-4 text-left font-semibold hidden sm:table-cell">Masa</th>
+                                <th class="py-2.5 px-4 text-left font-semibold hidden md:table-cell">Kategori</th>
+                                <th class="py-2.5 px-4 text-center font-semibold">Status</th>
+                                <th class="py-2.5 px-4 text-center font-semibold text-red-600">Padam</th>
+                            </tr>
+                        </thead>
+                        <tbody id="event-table-body" class="divide-y divide-green-50"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 2: TAMBAH ACARA FORM -->
+            <div id="panel-tambah-acara" class="hidden bg-green-xlight border border-green-200 rounded-2xl p-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs font-bold text-gray-600">Nama Acara *</label>
+                        <input id="new-ev-nama" type="text" placeholder="cth: Lari 200m (Lelaki)"
+                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500 bg-white" />
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs font-bold text-gray-600">Masa *</label>
+                        <input id="new-ev-masa" type="text" placeholder="cth: 8:30 pg"
+                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500 bg-white" />
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs font-bold text-gray-600">Kategori *</label>
+                        <input id="new-ev-kategori" type="text" placeholder="cth: Tahun 4–6 atau Semua"
+                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500 bg-white" />
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs font-bold text-gray-600">Jenis Acara *</label>
+                        <select id="new-ev-jenis"
+                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500 bg-white">
+                            <option value="balapan">Acara Balapan (Track)</option>
+                            <option value="padang">Acara Padang (Field)</option>
+                        </select>
+                    </div>
+                </div>
+                <button onclick="addEvent()"
+                    class="bg-green-600 text-white font-bold text-sm px-6 py-2.5 rounded-xl hover:bg-green-800 transition">
+                    + Tambah Acara
+                </button>
             </div>
         </div>
 
@@ -431,24 +479,26 @@
         const PIN_KEY = 'sukan_admin_pin';
         const DEFAULT_PIN = '1234';
 
+        const DEFAULT_EVENTS = [
+            { id: 't1', masa: '7:30 pg', nama: 'Perarakan & Upacara Pembukaan', kategori: 'Semua', jenis: 'balapan' },
+            { id: 't2', masa: '8:00 pg', nama: 'Lari 100m (Lelaki)', kategori: 'Tahun 4–6', jenis: 'balapan' },
+            { id: 't3', masa: '8:15 pg', nama: 'Lari 100m (Perempuan)', kategori: 'Tahun 4–6', jenis: 'balapan' },
+            { id: 't4', masa: '9:00 pg', nama: 'Lompat Jauh', kategori: 'Tahun 3–5', jenis: 'balapan' },
+            { id: 't5', masa: '10:00 pg', nama: 'Lari Berganti-ganti 4×100m', kategori: 'Tahun 4–6', jenis: 'balapan' },
+            { id: 't6', masa: '11:30 pg', nama: 'Majlis Penyampaian Hadiah', kategori: 'Semua', jenis: 'balapan' },
+            { id: 'p1', masa: '8:00 pg', nama: 'Bola Jaring (Perempuan)', kategori: 'Tahun 4–6', jenis: 'padang' },
+            { id: 'p2', masa: '8:45 pg', nama: 'Futsal (Lelaki)', kategori: 'Tahun 4–6', jenis: 'padang' },
+            { id: 'p3', masa: '9:30 pg', nama: 'Tarik Tali', kategori: 'Tahun 1–3', jenis: 'padang' },
+            { id: 'p4', masa: '10:30 pg', nama: 'Badminton Beregu', kategori: 'Tahun 5–6', jenis: 'padang' }
+        ];
+
         /* Default schema */
         let cloudData = {
             scores: { merah: 0, biru: 0, kuning: 0, hijau: 0 },
-            results: [], announcements: [], streamUrl: '', streamActive: false, eventStatus: {}
+            results: [], announcements: [], streamUrl: '', streamActive: false, eventStatus: {},
+            events: DEFAULT_EVENTS
         };
 
-        const ALL_EVENTS = [
-            { id: 'p1', masa: '7:30 pg', nama: 'Perarakan & Upacara Pembukaan', kategori: 'Semua' },
-            { id: 'p2', masa: '8:00 pg', nama: 'Lari 100m (Lelaki)', kategori: 'Tahun 4–6' },
-            { id: 'p3', masa: '8:15 pg', nama: 'Lari 100m (Perempuan)', kategori: 'Tahun 4–6' },
-            { id: 'p4', masa: '9:00 pg', nama: 'Lompat Jauh', kategori: 'Tahun 3–5' },
-            { id: 'p5', masa: '10:00 pg', nama: 'Lari Berganti-ganti 4×100m', kategori: 'Tahun 4–6' },
-            { id: 'p6', masa: '11:30 pg', nama: 'Majlis Penyampaian Hadiah', kategori: 'Semua' },
-            { id: 'b1', masa: '8:00 pg', nama: 'Bola Jaring (Perempuan)', kategori: 'Tahun 4–6' },
-            { id: 'b2', masa: '8:45 pg', nama: 'Futsal (Lelaki)', kategori: 'Tahun 4–6' },
-            { id: 'b3', masa: '9:30 pg', nama: 'Tarik Tali', kategori: 'Tahun 1–3' },
-            { id: 'b4', masa: '10:30 pg', nama: 'Badminton Beregu', kategori: 'Tahun 5–6' }
-        ];
         const STATUS_OPTS = [
             { val: 'akan-datang', label: 'Akan Datang', cls: 'bg-blue-100 text-blue-700' },
             { val: 'sedang', label: 'Sedang Berlangsung', cls: 'bg-amber-400 text-white' },
@@ -456,10 +506,9 @@
             { val: 'tangguh', label: 'Ditangguhkan ⚠️', cls: 'bg-red-100 text-red-700' }
         ];
 
-
         /* ═══════════════════════════════════════════════
            SYNC WITH FIREBASE (LISTENER)
-        ═══════════════════════════════════════════════ */
+         ═══════════════════════════════════════════════ */
         dbRef.on('value', (snapshot) => {
             if (snapshot.exists()) {
                 cloudData = snapshot.val();
@@ -468,6 +517,7 @@
                 cloudData.results = cloudData.results || [];
                 cloudData.announcements = cloudData.announcements || [];
                 cloudData.eventStatus = cloudData.eventStatus || {};
+                cloudData.events = cloudData.events || DEFAULT_EVENTS;
             }
             renderAll();
             buildEventTable();
@@ -520,13 +570,11 @@
             if (!url) return; cloudData.streamUrl = url; cloudData.streamActive = true;
             document.getElementById('fb-url').value = ''; syncToCloud();
         }
-        function setCustomUrl() {
-            let url = document.getElementById('custom-url').value.trim();
+        function setTiktok() {
+            const url = document.getElementById('tiktok-url').value.trim();
             if (!url) return;
-            const yt = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|live\/)|youtu\.be\/)([\w-]{11})/);
-            if (yt) url = `https://www.youtube.com/embed/${yt[1]}?autoplay=1&rel=0`;
             cloudData.streamUrl = url; cloudData.streamActive = true;
-            document.getElementById('custom-url').value = '';
+            document.getElementById('tiktok-url').value = '';
             syncToCloud();
         }
         function toggleStream() { cloudData.streamActive = !cloudData.streamActive; syncToCloud(); }
@@ -569,7 +617,15 @@
 
         function resetAll() {
             if (confirm('Pasti ingin padam semua data dari database Cloud?')) {
-                cloudData = { scores: { merah: 0, biru: 0, kuning: 0, hijau: 0 }, results: [], announcements: [], eventStatus: {}, streamUrl: '', streamActive: false };
+                cloudData = {
+                    scores: { merah: 0, biru: 0, kuning: 0, hijau: 0 },
+                    results: [],
+                    announcements: [],
+                    eventStatus: {},
+                    streamUrl: '',
+                    streamActive: false,
+                    events: DEFAULT_EVENTS
+                };
                 syncToCloud();
             }
         }
@@ -631,18 +687,96 @@
             }
         }
 
+        function switchEventTab(tab) {
+            const pStatus = document.getElementById('panel-status-acara');
+            const pTambah = document.getElementById('panel-tambah-acara');
+            const tStatus = document.getElementById('tab-status-acara');
+            const tTambah = document.getElementById('tab-tambah-acara');
+
+            if (tab === 'status') {
+                pStatus.classList.remove('hidden');
+                pStatus.classList.add('block');
+                pTambah.classList.add('hidden');
+                pTambah.classList.remove('block');
+
+                tStatus.classList.add('bg-white', 'shadow', 'text-green-dark');
+                tStatus.classList.remove('text-green-700');
+                tTambah.classList.remove('bg-white', 'shadow', 'text-green-dark');
+                tTambah.classList.add('text-green-700');
+            } else {
+                pTambah.classList.remove('hidden');
+                pTambah.classList.add('block');
+                pStatus.classList.add('hidden');
+                pStatus.classList.remove('block');
+
+                tTambah.classList.add('bg-white', 'shadow', 'text-green-dark');
+                tTambah.classList.remove('text-green-700');
+                tStatus.classList.remove('bg-white', 'shadow', 'text-green-dark');
+                tStatus.classList.add('text-green-700');
+            }
+        }
+
+        function addEvent() {
+            const nama = document.getElementById('new-ev-nama').value.trim();
+            const masa = document.getElementById('new-ev-masa').value.trim();
+            const kategori = document.getElementById('new-ev-kategori').value.trim();
+            const jenis = document.getElementById('new-ev-jenis').value;
+
+            if (!nama || !masa || !kategori) {
+                showToast('⚠️ Nama, Masa & Kategori wajib diisi', true);
+                return;
+            }
+
+            const prefix = jenis === 'balapan' ? 't' : 'p';
+            const newId = prefix + Date.now();
+
+            if (!cloudData.events) {
+                cloudData.events = [];
+            }
+
+            cloudData.events.push({ id: newId, masa, nama, kategori, jenis });
+
+            if (!cloudData.eventStatus) {
+                cloudData.eventStatus = {};
+            }
+            cloudData.eventStatus[newId] = 'akan-datang';
+
+            document.getElementById('new-ev-nama').value = '';
+            document.getElementById('new-ev-masa').value = '';
+            document.getElementById('new-ev-kategori').value = '';
+
+            syncToCloud();
+            switchEventTab('status');
+        }
+
+        function deleteEvent(id) {
+            if (confirm('Adakah anda pasti ingin memadam acara ini?')) {
+                if (cloudData.events) {
+                    cloudData.events = cloudData.events.filter(e => e.id !== id);
+                }
+                if (cloudData.eventStatus) {
+                    delete cloudData.eventStatus[id];
+                }
+                syncToCloud();
+            }
+        }
+
         function buildEventTable() {
             const tbody = document.getElementById('event-table-body');
-            tbody.innerHTML = ALL_EVENTS.map(ev => {
+            const events = cloudData.events || DEFAULT_EVENTS;
+            tbody.innerHTML = events.map(ev => {
                 const current = cloudData.eventStatus[ev.id] || 'akan-datang';
                 return `<tr class="hover:bg-green-50 transition-colors">
-      <td class="py-2.5 px-4 font-medium text-gray-800">${ev.nama}</td>
+      <td class="py-2.5 px-4 font-medium text-gray-800">${ev.nama} <span class="text-xs text-gray-400 font-normal">(${ev.jenis === 'balapan' ? 'Balapan' : 'Padang'})</span></td>
       <td class="py-2.5 px-4 text-gray-500 hidden sm:table-cell">${ev.masa}</td>
       <td class="py-2.5 px-4 text-gray-500 hidden md:table-cell">${ev.kategori}</td>
       <td class="py-2.5 px-4 text-center">
         <select data-id="${ev.id}" onchange="setEventStatus(this)" class="text-xs font-bold border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none bg-white">
           ${STATUS_OPTS.map(s => `<option value="${s.val}" ${current === s.val ? 'selected' : ''}>${s.label}</option>`).join('')}
         </select>
+      </td>
+      <td class="py-2.5 px-4 text-center">
+        <button onclick="deleteEvent('${ev.id}')" class="text-red-400 hover:text-red-600 text-xs font-bold px-2 py-1 rounded hover:bg-red-50 transition">🗑</button>
       </td>
     </tr>`;
             }).join('');
