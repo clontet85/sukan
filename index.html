@@ -5,13 +5,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sukan Tahunan SK Agama Ibnu Khaldun 2026</title>
-    <meta name="description"<!DOCTYPE html>
-<html lang="ms">
-
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sukan Tahunan SK Agama Ibnu Khaldun 2026</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
@@ -131,7 +124,7 @@
                 </div>
                 <div class="leading-tight">
                     <p class="text-xs text-green-700 font-medium">Portal Rasmi Ibu Bapa</p>
-                    <p class="text-sm font-bold text-green-dark">SK Agama-Ibnu Khaldun</p>
+                    <p class="text-sm font-bold text-green-dark">SK Agama Ibnu Khaldun</p>
                 </div>
             </div>
             <div class="hidden md:flex items-center gap-5 text-sm font-medium text-gray-600">
@@ -174,7 +167,8 @@
             <span class="w-2 h-2 rounded-full bg-yellow-300 animate-pulse-slow"></span> ACARA TAHUNAN 2026
         </div>
         <h1 class="animate-slide-up text-white font-extrabold text-3xl sm:text-5xl md:text-6xl leading-tight max-w-3xl"
-            style="animation-delay:.1s">🏃 Sukan Tahunan<br /><span class="text-green-light">SK Agama Ibnu Khaldun</span>
+            style="animation-delay:.1s">🏃 Sukan Tahunan<br /><span class="text-green-light">SK Agama Ibnu
+                Khaldun</span>
         </h1>
         <p class="animate-slide-up mt-5 text-green-200 text-base sm:text-lg font-medium" style="animation-delay:.2s">📅
             Sabtu, 18 Julai 2026 &nbsp;|&nbsp; 🕗 7:30 pagi — 1:00 tengah hari</p>
@@ -246,13 +240,24 @@
             <div class="reveal rounded-2xl overflow-hidden bg-black border border-white/10 shadow-2xl">
                 <div class="relative w-full" style="padding-top:56.25%">
                     <div id="stream-offline"
-                        class="absolute inset-0 flex flex-col items-center justify-center bg-gray-900">
+                        class="absolute inset-0 flex flex-col items-center justify-center bg-gray-900 z-10 transition-opacity">
                         <div class="text-6xl mb-4">📡</div>
                         <p class="text-white font-bold text-lg">Siaran Belum Bermula</p>
                         <p class="text-gray-400 text-sm mt-2 text-center px-6">Siaran akan diaktifkan oleh admin apabila
                             acara bermula</p>
                     </div>
-                    <iframe id="stream-iframe" class="absolute inset-0 w-full h-full hidden" src="" frameborder="0"
+                    <div id="stream-tiktok"
+                        class="absolute inset-0 hidden flex-col items-center justify-center bg-black z-20">
+                        <div class="text-6xl mb-4 animate-bounce">🎵</div>
+                        <p class="text-white font-bold text-xl mb-1">Siaran Langsung di TikTok</p>
+                        <p class="text-gray-400 text-sm mb-6 text-center px-6">Klik di bawah untuk buka aplikasi TikTok
+                            dan mulakan tontonan</p>
+                        <a id="tiktok-link" href="#" target="_blank"
+                            class="bg-[#fe2c55] text-white font-bold px-8 py-3.5 rounded-full hover:bg-red-500 transition shadow-[0_0_15px_rgba(254,44,85,0.4)]">
+                            Tonton Sekarang →
+                        </a>
+                    </div>
+                    <iframe id="stream-iframe" class="absolute inset-0 w-full h-full hidden z-10" src="" frameborder="0"
                         allow="autoplay; encrypted-media; fullscreen"></iframe>
                 </div>
             </div>
@@ -331,19 +336,19 @@
             <h2 class="text-2xl sm:text-3xl font-extrabold text-green-dark">📅 Jadual Acara</h2>
         </div>
         <div class="flex rounded-xl bg-green-light p-1 mb-6 reveal max-w-xs mx-auto">
-            <button id="tab-padang" onclick="switchTab('padang')"
+            <button id="tab-balapan" onclick="switchTab('balapan')"
                 class="flex-1 py-2 text-sm font-semibold rounded-lg text-green-dark bg-white shadow transition-all">Acara
-                Padang</button>
-            <button id="tab-berpetak" onclick="switchTab('berpetak')"
+                Balapan</button>
+            <button id="tab-padang" onclick="switchTab('padang')"
                 class="flex-1 py-2 text-sm font-semibold rounded-lg text-green-700 transition-all">Acara
-                Berpetak</button>
+                Padang</button>
         </div>
-        <div id="content-padang" class="reveal bg-white rounded-2xl shadow-sm border border-green-100 overflow-hidden">
-            <table class="w-full text-sm" id="table-padang"></table>
+        <div id="content-balapan" class="reveal bg-white rounded-2xl shadow-sm border border-green-100 overflow-hidden">
+            <table class="w-full text-sm" id="table-balapan"></table>
         </div>
-        <div id="content-berpetak"
+        <div id="content-padang"
             class="reveal hidden bg-white rounded-2xl shadow-sm border border-green-100 overflow-hidden">
-            <table class="w-full text-sm" id="table-berpetak"></table>
+            <table class="w-full text-sm" id="table-padang"></table>
         </div>
     </section>
 
@@ -361,7 +366,7 @@
     </section>
 
     <footer class="bg-green-900 border-t border-white/10 py-6 px-4 text-center">
-        <p class="text-green-300 text-xs">© 2026 SK Agama Ibnu Khaldun </p>
+        <p class="text-green-300 text-xs">© 2026 SK Agama Ibnu Khaldun</p>
     </footer>
 
     <script>
@@ -381,19 +386,17 @@
         firebase.initializeApp(firebaseConfig);
         const dbRef = firebase.database().ref('sukan_data_2026');
 
-        const EVENTS_PADANG = [
-            { id: 'p1', masa: '7:30 pg', nama: 'Perarakan', kategori: 'Semua' },
-            { id: 'p2', masa: '8:00 pg', nama: 'Lari 100m (L)', kategori: 'Tahun 4–6' },
-            { id: 'p3', masa: '8:15 pg', nama: 'Lari 100m (P)', kategori: 'Tahun 4–6' },
-            { id: 'p4', masa: '9:00 pg', nama: 'Lompat Jauh', kategori: 'Tahun 3–5' },
-            { id: 'p5', masa: '10:00 pg', nama: 'Lari 4×100m', kategori: 'Tahun 4–6' },
-            { id: 'p6', masa: '11:30 pg', nama: 'Majlis Hadiah', kategori: 'Semua' }
-        ];
-        const EVENTS_BERPETAK = [
-            { id: 'b1', masa: '8:00 pg', nama: 'Bola Jaring', kategori: 'Tahun 4–6' },
-            { id: 'b2', masa: '8:45 pg', nama: 'Futsal', kategori: 'Tahun 4–6' },
-            { id: 'b3', masa: '9:30 pg', nama: 'Tarik Tali', kategori: 'Tahun 1–3' },
-            { id: 'b4', masa: '10:30 pg', nama: 'Badminton', kategori: 'Tahun 5–6' }
+        const DEFAULT_EVENTS = [
+            { id: 't1', masa: '7:30 pg', nama: 'Perarakan', kategori: 'Semua', jenis: 'balapan' },
+            { id: 't2', masa: '8:00 pg', nama: 'Lari 100m (L)', kategori: 'Tahun 4–6', jenis: 'balapan' },
+            { id: 't3', masa: '8:15 pg', nama: 'Lari 100m (P)', kategori: 'Tahun 4–6', jenis: 'balapan' },
+            { id: 't4', masa: '9:00 pg', nama: 'Lompat Jauh', kategori: 'Tahun 3–5', jenis: 'balapan' },
+            { id: 't5', masa: '10:00 pg', nama: 'Lari 4×100m', kategori: 'Tahun 4–6', jenis: 'balapan' },
+            { id: 't6', masa: '11:30 pg', nama: 'Majlis Hadiah', kategori: 'Semua', jenis: 'balapan' },
+            { id: 'p1', masa: '8:00 pg', nama: 'Bola Jaring', kategori: 'Tahun 4–6', jenis: 'padang' },
+            { id: 'p2', masa: '8:45 pg', nama: 'Futsal', kategori: 'Tahun 4–6', jenis: 'padang' },
+            { id: 'p3', masa: '9:30 pg', nama: 'Tarik Tali', kategori: 'Tahun 1–3', jenis: 'padang' },
+            { id: 'p4', masa: '10:30 pg', nama: 'Badminton', kategori: 'Tahun 5–6', jenis: 'padang' }
         ];
         const STATUS_STYLE = {
             'akan-datang': { label: 'Akan Datang', cls: 'bg-blue-100 text-blue-700' },
@@ -412,7 +415,7 @@
                 renderAll(snapshot.val());
             } else {
                 // Defaults if empty
-                renderAll({ scores: { merah: 0, biru: 0, kuning: 0, hijau: 0 }, results: [], announcements: [], streamActive: false, eventStatus: {} });
+                renderAll({ scores: { merah: 0, biru: 0, kuning: 0, hijau: 0 }, results: [], announcements: [], streamActive: false, eventStatus: {}, events: DEFAULT_EVENTS });
             }
         });
 
@@ -422,6 +425,10 @@
             const results = d.results || [];
             const announcements = d.announcements || [];
             const evStatus = d.eventStatus || {};
+            const events = d.events || DEFAULT_EVENTS;
+
+            const eventsBalapan = events.filter(e => e.jenis === 'balapan');
+            const eventsPadang = events.filter(e => e.jenis === 'padang');
 
             // SCORES
             const max = Math.max(...Object.values(scores));
@@ -438,8 +445,10 @@
 
             // STREAM (LIVE/OFFLINE)
             const isLive = d.streamActive && d.streamUrl;
+            const isTiktok = isLive && d.streamUrl.toLowerCase().includes('tiktok');
             const badge = document.getElementById('stream-badge'), qBadge = document.getElementById('quick-live-badge');
             const iframe = document.getElementById('stream-iframe'), offline = document.getElementById('stream-offline');
+            const tiktokDiv = document.getElementById('stream-tiktok'), tiktokLink = document.getElementById('tiktok-link');
             const nDot = document.getElementById('nav-live-dot'), mDot = document.getElementById('mob-live-dot');
 
             if (isLive) {
@@ -447,18 +456,27 @@
                 badge.innerHTML = '<span class="w-2 h-2 bg-white rounded-full animate-pulse"></span> LIVE SEKARANG';
                 nDot.className = 'w-2 h-2 rounded-full bg-red-500 animate-ping'; mDot.className = 'w-2.5 h-2.5 rounded-full bg-red-500 animate-ping';
                 qBadge.innerHTML = '<span class="inline-flex items-center gap-1 text-red-500 font-bold"><span class="w-2 h-2 bg-red-500 rounded-full animate-ping inline-block"></span> LIVE</span>';
-                if (iframe.src !== d.streamUrl) iframe.src = d.streamUrl;
-                offline.classList.add('hidden'); iframe.classList.remove('hidden');
+
+                offline.classList.add('hidden');
+                if (isTiktok) {
+                    iframe.classList.add('hidden');
+                    tiktokDiv.classList.remove('hidden'); tiktokDiv.classList.add('flex');
+                    tiktokLink.href = d.streamUrl;
+                    if (iframe.src) iframe.src = '';
+                } else {
+                    tiktokDiv.classList.add('hidden'); tiktokDiv.classList.remove('flex');
+                    iframe.classList.remove('hidden');
+                    if (iframe.src !== d.streamUrl) iframe.src = d.streamUrl;
+                }
             } else {
                 badge.className = 'inline-flex items-center gap-2 bg-red-500/20 text-red-300 text-xs font-bold px-4 py-2 rounded-full';
                 badge.innerHTML = '<span class="w-2 h-2 bg-red-400 rounded-full"></span> OFFLINE';
                 nDot.className = 'w-2 h-2 rounded-full bg-gray-400'; mDot.className = 'w-2.5 h-2.5 rounded-full bg-gray-400';
                 qBadge.textContent = 'OFFLINE'; qBadge.className = 'text-gray-400 font-semibold text-xs';
                 offline.classList.remove('hidden'); iframe.classList.add('hidden');
+                tiktokDiv.classList.add('hidden'); tiktokDiv.classList.remove('flex');
                 if (iframe.src) iframe.src = '';
             }
-
-            // ANNOUNCEMENTS
             const list = document.getElementById('pub-announcements');
             list.innerHTML = announcements.length ? announcements.map(a => `<div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-5 flex gap-4 items-start hover:bg-white/15 transition-colors"><span class="text-2xl mt-0.5">${a.icon}</span><div><p class="text-white font-semibold text-sm sm:text-base leading-snug">${a.text}</p><p class="text-green-300 text-xs mt-2">🕐 ${a.ts}</p></div></div>`).join('') : '<p class="text-green-300 text-sm text-center py-4">Tiada pengumuman buat masa ini.</p>';
 
@@ -485,14 +503,14 @@
                 }).join('')}
       </tbody>`;
             }
-            buildTbl(EVENTS_PADANG, 'table-padang'); buildTbl(EVENTS_BERPETAK, 'table-berpetak');
+            buildTbl(eventsBalapan, 'table-balapan'); buildTbl(eventsPadang, 'table-padang');
         }
 
         /* UI LOGIC */
         function switchTab(tab) {
-            const p = document.getElementById('content-padang'), b = document.getElementById('content-berpetak');
-            const tp = document.getElementById('tab-padang'), tb = document.getElementById('tab-berpetak');
-            if (tab === 'padang') { p.classList.remove('hidden'); b.classList.add('hidden'); tp.classList.add('bg-white', 'shadow', 'text-green-dark'); tp.classList.remove('text-green-700'); tb.classList.remove('bg-white', 'shadow', 'text-green-dark'); tb.classList.add('text-green-700'); }
+            const p = document.getElementById('content-balapan'), b = document.getElementById('content-padang');
+            const tp = document.getElementById('tab-balapan'), tb = document.getElementById('tab-padang');
+            if (tab === 'balapan') { p.classList.remove('hidden'); b.classList.add('hidden'); tp.classList.add('bg-white', 'shadow', 'text-green-dark'); tp.classList.remove('text-green-700'); tb.classList.remove('bg-white', 'shadow', 'text-green-dark'); tb.classList.add('text-green-700'); }
             else { b.classList.remove('hidden'); p.classList.add('hidden'); tb.classList.add('bg-white', 'shadow', 'text-green-dark'); tb.classList.remove('text-green-700'); tp.classList.remove('bg-white', 'shadow', 'text-green-dark'); tp.classList.add('text-green-700'); }
         }
         document.getElementById('menu-btn').addEventListener('click', () => { document.getElementById('mobile-menu').classList.toggle('hidden'); document.getElementById('icon-open').classList.toggle('hidden'); document.getElementById('icon-close').classList.toggle('hidden'); });
@@ -500,834 +518,6 @@
         const observer = new IntersectionObserver(ents => { ents.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }); }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         window.addEventListener('scroll', () => { document.getElementById('navbar').classList.toggle('shadow-md', window.scrollY > 60); });
-    </script>
-</body>
-
-</html>
-        content="Portal rasmi Sukan Tahunan SK Agama Ibnu Khaldun 2026 — jadual acara, keputusan terkini, galeri, dan siaran langsung untuk ibu bapa." />
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet" />
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { poppins: ['Poppins', 'sans-serif'] },
-                    colors: {
-                        green: { primary: '#16a34a', dark: '#14532d', light: '#bbf7d0', xlight: '#f0fdf4' }
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 2.5s cubic-bezier(0.4,0,0.6,1) infinite',
-                        'fade-in': 'fadeIn 0.6s ease-out both',
-                        'slide-up': 'slideUp 0.7s ease-out both',
-                    },
-                    keyframes: {
-                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-                        slideUp: { '0%': { opacity: '0', transform: 'translateY(24px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #f0fdf4;
-        }
-
-        .hero-gradient {
-            background: linear-gradient(135deg, #14532d 0%, #16a34a 55%, #22c55e 100%);
-        }
-
-        .hero-circle {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, .07);
-            pointer-events: none;
-        }
-
-        .card-lift {
-            transition: transform .25s ease, box-shadow .25s ease;
-        }
-
-        .card-lift:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 18px 36px rgba(22, 163, 74, .16);
-        }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(26px);
-            transition: opacity .65s ease, transform .65s ease;
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* score pop animation */
-        @keyframes scorePop {
-            0% {
-                transform: scale(1)
-            }
-
-            50% {
-                transform: scale(1.18)
-            }
-
-            100% {
-                transform: scale(1)
-            }
-        }
-
-        .score-pop {
-            animation: scorePop .4s ease;
-        }
-
-        /* refresh pulse */
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .spin {
-            animation: spin 1s linear infinite;
-        }
-    </style>
-</head>
-
-<body class="min-h-screen">
-
-    <!-- ══════════════════════════════ NAVBAR ══════════════════════════════ -->
-    <nav id="navbar"
-        class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-green-100 transition-all">
-        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-green-primary flex items-center justify-center shadow">
-                    <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                        stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
-                </div>
-                <div class="leading-tight">
-                    <p class="text-xs text-green-700 font-medium">Portal Rasmi Ibu Bapa</p>
-                    <p class="text-sm font-bold text-green-dark">SK Agama Ibnu Khaldun</p>
-                </div>
-            </div>
-
-            <div class="hidden md:flex items-center gap-5 text-sm font-medium text-gray-600">
-                <a href="#streaming" class="hover:text-green-primary transition flex items-center gap-1.5">
-                    <span id="nav-live-dot" class="w-2 h-2 rounded-full bg-gray-400"></span>Live
-                </a>
-                <a href="#keputusan" class="hover:text-green-primary transition">Keputusan</a>
-                <a href="#jadual" class="hover:text-green-primary transition">Jadual</a>
-                <a href="#pengumuman" class="hover:text-green-primary transition">Pengumuman</a>
-                <a href="#hubungi"
-                    class="bg-green-primary text-white px-4 py-1.5 rounded-full hover:bg-green-dark transition">Hubungi</a>
-            </div>
-
-            <button id="menu-btn" class="md:hidden p-2 rounded-lg text-green-dark hover:bg-green-xlight transition"
-                aria-label="Menu">
-                <svg id="icon-open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-                <svg id="icon-close" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-
-        <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-green-100 px-4 pb-4">
-            <div class="flex flex-col gap-3 pt-3 text-sm font-medium text-gray-700">
-                <a href="#streaming"
-                    class="py-2 border-b border-gray-100 hover:text-green-primary transition flex items-center gap-2"
-                    onclick="closeMob()">
-                    <span id="mob-live-dot" class="w-2.5 h-2.5 rounded-full bg-gray-400"></span>📺 Siaran Langsung
-                </a>
-                <a href="#keputusan" class="py-2 border-b border-gray-100 hover:text-green-primary transition"
-                    onclick="closeMob()">🏆 Keputusan</a>
-                <a href="#jadual" class="py-2 border-b border-gray-100 hover:text-green-primary transition"
-                    onclick="closeMob()">📅 Jadual Acara</a>
-                <a href="#pengumuman" class="py-2 border-b border-gray-100 hover:text-green-primary transition"
-                    onclick="closeMob()">📢 Pengumuman</a>
-                <a href="#hubungi"
-                    class="mt-1 bg-green-primary text-white text-center py-2.5 rounded-xl hover:bg-green-dark transition"
-                    onclick="closeMob()">Hubungi Kami</a>
-            </div>
-        </div>
-    </nav>
-
-
-    <!-- ══════════════════════════════ HERO ══════════════════════════════ -->
-    <section
-        class="hero-gradient relative overflow-hidden min-h-[88vw] sm:min-h-[55vw] md:min-h-[400px] flex flex-col items-center justify-center text-center px-6 py-20">
-        <div class="hero-circle w-80 h-80 -top-24 -left-20 opacity-60"></div>
-        <div class="hero-circle w-56 h-56 -bottom-16 -right-12 opacity-50"></div>
-        <div class="hero-circle w-40 h-40 top-10 right-10 opacity-30"></div>
-
-        <div
-            class="animate-fade-in inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm text-white text-xs font-semibold px-4 py-1.5 rounded-full border border-white/30 mb-6">
-            <span class="w-2 h-2 rounded-full bg-yellow-300 animate-pulse-slow"></span>
-            ACARA TAHUNAN 2026
-        </div>
-
-        <h1 class="animate-slide-up text-white font-extrabold text-3xl sm:text-5xl md:text-6xl leading-tight max-w-3xl"
-            style="animation-delay:.1s">
-            🏃 Sukan Tahunan<br />
-            <span class="text-green-light">SK Agama Ibnu Khaldun</span>
-        </h1>
-
-        <p class="animate-slide-up mt-5 text-green-200 text-base sm:text-lg font-medium" style="animation-delay:.2s">
-            📅 Sabtu, 18 Julai 2026 &nbsp;|&nbsp; 🕗 7:30 pagi — 1:00 tengah hari
-        </p>
-        <p class="animate-slide-up mt-1 text-green-300 text-sm" style="animation-delay:.25s">
-            📍 Padang Sekolah SK Agama Ibnu Khaldun
-        </p>
-
-        <div class="animate-slide-up mt-8 flex flex-wrap gap-4 justify-center" style="animation-delay:.35s">
-            <a href="#keputusan"
-                class="bg-white text-green-primary font-bold px-7 py-3 rounded-full shadow-lg hover:bg-green-light transition text-sm sm:text-base">
-                🏆 Lihat Keputusan
-            </a>
-            <a href="#streaming"
-                class="bg-transparent text-white font-bold px-7 py-3 rounded-full border-2 border-white/70 hover:bg-white/15 transition text-sm sm:text-base">
-                📺 Siaran Langsung
-            </a>
-        </div>
-
-        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce text-white/60">
-            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-        </div>
-    </section>
-
-
-    <!-- ══════════════════════════════ STATUS BANNER ══════════════════════════════ -->
-    <section class="bg-yellow-400 py-4 px-4">
-        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div class="flex items-center gap-3">
-                <span class="relative flex h-4 w-4">
-                    <span
-                        class="absolute inline-flex h-full w-full rounded-full bg-green-primary opacity-75 animate-ping"></span>
-                    <span class="relative inline-flex h-4 w-4 rounded-full bg-green-dark"></span>
-                </span>
-                <p class="font-bold text-green-dark text-sm sm:text-base">🛒 TEMPAHAN DIBUKA — Gerai Makanan &amp;
-                    Tempat Duduk VIP</p>
-            </div>
-            <a href="#tempahan"
-                class="bg-green-primary text-white text-sm font-bold px-5 py-2 rounded-full shadow hover:bg-green-dark transition whitespace-nowrap">
-                Tempah Sekarang →
-            </a>
-        </div>
-    </section>
-
-
-    <!-- ══════════════════════════════ AUTO REFRESH BAR ══════════════════════════════ -->
-    <div class="bg-green-xlight border-b border-green-100 px-4 py-2">
-        <div class="max-w-5xl mx-auto flex items-center justify-between text-xs text-green-700">
-            <span>🔄 Maklumat dikemas kini secara automatik setiap 30 saat</span>
-            <div class="flex items-center gap-2">
-                <span id="refresh-label">Dikemas kini: <strong id="last-refresh">—</strong></span>
-                <button onclick="refreshData()" id="refresh-btn"
-                    class="ml-2 bg-green-primary text-white px-2.5 py-1 rounded-full font-semibold hover:bg-green-dark transition">
-                    ↺ Muat Semula
-                </button>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- ══════════════════════════════ QUICK MENU ══════════════════════════════ -->
-    <section class="max-w-5xl mx-auto px-4 py-12">
-        <div class="text-center mb-8 reveal">
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-green-dark">Menu Pantas</h2>
-            <p class="text-gray-500 mt-2 text-sm">Semua maklumat penting di hujung jari anda</p>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            <a href="#jadual"
-                class="card-lift reveal bg-white rounded-2xl shadow-md border border-green-100 p-6 flex flex-col items-center text-center gap-3 no-underline"
-                style="transition-delay:.05s">
-                <div class="w-14 h-14 rounded-2xl bg-green-xlight flex items-center justify-center text-3xl">📅</div>
-                <div>
-                    <h3 class="font-bold text-green-dark">Jadual Acara</h3>
-                    <p class="text-gray-500 text-xs mt-1">Status terkini setiap acara</p>
-                </div>
-                <span class="text-green-primary font-semibold text-xs flex items-center gap-1">Lihat →</span>
-            </a>
-            <a href="#keputusan"
-                class="card-lift reveal bg-white rounded-2xl shadow-md border border-green-100 p-6 flex flex-col items-center text-center gap-3 no-underline"
-                style="transition-delay:.15s">
-                <div class="w-14 h-14 rounded-2xl bg-green-xlight flex items-center justify-center text-3xl">🏆</div>
-                <div>
-                    <h3 class="font-bold text-green-dark">Keputusan Terkini</h3>
-                    <p class="text-gray-500 text-xs mt-1">Mata & pemenang setiap acara</p>
-                </div>
-                <span class="text-green-primary font-semibold text-xs flex items-center gap-1">Lihat →</span>
-            </a>
-            <a href="#streaming"
-                class="card-lift reveal bg-white rounded-2xl shadow-md border border-green-100 p-6 flex flex-col items-center text-center gap-3 no-underline"
-                style="transition-delay:.25s">
-                <div class="w-14 h-14 rounded-2xl bg-green-xlight flex items-center justify-center text-3xl">📺</div>
-                <div>
-                    <h3 class="font-bold text-green-dark">Siaran Langsung</h3>
-                    <p class="text-gray-500 text-xs mt-1">Tonton liputan langsung di sini</p>
-                </div>
-                <span id="quick-live-badge" class="text-gray-400 font-semibold text-xs">OFFLINE</span>
-            </a>
-        </div>
-    </section>
-
-
-    <!-- ══════════════════════════════ LIVE STREAMING ══════════════════════════════ -->
-    <section id="streaming" class="bg-green-dark py-14 px-4">
-        <div class="max-w-5xl mx-auto">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 reveal">
-                <div>
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="relative flex h-3 w-3">
-                            <span id="stream-ping"
-                                class="absolute inline-flex h-full w-full rounded-full bg-gray-400 opacity-75"></span>
-                            <span class="relative inline-flex h-3 w-3 rounded-full bg-gray-500"></span>
-                        </span>
-                        <span id="stream-label" class="text-xs font-bold text-gray-400 uppercase tracking-widest">Siaran
-                            Langsung</span>
-                    </div>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white">📺 Live Streaming</h2>
-                    <p class="text-green-300 text-sm mt-1">Tonton liputan langsung Hari Sukan di sini</p>
-                </div>
-                <span id="stream-badge"
-                    class="inline-flex items-center gap-2 bg-red-500/20 border border-red-500/40 text-red-300 text-xs font-bold px-4 py-2 rounded-full">
-                    <span class="w-2 h-2 bg-red-400 rounded-full animate-pulse"></span> OFFLINE
-                </span>
-            </div>
-
-            <div class="reveal rounded-2xl overflow-hidden bg-black border border-white/10 shadow-2xl">
-                <div class="relative w-full" style="padding-top:56.25%">
-                    <div id="stream-offline"
-                        class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800">
-                        <div class="text-6xl mb-4">📡</div>
-                        <p class="text-white font-bold text-lg">Siaran Belum Bermula</p>
-                        <p class="text-gray-400 text-sm mt-2 text-center px-6">Siaran langsung akan diaktifkan oleh
-                            pihak sekolah apabila acara bermula</p>
-                        <div class="mt-5 flex gap-2 text-xs text-gray-500">
-                            <span>📅 18 Julai 2026</span><span>·</span><span>🕗 7:30 pagi</span>
-                        </div>
-                    </div>
-                    <iframe id="stream-iframe" class="absolute inset-0 w-full h-full hidden" src="" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen title="Siaran Langsung Sukan Tahunan">
-                    </iframe>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- ══════════════════════════════ KEPUTUSAN TERKINI ══════════════════════════════ -->
-    <section id="keputusan" class="bg-white py-14 px-4 border-t border-green-100">
-        <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-10 reveal">
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-green-dark">🏆 Keputusan Terkini</h2>
-                <p class="text-gray-500 mt-2 text-sm">Mata Rumah Sukan — dikemas kini oleh pihak sekolah</p>
-            </div>
-
-            <!-- Score cards -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10 reveal">
-                <div id="pub-card-merah"
-                    class="bg-gradient-to-br from-red-500 to-red-700 rounded-2xl p-5 text-white text-center shadow-lg relative overflow-hidden card-lift">
-                    <div id="pub-leader-merah"
-                        class="hidden absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-xs font-extrabold px-2 py-0.5 rounded-full">
-                        👑 Teratas</div>
-                    <p class="text-xs font-bold opacity-80 uppercase tracking-widest mb-1">Rumah Merah</p>
-                    <p class="text-5xl font-extrabold mb-1" id="pub-score-merah">0</p>
-                    <p class="text-xs opacity-70">Mata</p>
-                </div>
-                <div id="pub-card-biru"
-                    class="bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl p-5 text-white text-center shadow-lg relative overflow-hidden card-lift">
-                    <div id="pub-leader-biru"
-                        class="hidden absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-xs font-extrabold px-2 py-0.5 rounded-full">
-                        👑 Teratas</div>
-                    <p class="text-xs font-bold opacity-80 uppercase tracking-widest mb-1">Rumah Biru</p>
-                    <p class="text-5xl font-extrabold mb-1" id="pub-score-biru">0</p>
-                    <p class="text-xs opacity-70">Mata</p>
-                </div>
-                <div id="pub-card-kuning"
-                    class="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-2xl p-5 text-white text-center shadow-lg relative overflow-hidden card-lift">
-                    <div id="pub-leader-kuning"
-                        class="hidden absolute top-2 right-2 bg-white text-yellow-700 text-xs font-extrabold px-2 py-0.5 rounded-full">
-                        👑 Teratas</div>
-                    <p class="text-xs font-bold opacity-80 uppercase tracking-widest mb-1">Rumah Kuning</p>
-                    <p class="text-5xl font-extrabold mb-1" id="pub-score-kuning">0</p>
-                    <p class="text-xs opacity-70">Mata</p>
-                </div>
-                <div id="pub-card-hijau"
-                    class="bg-gradient-to-br from-green-500 to-green-700 rounded-2xl p-5 text-white text-center shadow-lg relative overflow-hidden card-lift">
-                    <div id="pub-leader-hijau"
-                        class="hidden absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-xs font-extrabold px-2 py-0.5 rounded-full">
-                        👑 Teratas</div>
-                    <p class="text-xs font-bold opacity-80 uppercase tracking-widest mb-1">Rumah Hijau</p>
-                    <p class="text-5xl font-extrabold mb-1" id="pub-score-hijau">0</p>
-                    <p class="text-xs opacity-70">Mata</p>
-                </div>
-            </div>
-
-            <!-- Event results table -->
-            <div class="reveal">
-                <h3 class="font-extrabold text-green-dark text-lg mb-4">📋 Rekod Pemenang Acara</h3>
-                <div class="bg-white rounded-2xl border border-green-100 shadow-sm overflow-hidden">
-                    <table class="w-full text-sm">
-                        <thead class="bg-green-primary text-white">
-                            <tr>
-                                <th class="py-3 px-4 text-left font-semibold">Acara</th>
-                                <th class="py-3 px-4 text-left font-semibold">🥇 Pertama</th>
-                                <th class="py-3 px-4 text-left font-semibold hidden sm:table-cell">🥈 Kedua</th>
-                                <th class="py-3 px-4 text-left font-semibold hidden sm:table-cell">🥉 Ketiga</th>
-                            </tr>
-                        </thead>
-                        <tbody id="pub-results-body" class="divide-y divide-green-50">
-                            <tr id="pub-results-empty">
-                                <td colspan="4" class="py-8 text-center text-gray-400">
-                                    <p class="text-2xl mb-2">⏳</p>
-                                    <p>Keputusan akan dipaparkan selepas acara selesai</p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- ══════════════════════════════ JADUAL ACARA ══════════════════════════════ -->
-    <section id="jadual" class="max-w-5xl mx-auto px-4 py-14">
-        <div class="text-center mb-10 reveal">
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-green-dark">📅 Jadual Acara</h2>
-            <p class="text-gray-500 mt-2 text-sm">Sabtu, 18 Julai 2026 — Stadium UNIMAS</p>
-        </div>
-
-        <div class="flex rounded-xl bg-green-light p-1 mb-6 reveal max-w-xs mx-auto">
-            <button id="tab-padang" onclick="switchTab('padang')"
-                class="flex-1 py-2 text-sm font-semibold rounded-lg text-green-dark bg-white shadow transition-all">
-                Acara Balapan
-            </button>
-            <button id="tab-berpetak" onclick="switchTab('berpetak')"
-                class="flex-1 py-2 text-sm font-semibold rounded-lg text-green-700 transition-all">
-                Acara Padang
-            </button>
-        </div>
-
-        <div id="content-padang" class="reveal">
-            <div class="bg-white rounded-2xl shadow-sm border border-green-100 overflow-hidden">
-                <table class="w-full text-sm" id="table-padang"></table>
-            </div>
-        </div>
-        <div id="content-berpetak" class="reveal hidden">
-            <div class="bg-white rounded-2xl shadow-sm border border-green-100 overflow-hidden">
-                <table class="w-full text-sm" id="table-berpetak"></table>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- ══════════════════════════════ PENGUMUMAN ══════════════════════════════ -->
-    <section id="pengumuman" class="bg-green-dark py-14 px-4">
-        <div class="max-w-5xl mx-auto">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 reveal">
-                <div>
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="relative flex h-3 w-3">
-                            <span
-                                class="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75 animate-ping"></span>
-                            <span class="relative inline-flex h-3 w-3 rounded-full bg-red-500"></span>
-                        </span>
-                        <span class="text-xs font-bold text-red-400 uppercase tracking-widest">Terkini</span>
-                    </div>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white">📢 Pengumuman Penting</h2>
-                    <p class="text-green-300 text-sm mt-1">Dikemas kini secara langsung oleh pihak sekolah</p>
-                </div>
-                <div class="bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-center">
-                    <p class="text-green-300 text-xs">Dikemas kini</p>
-                    <p id="pub-last-updated" class="text-white font-bold text-sm">—</p>
-                </div>
-            </div>
-            <div id="pub-announcements" class="flex flex-col gap-4 reveal"></div>
-        </div>
-    </section>
-
-
-    <!-- ══════════════════════════════ TEMPAHAN ══════════════════════════════ -->
-    <section id="tempahan" class="bg-green-xlight border-t border-green-200 py-14 px-4">
-        <div class="max-w-3xl mx-auto">
-            <div class="text-center mb-10 reveal">
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-green-dark">🛒 Borang Tempahan</h2>
-                <p class="text-gray-500 mt-2 text-sm">Tempah gerai makanan atau tempat duduk VIP untuk Hari Sukan</p>
-            </div>
-            <form id="booking-form" onsubmit="submitBooking(event)"
-                class="bg-white rounded-2xl shadow-md border border-green-100 p-6 sm:p-8 flex flex-col gap-5 reveal">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div class="flex flex-col gap-1.5">
-                        <label for="nama" class="text-sm font-semibold text-green-dark">Nama Penuh</label>
-                        <input id="nama" type="text" required placeholder="cth: Ahmad bin Ali"
-                            class="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-primary focus:ring-2 focus:ring-green-100 transition" />
-                    </div>
-                    <div class="flex flex-col gap-1.5">
-                        <label for="telefon" class="text-sm font-semibold text-green-dark">No. Telefon</label>
-                        <input id="telefon" type="tel" required placeholder="cth: 011-12345678"
-                            class="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-primary focus:ring-2 focus:ring-green-100 transition" />
-                    </div>
-                </div>
-                <div class="flex flex-col gap-1.5">
-                    <label for="jenis" class="text-sm font-semibold text-green-dark">Jenis Tempahan</label>
-                    <select id="jenis" required
-                        class="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-primary focus:ring-2 focus:ring-green-100 transition bg-white">
-                        <option value="">— Pilih jenis —</option>
-                        <option>Gerai Makanan</option>
-                        <option>Tempat Duduk VIP</option>
-                        <option>Gerai Jualan Barangan</option>
-                    </select>
-                </div>
-                <div class="flex flex-col gap-1.5">
-                    <label for="nota" class="text-sm font-semibold text-green-dark">Nota <span
-                            class="font-normal text-gray-400">(pilihan)</span></label>
-                    <textarea id="nota" rows="3" placeholder="Sebarang permintaan khas..."
-                        class="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-primary focus:ring-2 focus:ring-green-100 transition resize-none"></textarea>
-                </div>
-                <button type="submit" id="btn-submit"
-                    class="w-full bg-green-primary text-white font-bold py-3.5 rounded-xl hover:bg-green-dark transition shadow-md">
-                    Hantar Tempahan →
-                </button>
-                <div id="booking-success"
-                    class="hidden bg-green-100 border border-green-300 rounded-xl p-4 text-center">
-                    <p class="text-green-dark font-bold">✅ Tempahan berjaya dihantar!</p>
-                    <p class="text-green-700 text-sm mt-1">Kami akan menghubungi anda melalui nombor telefon yang
-                        diberikan.</p>
-                </div>
-            </form>
-        </div>
-    </section>
-
-
-    <!-- ══════════════════════════════ HUBUNGI ══════════════════════════════ -->
-    <section id="hubungi" class="bg-green-dark py-14 px-4">
-        <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-10 reveal">
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-white">📞 Hubungi Kami</h2>
-                <p class="text-green-300 mt-2 text-sm">Sebarang pertanyaan, sila hubungi pihak sekolah</p>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 reveal">
-                <div
-                    class="bg-white/10 border border-white/20 rounded-2xl p-6 text-center card-lift hover:bg-white/15 transition">
-                    <span class="text-3xl block mb-3">📱</span>
-                    <p class="text-white font-bold">Telefon Pejabat</p>
-                    <p class="text-green-300 text-sm mt-1">082-123456</p>
-                </div>
-                <div
-                    class="bg-white/10 border border-white/20 rounded-2xl p-6 text-center card-lift hover:bg-white/15 transition">
-                    <span class="text-3xl block mb-3">✉️</span>
-                    <p class="text-white font-bold">E-mel</p>
-                    <p class="text-green-300 text-sm mt-1">skaibkhaldun@moe.gov.my</p>
-                </div>
-                <div
-                    class="bg-white/10 border border-white/20 rounded-2xl p-6 text-center card-lift hover:bg-white/15 transition">
-                    <span class="text-3xl block mb-3">📍</span>
-                    <p class="text-white font-bold">Alamat</p>
-                    <p class="text-green-300 text-sm mt-1">SK Agama Ibnu Khaldun, Sarawak</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- FOOTER -->
-    <footer class="bg-green-dark border-t border-white/10 py-6 px-4 text-center">
-        <p class="text-green-300 text-xs">
-            © 2026 SK Agama Ibnu Khaldun · Portal Sukan Tahunan ·
-            <span class="text-white/60">Dibina dengan ❤️ untuk ibu bapa &amp; komuniti sekolah</span>
-        </p>
-    </footer>
-
-
-    <!-- ══════════════════════════════ JAVASCRIPT ══════════════════════════════ -->
-    <script>
-        /* ═══════════════════════════════════════════════
-           CONSTANTS
-        ═══════════════════════════════════════════════ */
-        const STORE_KEY = 'sukan_data_2026';
-
-        const EVENTS_PADANG = [
-            { id: 'p1', masa: '7:30 pg', nama: 'Perarakan & Upacara Pembukaan', kategori: 'Semua' },
-            { id: 'p2', masa: '8:00 pg', nama: 'Lari 100m (Lelaki)', kategori: 'Tahun 4–6' },
-            { id: 'p3', masa: '8:15 pg', nama: 'Lari 100m (Perempuan)', kategori: 'Tahun 4–6' },
-            { id: 'p4', masa: '9:00 pg', nama: 'Lompat Jauh', kategori: 'Tahun 3–5' },
-            { id: 'p5', masa: '10:00 pg', nama: 'Lari Berganti-ganti 4×100m', kategori: 'Tahun 4–6' },
-            { id: 'p6', masa: '11:30 pg', nama: 'Majlis Penyampaian Hadiah', kategori: 'Semua' },
-        ];
-        const EVENTS_BERPETAK = [
-            { id: 'b1', masa: '8:00 pg', nama: 'Bola Jaring (Perempuan)', kategori: 'Tahun 4–6' },
-            { id: 'b2', masa: '8:45 pg', nama: 'Futsal (Lelaki)', kategori: 'Tahun 4–6' },
-            { id: 'b3', masa: '9:30 pg', nama: 'Tarik Tali', kategori: 'Tahun 1–3' },
-            { id: 'b4', masa: '10:30 pg', nama: 'Badminton Beregu', kategori: 'Tahun 5–6' },
-        ];
-
-        const STATUS_STYLE = {
-            'akan-datang': { label: 'Akan Datang', cls: 'bg-blue-100 text-blue-700' },
-            'sedang': { label: 'Sedang Berlangsung', cls: 'bg-amber-400 text-white' },
-            'selesai': { label: 'Selesai ✓', cls: 'bg-green-500 text-white' },
-            'tangguh': { label: 'Ditangguhkan ⚠️', cls: 'bg-red-100 text-red-700' },
-        };
-
-        function loadData() {
-            try { return JSON.parse(localStorage.getItem(STORE_KEY)) || defaultData(); }
-            catch { return defaultData(); }
-        }
-        function defaultData() {
-            return {
-                scores: { merah: 0, biru: 0, kuning: 0, hijau: 0 }, results: [],
-                announcements: [
-                    { id: 1, icon: '🔔', text: 'Perbarisan akan bermula tepat pada pukul 7:30 pagi. Ibu bapa diminta berada di kawasan penonton sebelum 7:15 pagi.', ts: '18 Jul 2026 · 6:45 pagi' },
-                    { id: 2, icon: '🥗', text: 'Gerai makanan mula beroperasi pada pukul 8:00 pagi. Terdapat 12 gerai.', ts: '17 Jul 2026 · 5:00 petang' },
-                    { id: 3, icon: '🚗', text: 'Kawasan parkir ibu bapa disediakan di hadapan Dewan Serbaguna.', ts: '15 Jul 2026 · 2:00 petang' },
-                ],
-                streamUrl: '', streamActive: false, eventStatus: {}, lastUpdated: null,
-            };
-        }
-
-        /* ═══════════════════════════════════════════════
-           RENDER FUNCTIONS
-        ═══════════════════════════════════════════════ */
-        let prevScores = {};
-
-        function renderScores(d) {
-            const houses = ['merah', 'biru', 'kuning', 'hijau'];
-            const max = Math.max(...Object.values(d.scores));
-            houses.forEach(h => {
-                const el = document.getElementById('pub-score-' + h);
-                const newVal = d.scores[h];
-                if (prevScores[h] !== undefined && prevScores[h] !== newVal) {
-                    el.classList.add('score-pop');
-                    setTimeout(() => el.classList.remove('score-pop'), 400);
-                }
-                el.textContent = newVal;
-                const badge = document.getElementById('pub-leader-' + h);
-                badge.classList.toggle('hidden', !(newVal === max && max > 0));
-                prevScores[h] = newVal;
-            });
-        }
-
-        function renderStream(d) {
-            const isLive = d.streamActive && d.streamUrl;
-            const badge = document.getElementById('stream-badge');
-            const ping = document.getElementById('stream-ping');
-            const label = document.getElementById('stream-label');
-            const offline = document.getElementById('stream-offline');
-            const iframe = document.getElementById('stream-iframe');
-            const navDot = document.getElementById('nav-live-dot');
-            const mobDot = document.getElementById('mob-live-dot');
-            const quickBadge = document.getElementById('quick-live-badge');
-
-            if (isLive) {
-                badge.className = 'inline-flex items-center gap-2 bg-red-500 border border-red-600 text-white text-xs font-bold px-4 py-2 rounded-full';
-                badge.innerHTML = '<span class="w-2 h-2 bg-white rounded-full animate-pulse"></span> LIVE SEKARANG';
-                ping.className = 'absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75 animate-ping';
-                label.className = 'text-xs font-bold text-red-400 uppercase tracking-widest';
-                navDot.className = 'w-2 h-2 rounded-full bg-red-500 animate-ping';
-                mobDot.className = 'w-2.5 h-2.5 rounded-full bg-red-500 animate-ping';
-                quickBadge.innerHTML = '<span class="inline-flex items-center gap-1 text-red-500 font-bold"><span class="w-2 h-2 bg-red-500 rounded-full animate-ping inline-block"></span> LIVE</span>';
-                if (iframe.src !== d.streamUrl) iframe.src = d.streamUrl;
-                offline.classList.add('hidden');
-                iframe.classList.remove('hidden');
-            } else {
-                badge.className = 'inline-flex items-center gap-2 bg-red-500/20 border border-red-500/40 text-red-300 text-xs font-bold px-4 py-2 rounded-full';
-                badge.innerHTML = '<span class="w-2 h-2 bg-red-400 rounded-full animate-pulse"></span> OFFLINE';
-                ping.className = 'absolute inline-flex h-full w-full rounded-full bg-gray-400 opacity-50';
-                label.className = 'text-xs font-bold text-gray-400 uppercase tracking-widest';
-                navDot.className = 'w-2 h-2 rounded-full bg-gray-400';
-                mobDot.className = 'w-2.5 h-2.5 rounded-full bg-gray-400';
-                quickBadge.textContent = 'OFFLINE';
-                quickBadge.className = 'text-gray-400 font-semibold text-xs';
-                offline.classList.remove('hidden');
-                iframe.classList.add('hidden');
-                // Only clear src if it was previously set
-                if (iframe.src) iframe.src = '';
-            }
-        }
-
-        function renderAnnouncements(d) {
-            const list = document.getElementById('pub-announcements');
-            if (!d.announcements.length) {
-                list.innerHTML = '<p class="text-green-300 text-sm text-center py-4">Tiada pengumuman buat masa ini.</p>';
-                return;
-            }
-            list.innerHTML = d.announcements.map(a => `
-    <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-5 flex gap-4 items-start hover:bg-white/15 transition-colors">
-      <span class="text-2xl mt-0.5">${a.icon}</span>
-      <div>
-        <p class="text-white font-semibold text-sm sm:text-base leading-snug">${a.text}</p>
-        <p class="text-green-300 text-xs mt-2">🕐 ${a.ts}</p>
-      </div>
-    </div>`).join('');
-            const el = document.getElementById('pub-last-updated');
-            if (d.lastUpdated) {
-                el.textContent = new Date(d.lastUpdated).toLocaleString('ms-MY', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-            }
-        }
-
-        function renderResults(d) {
-            const tbody = document.getElementById('pub-results-body');
-            const empty = document.getElementById('pub-results-empty');
-            Array.from(tbody.querySelectorAll('tr.res-row')).forEach(r => r.remove());
-            if (!d.results.length) { empty.style.display = ''; return; }
-            empty.style.display = 'none';
-            d.results.forEach(r => {
-                const tr = document.createElement('tr');
-                tr.className = 'res-row hover:bg-green-xlight transition-colors';
-                tr.innerHTML = `
-      <td class="py-3 px-4 font-semibold text-gray-800">${r.acara}</td>
-      <td class="py-3 px-4 text-gray-700">${r.p1 || '—'}</td>
-      <td class="py-3 px-4 text-gray-500 hidden sm:table-cell">${r.p2 || '—'}</td>
-      <td class="py-3 px-4 text-gray-500 hidden sm:table-cell">${r.p3 || '—'}</td>`;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function buildJadualTable(events, tableId, d) {
-            const table = document.getElementById(tableId);
-            table.innerHTML = `
-    <thead class="bg-green-primary text-white">
-      <tr>
-        <th class="py-3 px-4 text-left font-semibold">Masa</th>
-        <th class="py-3 px-4 text-left font-semibold">Acara</th>
-        <th class="py-3 px-4 text-left font-semibold hidden sm:table-cell">Kategori</th>
-        <th class="py-3 px-4 text-center font-semibold">Status</th>
-      </tr>
-    </thead>
-    <tbody class="divide-y divide-green-50">
-      ${events.map(ev => {
-                const st = d.eventStatus[ev.id] || 'akan-datang';
-                const style = STATUS_STYLE[st] || STATUS_STYLE['akan-datang'];
-                const isNow = st === 'sedang';
-                return `<tr class="hover:bg-green-xlight transition-colors ${isNow ? 'bg-amber-50' : ''}">
-          <td class="py-3 px-4 font-medium text-gray-700 whitespace-nowrap">${ev.masa}</td>
-          <td class="py-3 px-4 text-gray-800 font-medium ${isNow ? 'text-amber-700' : ''}">${ev.nama}${isNow ? ' <span class="text-xs text-amber-600 font-bold ml-1 animate-pulse">◀ SEKARANG</span>' : ''}</td>
-          <td class="py-3 px-4 text-gray-500 hidden sm:table-cell">${ev.kategori}</td>
-          <td class="py-3 px-4 text-center"><span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold ${style.cls}">${style.label}</span></td>
-        </tr>`;
-            }).join('')}
-    </tbody>`;
-        }
-
-        function renderAll() {
-            const d = loadData();
-            renderScores(d);
-            renderStream(d);
-            renderAnnouncements(d);
-            renderResults(d);
-            buildJadualTable(EVENTS_PADANG, 'table-padang', d);
-            buildJadualTable(EVENTS_BERPETAK, 'table-berpetak', d);
-            document.getElementById('last-refresh').textContent =
-                new Date().toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        }
-
-        /* ═══════════════════════════════════════════════
-           REFRESH
-        ═══════════════════════════════════════════════ */
-        function refreshData() {
-            const btn = document.getElementById('refresh-btn');
-            btn.innerHTML = '<span class="spin inline-block">↺</span> Memuatkan...';
-            btn.disabled = true;
-            setTimeout(() => {
-                renderAll();
-                btn.innerHTML = '↺ Muat Semula';
-                btn.disabled = false;
-            }, 600);
-        }
-
-        // Auto-refresh every 30 seconds
-        setInterval(renderAll, 30000);
-
-        /* ═══════════════════════════════════════════════
-           TAB SWITCH
-        ═══════════════════════════════════════════════ */
-        function switchTab(tab) {
-            const padang = document.getElementById('content-padang');
-            const berpetak = document.getElementById('content-berpetak');
-            const btnP = document.getElementById('tab-padang');
-            const btnB = document.getElementById('tab-berpetak');
-            if (tab === 'padang') {
-                padang.classList.remove('hidden'); berpetak.classList.add('hidden');
-                btnP.classList.add('bg-white', 'shadow', 'text-green-dark'); btnP.classList.remove('text-green-700');
-                btnB.classList.remove('bg-white', 'shadow', 'text-green-dark'); btnB.classList.add('text-green-700');
-            } else {
-                berpetak.classList.remove('hidden'); padang.classList.add('hidden');
-                btnB.classList.add('bg-white', 'shadow', 'text-green-dark'); btnB.classList.remove('text-green-700');
-                btnP.classList.remove('bg-white', 'shadow', 'text-green-dark'); btnP.classList.add('text-green-700');
-            }
-        }
-
-        /* ═══════════════════════════════════════════════
-           MOBILE MENU
-        ═══════════════════════════════════════════════ */
-        document.getElementById('menu-btn').addEventListener('click', () => {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-            document.getElementById('icon-open').classList.toggle('hidden');
-            document.getElementById('icon-close').classList.toggle('hidden');
-        });
-        function closeMob() {
-            document.getElementById('mobile-menu').classList.add('hidden');
-            document.getElementById('icon-open').classList.remove('hidden');
-            document.getElementById('icon-close').classList.add('hidden');
-        }
-
-        /* ═══════════════════════════════════════════════
-           BOOKING FORM
-        ═══════════════════════════════════════════════ */
-        function submitBooking(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit');
-            btn.textContent = 'Menghantar...'; btn.disabled = true;
-            setTimeout(() => {
-                document.getElementById('booking-form').reset();
-                document.getElementById('booking-success').classList.remove('hidden');
-                btn.textContent = 'Hantar Tempahan →'; btn.disabled = false;
-                setTimeout(() => document.getElementById('booking-success').classList.add('hidden'), 5000);
-            }, 1200);
-        }
-
-        /* ═══════════════════════════════════════════════
-           SCROLL REVEAL
-        ═══════════════════════════════════════════════ */
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        /* ═══════════════════════════════════════════════
-           NAVBAR SCROLL SHRINK
-        ═══════════════════════════════════════════════ */
-        window.addEventListener('scroll', () => {
-            document.getElementById('navbar').classList.toggle('shadow-md', window.scrollY > 60);
-        });
-
-        /* ═══════════════════════════════════════════════
-           INIT
-        ═══════════════════════════════════════════════ */
-        renderAll();
     </script>
 </body>
 
