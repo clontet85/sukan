@@ -20,7 +20,7 @@
             theme: {
                 extend: {
                     fontFamily: { poppins: ['Poppins', 'sans-serif'] },
-                    colors: { brand: { DEFAULT: '#16a34a', dark: '#14532d', light: '#bbf7d0', xlight: '#f0fdf4' } }
+                    colors: { brand: { DEFAULT: '#16a34a', dark: '#14532d', light: '#bbf7d0', xlight: '#f0fdf4', accent: '#f59e0b', sky: '#0ea5e9' } }
                 }
             }
         }
@@ -78,6 +78,30 @@
             justify-content: center;
             background: linear-gradient(135deg, #14532d, #16a34a);
         }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #results-statistics-card,
+            #results-statistics-card * {
+                visibility: visible;
+            }
+
+            #results-statistics-card {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+            }
+
+            .print-hidden {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 
@@ -89,7 +113,7 @@
             <div class="text-5xl mb-4">🔐</div>
             <h1 class="font-extrabold text-2xl text-green-900 mb-1">Panel Admin</h1>
             <p class="text-gray-500 text-sm mb-6">SK Agama Ibnu Khaldun — Sukan 2026</p>
-            <input id="pin-input" type="password" maxlength="6" placeholder="Masukkan PIN (lalai: 1234)"
+            <input id="pin-input" type="password" maxlength="6" placeholder="Masukkan PIN"
                 class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-center text-xl tracking-widest font-bold focus:outline-none focus:border-green-500 mb-3"
                 onkeydown="if(event.key==='Enter') checkPin()" />
             <button onclick="checkPin()"
@@ -150,6 +174,24 @@
                     class="bg-red-500/70 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-xl transition">
                     🗑 Reset Semua
                 </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="card bg-gradient-to-br from-green-800 to-green-900 text-white">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-green-200">Paparan Pentadbiran</p>
+                <p class="mt-3 text-xl font-extrabold">Layout lebih tersusun</p>
+                <p class="mt-1 text-sm text-green-100">Panel admin kini dibahagikan dengan lebih jelas untuk pemantauan acara.</p>
+            </div>
+            <div class="card bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-700">Tindakan Pantas</p>
+                <p class="mt-3 text-xl font-extrabold text-amber-800">Kawal keputusan dan siaran</p>
+                <p class="mt-1 text-sm text-amber-700">Semua kemaskini dibuat dari satu paparan yang lebih kemas.</p>
+            </div>
+            <div class="card bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">Portal Ibu Bapa</p>
+                <p class="mt-3 text-xl font-extrabold text-blue-800">Paparan lebih mesra</p>
+                <p class="mt-1 text-sm text-blue-700">Pengguna dapat melihat acara, keputusan dan live streaming dengan lebih mudah.</p>
             </div>
         </div>
 
@@ -260,34 +302,23 @@
                     </button>
                 </div>
 
-                <!-- YouTube preset -->
-                <div class="mb-4">
-                    <label class="text-xs font-bold text-gray-600 block mb-1.5">📌 ID Video YouTube</label>
-                    <div class="flex gap-2">
-                        <input id="yt-id" type="text" placeholder="cth: dQw4w9WgXcQ"
-                            class="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-red-400" />
-                        <button onclick="setYoutube()"
-                            class="bg-red-600 text-white font-bold px-4 rounded-xl text-xs hover:bg-red-800 transition flex items-center gap-1">Set</button>
-                    </div>
-                </div>
                 <!-- Facebook preset -->
                 <div class="mb-4">
-                    <label class="text-xs font-bold text-gray-600 block mb-1.5">📌 URL Embed Facebook Live</label>
+                    <label class="text-xs font-bold text-gray-600 block mb-1.5">📌 URL Facebook Live / Kod Embed</label>
                     <div class="flex gap-2">
-                        <input id="fb-url" type="url" placeholder="https://www.facebook.com/..."
+                        <input id="fb-url" type="text" placeholder="https://www.facebook.com/... atau kod iframe"
                             class="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-400" />
                         <button onclick="setFacebook()"
                             class="bg-blue-600 text-white font-bold px-4 rounded-xl text-xs hover:bg-blue-800 transition">Set</button>
                     </div>
-                </div>
-                <!-- TikTok Live URL -->
-                <div class="mb-5">
-                    <label class="text-xs font-bold text-gray-600 block mb-1.5">🎵 URL TikTok Live</label>
-                    <div class="flex gap-2">
-                        <input id="tiktok-url" type="url" placeholder="cth: https://www.tiktok.com/@username/live"
-                            class="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-black" />
-                        <button onclick="setTiktok()"
-                            class="bg-black text-white font-bold px-4 rounded-xl text-xs hover:bg-gray-800 transition flex items-center gap-1">Set</button>
+                    <div class="mt-2 rounded-lg border border-blue-100 bg-blue-50 p-2 text-xs text-blue-700">
+                        <p class="font-semibold">Cara live menggunakan Facebook:</p>
+                        <ol class="list-decimal list-inside mt-1 space-y-1">
+                            <li>Buka Facebook Page atau Profil dan mulakan Live.</li>
+                            <li>Salin pautan video/live yang sebenar atau paste terus kod iframe embed Facebook.</li>
+                            <li>Sistem akan tukar pautan Facebook kepada format embed secara automatik.</li>
+                            <li>Di tab Urus Jadual Acara, tukar status acara kepada “Sedang Berlangsung”.</li>
+                        </ol>
                     </div>
                 </div>
 
@@ -299,6 +330,305 @@
                     class="mt-4 w-full bg-gray-200 hover:bg-red-100 hover:text-red-600 text-gray-600 font-bold py-2.5 rounded-xl text-sm transition">
                     ⏹ Hentikan & Padam Siaran
                 </button>
+            </div>
+        </div>
+
+        <!-- ── PENGUMUMAN ── -->
+        <div class="card">
+            <h2 class="font-extrabold text-green-900 text-lg mb-5 flex items-center gap-2">📢 Urus Pengumuman</h2>
+            <!-- Add form -->
+            <div class="bg-green-xlight border border-green-200 rounded-2xl p-5 mb-5">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs font-bold text-gray-600">Emoji / Ikon</label>
+                        <select id="ann-icon"
+                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none bg-white">
+                            <option>🔔</option>
+                            <option>⚠️</option>
+                            <option>✅</option>
+                            <option>📍</option>
+                            <option>🚗</option>
+                            <option>🥗</option>
+                            <option>☔</option>
+                            <option>📢</option>
+                        </select>
+                    </div>
+                    <div class="sm:col-span-2 flex flex-col gap-1">
+                        <label class="text-xs font-bold text-gray-600">Teks Pengumuman</label>
+                        <input id="ann-text" type="text" placeholder="Taip pengumuman di sini..."
+                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+                            onkeydown="if(event.key==='Enter') addAnnouncement()" />
+                    </div>
+                </div>
+                <button onclick="addAnnouncement()"
+                    class="mt-3 bg-green-600 text-white font-bold text-sm px-6 py-2.5 rounded-xl hover:bg-green-800 transition">Hantar
+                    Pengumuman</button>
+            </div>
+            <!-- List -->
+            <div id="ann-list" class="flex flex-col gap-3"></div>
+        </div>
+
+        <!-- ── ROSTER PASUKAN & KEPUTUSAN PERLAWANAN ── -->
+        <div class="card">
+            <h2 class="font-extrabold text-green-900 text-lg mb-5 flex items-center gap-2">👥 Roster & ⚽ Keputusan
+                Perlawanan</h2>
+
+            <div class="bg-green-xlight border border-green-200 rounded-2xl p-5 mb-5 block">
+                <label class="text-xs font-bold text-gray-600 block mb-2">📥 Import Data Roster dari CSV</label>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input id="roster-csv-file" type="file" accept=".csv"
+                        class="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500 bg-white" />
+                    <button onclick="importRosterFromCSV()"
+                        class="bg-blue-600 text-white font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-blue-800 transition">Import
+                        CSV</button>
+                    <button onclick="importRosterFromWorkspaceCsv('balapan.csv', 'balapan.csv')"
+                        class="bg-green-700 text-white font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-green-800 transition">Import
+                        balapan.csv</button>
+                    <button onclick="importRosterFromWorkspaceCsv('padang.csv', 'padang.csv')"
+                        class="bg-emerald-700 text-white font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-emerald-800 transition">Import
+                        padang.csv</button>
+                    <button onclick="importAllWorkspaceRosters()"
+                        class="bg-amber-600 text-white font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-amber-700 transition">Import
+                        Semua</button>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">Format disokong: `balapan.csv` dan `padang.csv` dengan lajur Acara, Tahun/Kategori, serta kolum rumah seperti `Kuning_Pelari_*`, `Kuning_Pemain_*` atau `Kuning_Wakil_*`.</p>
+            </div>
+
+            <div class="mb-6">
+                <label class="text-xs font-bold text-gray-600">Pilih Acara</label>
+                <select id="roster-event-select" onchange="onRosterEventChange()"
+                    class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500 bg-white mt-1">
+                    <option value="">-- Pilih Acara --</option>
+                </select>
+                <button onclick="resetCurrentEventRoster()"
+                    class="mt-3 bg-red-50 text-red-600 border border-red-200 font-bold text-xs px-4 py-2 rounded-xl hover:bg-red-100 transition">🧹 Reset Roster Acara Ini</button>
+            </div>
+
+            <!-- Wrapper container for roster editor & match results -->
+            <div id="roster-and-match-container" class="hidden grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
+                <!-- Roster Editor Column -->
+                <div class="min-w-0">
+                    <div class="bg-green-xlight border border-green-200 rounded-2xl p-5">
+                        <h3 class="text-sm font-bold text-green-900 mb-4">👥 Roster Pasukan</h3>
+                        <div id="roster-list" class="space-y-4"></div>
+                        <button onclick="addNewTeamRoster()"
+                            class="mt-4 bg-green-600 text-white font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-green-800 transition">+
+                            Tambah Pasukan</button>
+                    </div>
+                </div>
+
+                <!-- Match/Event Results Column -->
+                <div class="min-w-0">
+                    <!-- Group Events Section -->
+                    <div id="match-section" class="bg-green-xlight border border-green-200 rounded-2xl p-5 mb-5 hidden">
+                        <h3 class="text-sm font-bold text-green-900 mb-4">⚽ Rekod Keputusan Perlawanan (Kumpulan)</h3>
+
+                        <div id="match-inputs" class="hidden">
+                            <div class="mb-4 rounded-xl border border-green-200 bg-white p-4">
+                                <p class="text-xs font-bold text-green-700 mb-2">Klik nombor kedudukan pada rumah yang menang</p>
+                                <div id="match-rank-summary" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs"></div>
+                            </div>
+
+                            <div id="match-house-ranking-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4"></div>
+
+                            <div class="hidden">
+                                <label id="rank-1-label">🥇 Tempat Pertama</label>
+                                <select id="rank-1" onchange="updateGroupResultOptions()">
+                                    <option value="">-- Pilih Rumah --</option>
+                                </select>
+                                <select id="rank-1-name" class="group-result-name-select hidden">
+                                    <option value="">-- Pilih Nama Penerima Pingat --</option>
+                                </select>
+
+                                <label id="rank-2-label">🥈 Tempat Kedua</label>
+                                <select id="rank-2" onchange="updateGroupResultOptions()">
+                                    <option value="">-- Pilih Rumah --</option>
+                                </select>
+                                <select id="rank-2-name" class="group-result-name-select hidden">
+                                    <option value="">-- Pilih Nama Penerima Pingat --</option>
+                                </select>
+
+                                <label id="rank-3-label">🥉 Tempat Ketiga</label>
+                                <select id="rank-3" onchange="updateGroupResultOptions()">
+                                    <option value="">-- Pilih Rumah --</option>
+                                </select>
+                                <select id="rank-3-name" class="group-result-name-select hidden">
+                                    <option value="">-- Pilih Nama Penerima Pingat --</option>
+                                </select>
+
+                                <label id="rank-4-label">🏅 Tempat Keempat</label>
+                                <select id="rank-4" onchange="updateGroupResultOptions()">
+                                    <option value="">-- Pilih Rumah --</option>
+                                </select>
+                                <select id="rank-4-name" class="group-result-name-select hidden">
+                                    <option value="">-- Pilih Nama Penerima Pingat --</option>
+                                </select>
+                            </div>
+
+                            <button onclick="recordMatchResult()"
+                                class="w-full bg-green-600 text-white font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-green-800 transition">📝
+                                Rekod Keputusan Kumpulan</button>
+                        </div>
+                    </div>
+
+                    <!-- Individual Events Section -->
+                    <div id="individual-section"
+                        class="bg-green-xlight border border-green-200 rounded-2xl p-5 mb-5 hidden min-w-0 overflow-hidden">
+                        <h3 class="text-sm font-bold text-green-900 mb-4">🥇 Rekod Keputusan Acara (Individu)</h3>
+
+                        <p class="text-xs text-gray-500 mb-3">Pilih rumah dahulu, kemudian nama peserta akan muncul untuk dipilih pada setiap tempat berdasarkan acara yang dipilih di bahagian atas.</p>
+
+                        <div class="grid grid-cols-1 xl:grid-cols-2 gap-3 mb-4 min-w-0">
+                            <div class="flex flex-col gap-2 min-w-0 rounded-2xl border border-yellow-200 bg-yellow-50 p-4">
+                                <label class="text-xs font-bold text-yellow-700">🥇 Tempat Pertama *</label>
+                                <div id="res-1-house-buttons" class="flex flex-wrap gap-2"></div>
+                                <div id="res-1-name-buttons" class="flex flex-wrap gap-2"></div>
+                                <div class="hidden">
+                                    <select id="res-1-house" onchange="updateIndividualResultOptions()">
+                                        <option value="">-- Rumah --</option>
+                                        <option value="merah">Merah</option>
+                                        <option value="biru">Biru</option>
+                                        <option value="kuning">Kuning</option>
+                                        <option value="hijau">Hijau</option>
+                                    </select>
+                                    <select id="res-1-name">
+                                        <option value="">-- Pilih Nama Peserta --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2 min-w-0 rounded-2xl border border-gray-200 bg-gray-50 p-4">
+                                <label class="text-xs font-bold text-gray-700">🥈 Tempat Kedua</label>
+                                <div id="res-2-house-buttons" class="flex flex-wrap gap-2"></div>
+                                <div id="res-2-name-buttons" class="flex flex-wrap gap-2"></div>
+                                <div class="hidden">
+                                    <select id="res-2-house" onchange="updateIndividualResultOptions()">
+                                        <option value="">-- Rumah --</option>
+                                        <option value="merah">Merah</option>
+                                        <option value="biru">Biru</option>
+                                        <option value="kuning">Kuning</option>
+                                        <option value="hijau">Hijau</option>
+                                    </select>
+                                    <select id="res-2-name">
+                                        <option value="">-- Pilih Nama Peserta --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2 min-w-0 rounded-2xl border border-orange-200 bg-orange-50 p-4">
+                                <label class="text-xs font-bold text-orange-700">🥉 Tempat Ketiga</label>
+                                <div id="res-3-house-buttons" class="flex flex-wrap gap-2"></div>
+                                <div id="res-3-name-buttons" class="flex flex-wrap gap-2"></div>
+                                <div class="hidden">
+                                    <select id="res-3-house" onchange="updateIndividualResultOptions()">
+                                        <option value="">-- Rumah --</option>
+                                        <option value="merah">Merah</option>
+                                        <option value="biru">Biru</option>
+                                        <option value="kuning">Kuning</option>
+                                        <option value="hijau">Hijau</option>
+                                    </select>
+                                    <select id="res-3-name">
+                                        <option value="">-- Pilih Nama Peserta --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2 min-w-0 rounded-2xl border border-green-200 bg-green-50 p-4">
+                                <label class="text-xs font-bold text-green-700">🏅 Tempat Keempat</label>
+                                <div id="res-4-house-buttons" class="flex flex-wrap gap-2"></div>
+                                <div id="res-4-name-buttons" class="flex flex-wrap gap-2"></div>
+                                <div class="hidden">
+                                    <select id="res-4-house" onchange="updateIndividualResultOptions()">
+                                        <option value="">-- Rumah --</option>
+                                        <option value="merah">Merah</option>
+                                        <option value="biru">Biru</option>
+                                        <option value="kuning">Kuning</option>
+                                        <option value="hijau">Hijau</option>
+                                    </select>
+                                    <select id="res-4-name">
+                                        <option value="">-- Pilih Nama Peserta --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="addResult()"
+                            class="w-full bg-green-600 text-white font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-green-800 transition">📝
+                            Rekod Keputusan Individu</button>
+                    </div>
+
+                    <div class="bg-green-xlight border border-green-200 rounded-2xl p-5">
+                        <div class="flex items-center justify-between gap-3 mb-4">
+                            <h3 class="text-sm font-bold text-green-900">🏆 Senarai Keputusan Perlawanan</h3>
+                        </div>
+                        <div id="match-results-list" class="space-y-3">
+                            <p class="text-center text-gray-400 text-sm py-4">Tiada keputusan direkodkan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── KEPUTUSAN ACARA ── -->
+        <div id="results-statistics-card" class="card">
+            <div class="flex flex-col gap-4 mb-5 lg:flex-row lg:items-start lg:justify-between">
+                <h2 class="font-extrabold text-green-900 text-lg flex items-center gap-2">🥇 Senarai Keputusan Acara &
+                    Statistik</h2>
+                <div class="flex flex-wrap gap-2 print-hidden">
+                    <button onclick="exportWinnerResultsToCsv()"
+                        class="bg-blue-700 text-white font-bold text-xs px-3 py-2 rounded-xl hover:bg-blue-800 transition">📥 Download CSV</button>
+                    <button onclick="exportWinnerResultsToJson()"
+                        class="bg-green-700 text-white font-bold text-xs px-3 py-2 rounded-xl hover:bg-green-800 transition">📥 Download JSON</button>
+                    <button onclick="exportWinnerResultsToCsv(); exportWinnerResultsToJson();"
+                        class="bg-amber-600 text-white font-bold text-xs px-3 py-2 rounded-xl hover:bg-amber-700 transition">📦 Download Semua Keputusan</button>
+                    <button onclick="printResults()"
+                        class="bg-slate-700 text-white font-bold text-xs px-3 py-2 rounded-xl hover:bg-slate-800 transition">🖨 Cetak Keputusan</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-3 mb-5 text-sm text-gray-700">
+                <div class="bg-white border border-green-200 rounded-2xl p-4">
+                    <p class="text-xs uppercase font-bold text-gray-500 mb-2">Olahragawan Terbaik (Lelaki)</p>
+                    <p class="text-[11px] uppercase tracking-[0.15em] text-green-600 font-bold mb-2">Peneraju Semasa</p>
+                    <div id="sportsperson-male" class="font-semibold text-green-900">Tiada data pingat lelaki.</div>
+                    <div class="mt-4 border-t border-green-100 pt-3">
+                        <p class="text-[11px] uppercase tracking-[0.15em] text-gray-500 font-bold mb-2">Calon Top 5 (Emas Sahaja)</p>
+                        <div id="sportsperson-male-candidates" class="space-y-2 text-sm text-gray-700">
+                            <p class="text-gray-400">Tiada calon lelaki buat masa ini.</p>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-3">Hanya pemenang pingat emas/pertama disenaraikan. Permainan futsal, badminton, bola baling dan bola jaring tidak diambil kira.</p>
+                    </div>
+                </div>
+                <div class="bg-white border border-green-200 rounded-2xl p-4">
+                    <p class="text-xs uppercase font-bold text-gray-500 mb-2">Olahragawati Terbaik (Perempuan)</p>
+                    <p class="text-[11px] uppercase tracking-[0.15em] text-green-600 font-bold mb-2">Peneraju Semasa</p>
+                    <div id="sportsperson-female" class="font-semibold text-green-900">Tiada data pingat wanita.</div>
+                    <div class="mt-4 border-t border-green-100 pt-3">
+                        <p class="text-[11px] uppercase tracking-[0.15em] text-gray-500 font-bold mb-2">Calon Top 5 (Emas Sahaja)</p>
+                        <div id="sportsperson-female-candidates" class="space-y-2 text-sm text-gray-700">
+                            <p class="text-gray-400">Tiada calon wanita buat masa ini.</p>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-3">Hanya pemenang pingat emas/pertama disenaraikan. Permainan futsal, badminton, bola baling dan bola jaring tidak diambil kira.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-green-700 text-white">
+                        <tr>
+                            <th class="py-2.5 px-4 text-left font-semibold">Acara</th>
+                            <th class="py-2.5 px-4 text-left font-semibold">🥇 Pertama</th>
+                            <th class="py-2.5 px-4 text-left font-semibold hidden sm:table-cell">🥈 Kedua</th>
+                            <th class="py-2.5 px-4 text-left font-semibold hidden sm:table-cell">🥉 Ketiga</th>
+                            <th class="py-2.5 px-4 text-left font-semibold hidden md:table-cell">🏅 Keempat</th>
+                            <th class="py-2.5 px-4 text-center font-semibold">Padam</th>
+                        </tr>
+                    </thead>
+                    <tbody id="res-table-body" class="divide-y divide-green-50">
+                        <tr id="res-empty">
+                            <td colspan="6" class="py-6 text-center text-gray-400 text-sm">Tiada rekod lagi</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -360,98 +690,67 @@
                             <option value="padang">Acara Padang (Field)</option>
                         </select>
                     </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs font-bold text-gray-600">Format Acara *</label>
+                        <select id="new-ev-format"
+                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500 bg-white">
+                            <option value="individu">Individu (Pertama: 4, Kedua: 3, Ketiga: 2, Keempat: 1)</option>
+                            <option value="kumpulan">Kumpulan (Pertama: 8, Kedua: 6, Ketiga: 4, Keempat: 2)</option>
+                        </select>
+                    </div>
                 </div>
                 <button onclick="addEvent()"
                     class="bg-green-600 text-white font-bold text-sm px-6 py-2.5 rounded-xl hover:bg-green-800 transition">
                     + Tambah Acara
                 </button>
             </div>
-        </div>
 
-        <!-- ── PENGUMUMAN ── -->
-        <div class="card">
-            <h2 class="font-extrabold text-green-900 text-lg mb-5 flex items-center gap-2">📢 Urus Pengumuman</h2>
-            <!-- Add form -->
-            <div class="bg-green-xlight border border-green-200 rounded-2xl p-5 mb-5">
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div class="flex flex-col gap-1">
-                        <label class="text-xs font-bold text-gray-600">Emoji / Ikon</label>
-                        <select id="ann-icon"
-                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none bg-white">
-                            <option>🔔</option>
-                            <option>⚠️</option>
-                            <option>✅</option>
-                            <option>📍</option>
-                            <option>🚗</option>
-                            <option>🥗</option>
-                            <option>☔</option>
-                            <option>📢</option>
-                        </select>
-                    </div>
-                    <div class="sm:col-span-2 flex flex-col gap-1">
-                        <label class="text-xs font-bold text-gray-600">Teks Pengumuman</label>
-                        <input id="ann-text" type="text" placeholder="Taip pengumuman di sini..."
-                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500"
-                            onkeydown="if(event.key==='Enter') addAnnouncement()" />
-                    </div>
+            <div class="mt-8 border-t border-green-100 pt-6">
+                <div class="mb-4">
+                    <p class="text-xs uppercase tracking-[0.2em] text-green-600 font-bold mb-3">Jadual Acara Mengikut
+                        Hari</p>
                 </div>
-                <button onclick="addAnnouncement()"
-                    class="mt-3 bg-green-600 text-white font-bold text-sm px-6 py-2.5 rounded-xl hover:bg-green-800 transition">Hantar
-                    Pengumuman</button>
-            </div>
-            <!-- List -->
-            <div id="ann-list" class="flex flex-col gap-3"></div>
-        </div>
 
-        <!-- ── KEPUTUSAN ACARA ── -->
-        <div class="card">
-            <h2 class="font-extrabold text-green-900 text-lg mb-5 flex items-center gap-2">🥇 Rekod Keputusan Acara</h2>
-            <!-- Add result form -->
-            <div class="bg-green-xlight border border-green-200 rounded-2xl p-5 mb-5">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-                    <div class="flex flex-col gap-1">
-                        <label class="text-xs font-bold text-gray-600">Nama Acara *</label>
-                        <input id="res-acara" type="text" placeholder="cth: Lari 100m Lelaki"
-                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500" />
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <label class="text-xs font-bold text-gray-600">🥇 Tempat Pertama *</label>
-                        <input id="res-1" type="text" placeholder="cth: Ahmad bin Razif (Merah)"
-                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500" />
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <label class="text-xs font-bold text-gray-600">🥈 Tempat Kedua</label>
-                        <input id="res-2" type="text" placeholder="cth: Haziq (Biru)"
-                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500" />
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <label class="text-xs font-bold text-gray-600">🥉 Tempat Ketiga</label>
-                        <input id="res-3" type="text" placeholder="cth: Siti Nur (Hijau)"
-                            class="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-green-500" />
-                    </div>
+                <div class="flex flex-wrap gap-2 mb-4 rounded-xl bg-green-light p-1 max-w-4xl">
+                    <button id="schedule-tab-1" onclick="switchScheduleDay('day-1')"
+                        class="py-2 px-4 text-xs font-semibold rounded-lg text-green-dark bg-white shadow transition-all">Isnin
+                        13 Julai</button>
+                    <button id="schedule-tab-2" onclick="switchScheduleDay('day-2')"
+                        class="py-2 px-4 text-xs font-semibold rounded-lg text-green-700 transition-all">Selasa 14
+                        Julai</button>
+                    <button id="schedule-tab-3" onclick="switchScheduleDay('day-3')"
+                        class="py-2 px-4 text-xs font-semibold rounded-lg text-green-700 transition-all">Rabu 15
+                        Julai</button>
+                    <button id="schedule-tab-4" onclick="switchScheduleDay('day-4')"
+                        class="py-2 px-4 text-xs font-semibold rounded-lg text-green-700 transition-all">Khamis 16
+                        Julai</button>
                 </div>
-                <button onclick="addResult()"
-                    class="bg-green-600 text-white font-bold text-sm px-6 py-2.5 rounded-xl hover:bg-green-800 transition">Simpan
-                    Keputusan</button>
-            </div>
-            <!-- Table -->
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead class="bg-green-700 text-white">
-                        <tr>
-                            <th class="py-2.5 px-4 text-left font-semibold">Acara</th>
-                            <th class="py-2.5 px-4 text-left font-semibold">🥇 Pertama</th>
-                            <th class="py-2.5 px-4 text-left font-semibold hidden sm:table-cell">🥈 Kedua</th>
-                            <th class="py-2.5 px-4 text-left font-semibold hidden sm:table-cell">🥉 Ketiga</th>
-                            <th class="py-2.5 px-4 text-center font-semibold">Padam</th>
-                        </tr>
-                    </thead>
-                    <tbody id="res-table-body" class="divide-y divide-green-50">
-                        <tr id="res-empty">
-                            <td colspan="5" class="py-6 text-center text-gray-400 text-sm">Tiada rekod lagi</td>
-                        </tr>
-                    </tbody>
-                </table>
+
+                <div id="schedule-content-day-1"
+                    class="bg-white rounded-2xl shadow-sm border border-green-100 overflow-hidden mb-4">
+                    <table class="w-full text-sm" id="schedule-table-day-1"></table>
+                </div>
+                <div id="schedule-content-day-2"
+                    class="hidden bg-white rounded-2xl shadow-sm border border-green-100 overflow-hidden mb-4">
+                    <table class="w-full text-sm" id="schedule-table-day-2"></table>
+                </div>
+                <div id="schedule-content-day-3"
+                    class="hidden bg-white rounded-2xl shadow-sm border border-green-100 overflow-hidden mb-4">
+                    <table class="w-full text-sm" id="schedule-table-day-3"></table>
+                </div>
+                <div id="schedule-content-day-4"
+                    class="hidden bg-white rounded-2xl shadow-sm border border-green-100 overflow-hidden mb-4">
+                    <table class="w-full text-sm" id="schedule-table-day-4"></table>
+                </div>
+
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="addScheduleItem()"
+                        class="bg-green-600 text-white font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-green-800 transition">+
+                        Tambah Baris</button>
+                    <button onclick="syncToCloud()"
+                        class="bg-white text-green-dark border border-green-200 font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-green-50 transition">Simpan
+                        Jadual</button>
+                </div>
             </div>
         </div>
 
@@ -477,26 +776,152 @@
         const dbRef = db.ref('sukan_data_2026');
 
         const PIN_KEY = 'sukan_admin_pin';
-        const DEFAULT_PIN = '1234';
+        const DEFAULT_PIN = '';
 
         const DEFAULT_EVENTS = [
-            { id: 't1', masa: '7:30 pg', nama: 'Perarakan & Upacara Pembukaan', kategori: 'Semua', jenis: 'balapan' },
-            { id: 't2', masa: '8:00 pg', nama: 'Lari 100m (Lelaki)', kategori: 'Tahun 4–6', jenis: 'balapan' },
-            { id: 't3', masa: '8:15 pg', nama: 'Lari 100m (Perempuan)', kategori: 'Tahun 4–6', jenis: 'balapan' },
-            { id: 't4', masa: '9:00 pg', nama: 'Lompat Jauh', kategori: 'Tahun 3–5', jenis: 'balapan' },
-            { id: 't5', masa: '10:00 pg', nama: 'Lari Berganti-ganti 4×100m', kategori: 'Tahun 4–6', jenis: 'balapan' },
-            { id: 't6', masa: '11:30 pg', nama: 'Majlis Penyampaian Hadiah', kategori: 'Semua', jenis: 'balapan' },
-            { id: 'p1', masa: '8:00 pg', nama: 'Bola Jaring (Perempuan)', kategori: 'Tahun 4–6', jenis: 'padang' },
-            { id: 'p2', masa: '8:45 pg', nama: 'Futsal (Lelaki)', kategori: 'Tahun 4–6', jenis: 'padang' },
-            { id: 'p3', masa: '9:30 pg', nama: 'Tarik Tali', kategori: 'Tahun 1–3', jenis: 'padang' },
-            { id: 'p4', masa: '10:30 pg', nama: 'Badminton Beregu', kategori: 'Tahun 5–6', jenis: 'padang' }
+            { id: 't1', masa: '7:30 pg', nama: 'Perarakan & Upacara Pembukaan', kategori: 'Semua', jenis: 'balapan', format: 'kumpulan' },
+            { id: 't2a', masa: '8:00 pg', nama: 'Lari 100m Lelaki Tahun 1', kategori: 'Tahun 1', jenis: 'balapan', format: 'individu' },
+            { id: 't2b', masa: '8:00 pg', nama: 'Lari 100m Lelaki Tahun 2', kategori: 'Tahun 2', jenis: 'balapan', format: 'individu' },
+            { id: 't2c', masa: '8:00 pg', nama: 'Lari 100m Lelaki Tahun 3', kategori: 'Tahun 3', jenis: 'balapan', format: 'individu' },
+            { id: 't2d', masa: '8:00 pg', nama: 'Lari 100m Lelaki Tahun 4', kategori: 'Tahun 4', jenis: 'balapan', format: 'individu' },
+            { id: 't2e', masa: '8:00 pg', nama: 'Lari 100m Lelaki Tahun 5', kategori: 'Tahun 5', jenis: 'balapan', format: 'individu' },
+            { id: 't2f', masa: '8:00 pg', nama: 'Lari 100m Lelaki Tahun 6', kategori: 'Tahun 6', jenis: 'balapan', format: 'individu' },
+            { id: 't3a', masa: '8:15 pg', nama: 'Lari 100m Perempuan Tahun 1', kategori: 'Tahun 1', jenis: 'balapan', format: 'individu' },
+            { id: 't3b', masa: '8:15 pg', nama: 'Lari 100m Perempuan Tahun 2', kategori: 'Tahun 2', jenis: 'balapan', format: 'individu' },
+            { id: 't3c', masa: '8:15 pg', nama: 'Lari 100m Perempuan Tahun 3', kategori: 'Tahun 3', jenis: 'balapan', format: 'individu' },
+            { id: 't3d', masa: '8:15 pg', nama: 'Lari 100m Perempuan Tahun 4', kategori: 'Tahun 4', jenis: 'balapan', format: 'individu' },
+            { id: 't3e', masa: '8:15 pg', nama: 'Lari 100m Perempuan Tahun 5', kategori: 'Tahun 5', jenis: 'balapan', format: 'individu' },
+            { id: 't3f', masa: '8:15 pg', nama: 'Lari 100m Perempuan Tahun 6', kategori: 'Tahun 6', jenis: 'balapan', format: 'individu' },
+            { id: 't6', masa: '11:30 pg', nama: 'Majlis Penyampaian Hadiah', kategori: 'Semua', jenis: 'balapan', format: 'individu' },
+            { id: 'p1', masa: '8:00 pg', nama: 'Bola Jaring (Perempuan)', kategori: 'Tahun 4–6', jenis: 'padang', format: 'kumpulan' },
+            { id: 'p2a', masa: '8:45 pg', nama: 'Futsal (Lelaki) Tahun 4', kategori: 'Tahun 4', jenis: 'padang', format: 'kumpulan' },
+            { id: 'p2b', masa: '8:45 pg', nama: 'Futsal (Lelaki) Tahun 5', kategori: 'Tahun 5', jenis: 'padang', format: 'kumpulan' },
+            { id: 'p2c', masa: '8:45 pg', nama: 'Futsal (Lelaki) Tahun 6', kategori: 'Tahun 6', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e2a', masa: 'TBD', nama: 'Bola Baling Lelaki Tahun 3', kategori: 'Tahun 3', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e2b', masa: 'TBD', nama: 'Bola Baling Lelaki Tahun 4', kategori: 'Tahun 4', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e2c', masa: 'TBD', nama: 'Bola Baling Lelaki Tahun 5', kategori: 'Tahun 5', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e2d', masa: 'TBD', nama: 'Bola Baling Lelaki Tahun 6', kategori: 'Tahun 6', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e2e', masa: 'TBD', nama: 'Bola Baling Perempuan Tahun 3', kategori: 'Tahun 3', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e2f', masa: 'TBD', nama: 'Bola Baling Perempuan Tahun 4', kategori: 'Tahun 4', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e2g', masa: 'TBD', nama: 'Bola Baling Perempuan Tahun 5', kategori: 'Tahun 5', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e2h', masa: 'TBD', nama: 'Bola Baling Perempuan Tahun 6', kategori: 'Tahun 6', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e3a', masa: 'TBD', nama: 'Bola Jaring Tahun 3', kategori: 'Tahun 3', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e3b', masa: 'TBD', nama: 'Bola Jaring Tahun 4', kategori: 'Tahun 4', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e3c', masa: 'TBD', nama: 'Bola Jaring Tahun 5', kategori: 'Tahun 5', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e3d', masa: 'TBD', nama: 'Bola Jaring Tahun 6', kategori: 'Tahun 6', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e4a', masa: 'TBD', nama: 'Badminton Tahun 3', kategori: 'Tahun 3', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e4b', masa: 'TBD', nama: 'Badminton Tahun 4', kategori: 'Tahun 4', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e4c', masa: 'TBD', nama: 'Badminton Tahun 5', kategori: 'Tahun 5', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e4d', masa: 'TBD', nama: 'Badminton Tahun 6', kategori: 'Tahun 6', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e5', masa: 'TBD', nama: 'Latihan Perbarisan', kategori: 'Tahun 1–2', jenis: 'padang', format: 'individu' },
+            { id: 'e6a', masa: 'TBD', nama: 'Lompat Jauh Tahun 3', kategori: 'Acara Padang', jenis: 'padang', format: 'individu' },
+            { id: 'e6b', masa: 'TBD', nama: 'Lompat Jauh Tahun 4', kategori: 'Acara Padang', jenis: 'padang', format: 'individu' },
+            { id: 'e6c', masa: 'TBD', nama: 'Lompat Jauh Tahun 5', kategori: 'Acara Padang', jenis: 'padang', format: 'individu' },
+            { id: 'e6d', masa: 'TBD', nama: 'Lompat Jauh Tahun 6', kategori: 'Acara Padang', jenis: 'padang', format: 'individu' },
+            { id: 'e7a', masa: 'TBD', nama: 'Lompat Tinggi Tahun 3', kategori: 'Acara Padang', jenis: 'padang', format: 'individu' },
+            { id: 'e7b', masa: 'TBD', nama: 'Lompat Tinggi Tahun 4', kategori: 'Acara Padang', jenis: 'padang', format: 'individu' },
+            { id: 'e7c', masa: 'TBD', nama: 'Lompat Tinggi Tahun 5', kategori: 'Acara Padang', jenis: 'padang', format: 'individu' },
+            { id: 'e7d', masa: 'TBD', nama: 'Lompat Tinggi Tahun 6', kategori: 'Acara Padang', jenis: 'padang', format: 'individu' },
+            { id: 'e8a', masa: 'TBD', nama: 'Lontar Peluru Lelaki Tahun 4', kategori: 'Tahun 4', jenis: 'padang', format: 'individu' },
+            { id: 'e8b', masa: 'TBD', nama: 'Lontar Peluru Lelaki Tahun 5', kategori: 'Tahun 5', jenis: 'padang', format: 'individu' },
+            { id: 'e8c', masa: 'TBD', nama: 'Lontar Peluru Lelaki Tahun 6', kategori: 'Tahun 6', jenis: 'padang', format: 'individu' },
+            { id: 'e8d', masa: 'TBD', nama: 'Lontar Peluru Perempuan Tahun 4', kategori: 'Tahun 4', jenis: 'padang', format: 'individu' },
+            { id: 'e8e', masa: 'TBD', nama: 'Lontar Peluru Perempuan Tahun 5', kategori: 'Tahun 5', jenis: 'padang', format: 'individu' },
+            { id: 'e8f', masa: 'TBD', nama: 'Lontar Peluru Perempuan Tahun 6', kategori: 'Tahun 6', jenis: 'padang', format: 'individu' },
+            { id: 'e9', masa: 'TBD', nama: 'Meleret Bola dengan relung plastik (Tahun 3)', kategori: 'Sukaneka', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e10', masa: 'TBD', nama: 'Meleret Bola dengan relung plastik (Tahun 2)', kategori: 'Sukaneka', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e11', masa: 'TBD', nama: 'Meleret Bola dengan relung plastik (Tahun 1)', kategori: 'Sukaneka', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e12', masa: 'TBD', nama: 'Mengisi air dalam botol (Tahun 3)', kategori: 'Sukaneka', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e13', masa: 'TBD', nama: 'Mengisi air dalam botol (Tahun 2)', kategori: 'Sukaneka', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e14', masa: 'TBD', nama: 'Mengisi air dalam botol (Tahun 1)', kategori: 'Sukaneka', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e15', masa: 'TBD', nama: 'Baling bulu tangkis dalam bakul (Tahun 3)', kategori: 'Sukaneka', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e16', masa: 'TBD', nama: 'Baling bulu tangkis dalam bakul (Tahun 2)', kategori: 'Sukaneka', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e17', masa: 'TBD', nama: 'Baling bulu tangkis dalam bakul (Tahun 1)', kategori: 'Sukaneka', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e18', masa: 'TBD', nama: 'Membawa bola ping pong dalam sudu (Tahun 3)', kategori: 'Sukaneka', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e19', masa: 'TBD', nama: 'Membawa bola ping pong dalam sudu (Tahun 2)', kategori: 'Sukaneka', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e20', masa: 'TBD', nama: 'Membawa bola ping pong dalam sudu (Tahun 1)', kategori: 'Sukaneka', jenis: 'padang', format: 'kumpulan' },
+            { id: 'e21', masa: 'TBD', nama: 'Raptai Perbarisan Lintas Hormat', kategori: 'Rabu 15 Julai 2026', jenis: 'padang', format: 'individu' },
+            { id: 't3a1', masa: '8:15 pg', nama: 'Lari 200m Lelaki Tahun 4', kategori: 'Tahun 4', jenis: 'balapan', format: 'individu' },
+            { id: 't3b2', masa: '8:15 pg', nama: 'Lari 200m Lelaki Tahun 5', kategori: 'Tahun 5', jenis: 'balapan', format: 'individu' },
+            { id: 't3c3', masa: '8:15 pg', nama: 'Lari 200m Lelaki Tahun 6', kategori: 'Tahun 6', jenis: 'balapan', format: 'individu' },
+            { id: 't3d4', masa: '8:15 pg', nama: 'Lari 200m Perempuan Tahun 4', kategori: 'Tahun 4', jenis: 'balapan', format: 'individu' },
+            { id: 't3e5', masa: '8:15 pg', nama: 'Lari 200m Perempuan Tahun 5', kategori: 'Tahun 5', jenis: 'balapan', format: 'individu' },
+            { id: 't3f6', masa: '8:15 pg', nama: 'Lari 200m Perempuan Tahun 6', kategori: 'Tahun 6', jenis: 'balapan', format: 'individu' },
+        ];
+
+        const DEFAULT_SCHEDULE = [
+            {
+                hari: 'Isnin 13 Julai 2026',
+                items: [
+                    { masa: 'TBD', nama: 'Futsal', kategori: 'Karnival Sukan Tahun 3–6' },
+                    { masa: 'TBD', nama: 'Bola Baling', kategori: 'Karnival Sukan Tahun 3–6' },
+                    { masa: 'TBD', nama: 'Bola Jaring', kategori: 'Karnival Sukan Tahun 3–6' },
+                    { masa: 'TBD', nama: 'Badminton', kategori: 'Karnival Sukan Tahun 3–6' },
+                    { masa: 'TBD', nama: 'Latihan Perbarisan Tahun 1 & 2', kategori: 'Latihan Perbarisan' }
+                ]
+            },
+            {
+                hari: 'Selasa 14 Julai 2026',
+                items: [
+                    { masa: 'TBD', nama: 'Lompat Jauh', kategori: 'Acara Padang' },
+                    { masa: 'TBD', nama: 'Lompat Tinggi', kategori: 'Acara Padang' },
+                    { masa: 'TBD', nama: 'Lontar Peluru', kategori: 'Acara Padang' },
+                    { masa: 'TBD', nama: 'Meleret Bola dengan relung plastik (Tahun 3)', kategori: 'Sukaneka' },
+                    { masa: 'TBD', nama: 'Meleret Bola dengan relung plastik (Tahun 2)', kategori: 'Sukaneka' },
+                    { masa: 'TBD', nama: 'Meleret Bola dengan relung plastik (Tahun 1)', kategori: 'Sukaneka' },
+                    { masa: 'TBD', nama: 'Mengisi air dalam botol (Tahun 3)', kategori: 'Sukaneka' },
+                    { masa: 'TBD', nama: 'Mengisi air dalam botol (Tahun 2)', kategori: 'Sukaneka' },
+                    { masa: 'TBD', nama: 'Mengisi air dalam botol (Tahun 1)', kategori: 'Sukaneka' },
+                    { masa: 'TBD', nama: 'Baling bulu tangkis dalam bakul (Tahun 3)', kategori: 'Sukaneka' },
+                    { masa: 'TBD', nama: 'Baling bulu tangkis dalam bakul (Tahun 2)', kategori: 'Sukaneka' },
+                    { masa: 'TBD', nama: 'Baling bulu tangkis dalam bakul (Tahun 1)', kategori: 'Sukaneka' },
+                    { masa: 'TBD', nama: 'Membawa bola ping pong dalam sudu (Tahun 3)', kategori: 'Sukaneka' },
+                    { masa: 'TBD', nama: 'Membawa bola ping pong dalam sudu (Tahun 2)', kategori: 'Sukaneka' },
+                    { masa: 'TBD', nama: 'Membawa bola ping pong dalam sudu (Tahun 1)', kategori: 'Sukaneka' }
+                ]
+            },
+            {
+                hari: 'Rabu 15 Julai 2026',
+                items: [
+                    { masa: 'TBD', nama: 'Raptai Perbarisan Lintas Hormat', kategori: 'Perbarisan' }
+                ]
+            },
+            {
+                hari: 'Khamis 16 Julai 2026',
+                items: [
+                    { masa: '06:30', nama: 'Ketibaan para guru, ibubapa dan murid', kategori: 'Program Utama' },
+                    { masa: '07:00', nama: 'Persediaan kontijen dalam perbarisan mengikut kedudukan yang telah disediakan', kategori: 'Program Utama' },
+                    { masa: '07:15', nama: 'Ketibaan tetamu jemputan', kategori: 'Program Utama' },
+                    { masa: '07:30', nama: 'Perarakan lintas hormat bermula', kategori: 'Program Utama' },
+                    { masa: '07:30', nama: 'Nyanyian lagu kebangsaan Negaraku', kategori: 'Program Utama' },
+                    { masa: '07:30', nama: 'Bacaan doa', kategori: 'Program Utama' },
+                    { masa: '07:30', nama: 'Ucapan aluan oleh Guru Besar SKAIKS Ustaz Tarmigi bin Sabli', kategori: 'Program Utama' },
+                    { masa: '07:30', nama: 'Ucapan perasmian oleh YDP PIBG SKAIKS Dato Rozalix bin Edi Wahab', kategori: 'Program Utama' },
+                    { masa: '07:30', nama: 'Bacaan Ikrar Kejohanan', kategori: 'Program Utama' },
+                    { masa: '07:30', nama: 'Kontijen bergerak ke tempat rumah masing-masing', kategori: 'Program Utama' },
+                    { masa: '09:00', nama: 'Acara 4x100m (Acara Jemputan)', kategori: 'Balapan' },
+                    { masa: '09:00', nama: 'Acara balapan bermula', kategori: 'Balapan' },
+                    { masa: '09:00', nama: '400m Tahun 4,5,6', kategori: 'Balapan' },
+                    { masa: '09:00', nama: '200m Tahun 4,5,6', kategori: 'Balapan' },
+                    { masa: '09:00', nama: '4x100m Tahun 1,2,3', kategori: 'Balapan' },
+                    { masa: '09:00', nama: '4x100m Tahun 4,5,6', kategori: 'Balapan' },
+                    { masa: '09:00', nama: '4x100m campuran Tahun 3,4,5,6', kategori: 'Balapan' },
+                    { masa: '09:00', nama: '100m Tahun 1,2,3', kategori: 'Balapan' },
+                    { masa: '09:00', nama: '100m Tahun 4,5,6', kategori: 'Balapan' },
+                    { masa: '09:00', nama: 'Acara ibu bapa dan guru', kategori: 'Acara Jemputan' },
+                    { masa: '09:00', nama: 'Acara alumni', kategori: 'Acara Jemputan' },
+                    { masa: '09:00', nama: 'Majlis penyampaian hadiah', kategori: 'Program Utama' },
+                    { masa: '09:00', nama: 'Nyanyian Lagu Ibu Pertiwi', kategori: 'Program Utama' },
+                    { masa: '14:00', nama: 'Bersurai', kategori: 'Program Utama' }
+                ]
+            }
         ];
 
         /* Default schema */
         let cloudData = {
             scores: { merah: 0, biru: 0, kuning: 0, hijau: 0 },
             results: [], announcements: [], streamUrl: '', streamActive: false, eventStatus: {},
-            events: DEFAULT_EVENTS
+            events: DEFAULT_EVENTS, schedule: DEFAULT_SCHEDULE, participants: {}, rosters: {}, matchResults: []
         };
 
         const STATUS_OPTS = [
@@ -518,6 +943,16 @@
                 cloudData.announcements = cloudData.announcements || [];
                 cloudData.eventStatus = cloudData.eventStatus || {};
                 cloudData.events = cloudData.events || DEFAULT_EVENTS;
+                // Merge with DEFAULT_EVENTS to ensure new events are included
+                const existingIds = new Set(cloudData.events.map(e => e.id));
+                const newEvents = DEFAULT_EVENTS.filter(e => !existingIds.has(e.id));
+                cloudData.events = [...cloudData.events, ...newEvents];
+                sanitizeEventData();
+                cloudData.schedule = cloudData.schedule || DEFAULT_SCHEDULE;
+                cloudData.participants = cloudData.participants || {};
+                cloudData.rosters = cloudData.rosters || {};
+                cloudData.matchResults = cloudData.matchResults || [];
+                sanitizeRosterData();
             }
             renderAll();
             buildEventTable();
@@ -557,24 +992,182 @@
         function adj(h, delta) { cloudData.scores[h] = Math.max(0, cloudData.scores[h] + delta); syncToCloud(); }
         function setExact(h) { cloudData.scores[h] = Math.max(0, parseInt(document.getElementById('input-' + h).value) || 0); syncToCloud(); }
 
-        function setYoutube() {
-            const id = document.getElementById('yt-id').value.trim();
-            if (!id) return;
-            cloudData.streamUrl = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
-            cloudData.streamActive = true;
-            document.getElementById('yt-id').value = '';
-            syncToCloud();
+        function extractIframeSrc(value) {
+            const text = String(value || '').trim();
+            if (!text) return '';
+            const match = text.match(/src=["']([^"']+)["']/i);
+            if (match && match[1]) return match[1].trim();
+            return text;
         }
+
+        function parseCsvRow(row, delimiter = ',') {
+            const cells = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < row.length; i++) {
+                const char = row[i];
+                const next = row[i + 1];
+
+                if (char === '"') {
+                    if (inQuotes && next === '"') {
+                        current += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === delimiter && !inQuotes) {
+                    cells.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+
+            cells.push(current.trim());
+            return cells;
+        }
+
+        function cleanPlainText(value) {
+            return String(value || '')
+                .replace(/[\u0000-\u001F\u007F-\u009F\u200B-\u200D\uFEFF]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function cleanCsvCell(value) {
+            return cleanPlainText(String(value || '').replace(/^"+|"+$/g, '').trim());
+        }
+
+        function normalizeMemberName(value) {
+            return cleanPlainText(cleanCsvCell(value));
+        }
+
+        function normalizeEventName(value) {
+            return cleanPlainText(cleanCsvCell(value)).toLowerCase();
+        }
+
+        function escapeHtml(value) {
+            return String(value || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function getAllEvents() {
+            return Array.isArray(cloudData.events) ? cloudData.events : DEFAULT_EVENTS;
+        }
+
+        function findEventByName(eventName) {
+            const normalized = normalizeEventName(eventName);
+            if (!normalized) return null;
+            return getAllEvents().find(ev => normalizeEventName(ev?.nama) === normalized) || null;
+        }
+
+        function inferEventMeta(eventName, kategoriText = '', sourceLabel = '') {
+            const name = normalizeEventName(eventName);
+            const category = normalizeEventName(kategoriText);
+            const source = normalizeEventName(sourceLabel);
+            const groupKeywords = ['futsal', 'bola jaring', 'bola baling', 'badminton', '4x100', 'campuran', 'relay'];
+            const padangKeywords = ['lompat', 'lontar', 'padang'];
+            const balapanKeywords = ['lari', '4x100', '100m', '200m', '400m', '800m', '1500m'];
+            const isGroup = groupKeywords.some(keyword => name.includes(keyword)) || category.includes('kumpulan') || category.includes('pasukan') || category.includes('berpasukan');
+            const isBalapan = source.includes('balapan') || balapanKeywords.some(keyword => name.includes(keyword));
+            const isPadang = source.includes('padang') || padangKeywords.some(keyword => name.includes(keyword));
+            return {
+                format: isGroup ? 'kumpulan' : 'individu',
+                jenis: isBalapan ? 'balapan' : (isPadang ? 'padang' : 'padang')
+            };
+        }
+
+        function sanitizeEventData() {
+            cloudData.events = Array.isArray(cloudData.events) ? cloudData.events : [];
+            cloudData.events = cloudData.events.map(event => {
+                const normalizedName = normalizeEventName(event?.nama);
+                const inferred = inferEventMeta(event?.nama, event?.kategori, event?.jenis);
+                const hasValidFormat = ['individu', 'kumpulan'].includes(event?.format);
+                const hasValidJenis = ['balapan', 'padang'].includes(event?.jenis);
+                const forcePadang = ['lompat', 'lontar', 'padang'].some(keyword => normalizedName.includes(keyword));
+                const format = inferred.format === 'kumpulan' ? 'kumpulan' : (hasValidFormat ? event.format : inferred.format);
+                const jenis = inferred.jenis === 'balapan'
+                    ? 'balapan'
+                    : (forcePadang ? 'padang' : (hasValidJenis ? event.jenis : inferred.jenis));
+                return {
+                    ...event,
+                    nama: cleanPlainText(event?.nama),
+                    kategori: cleanPlainText(event?.kategori),
+                    format,
+                    jenis
+                };
+            });
+        }
+
+        function sanitizeRosterData() {
+            cloudData.rosters = cloudData.rosters || {};
+            Object.keys(cloudData.rosters).forEach(eventId => {
+                const eventRoster = cloudData.rosters[eventId] || {};
+                Object.keys(eventRoster).forEach(house => {
+                    const team = eventRoster[house] || {};
+                    team.name = normalizeMemberName(team.name || `Rumah ${house.charAt(0).toUpperCase() + house.slice(1)}`);
+                    team.members = (Array.isArray(team.members) ? team.members : [])
+                        .map(member => normalizeMemberName(member))
+                        .filter(Boolean);
+                    eventRoster[house] = team;
+                });
+                cloudData.rosters[eventId] = eventRoster;
+            });
+        }
+
+        function normalizeFacebookEmbedUrl(value) {
+            const cleaned = extractIframeSrc(value);
+            if (!cleaned) return '';
+
+            let parsed;
+            try {
+                parsed = new URL(cleaned.startsWith('//') ? `https:${cleaned}` : cleaned);
+            } catch {
+                return '';
+            }
+
+            const host = parsed.hostname.toLowerCase();
+            const isFacebook = host.includes('facebook.com') || host === 'fb.watch' || host.endsWith('.fb.watch');
+            if (!isFacebook) return '';
+
+            if (parsed.pathname.includes('/plugins/video.php')) {
+                const href = parsed.searchParams.get('href');
+                const embedUrl = new URL('https://www.facebook.com/plugins/video.php');
+                embedUrl.searchParams.set('href', href || cleaned);
+                embedUrl.searchParams.set('show_text', 'false');
+                embedUrl.searchParams.set('autoplay', 'true');
+                return embedUrl.toString();
+            }
+
+            if (host.includes('facebook.com')) {
+                parsed.hostname = 'www.facebook.com';
+            }
+
+            const embedUrl = new URL('https://www.facebook.com/plugins/video.php');
+            embedUrl.searchParams.set('href', parsed.toString());
+            embedUrl.searchParams.set('show_text', 'false');
+            embedUrl.searchParams.set('autoplay', 'true');
+            return embedUrl.toString();
+        }
+
         function setFacebook() {
-            const url = document.getElementById('fb-url').value.trim();
-            if (!url) return; cloudData.streamUrl = url; cloudData.streamActive = true;
-            document.getElementById('fb-url').value = ''; syncToCloud();
-        }
-        function setTiktok() {
-            const url = document.getElementById('tiktok-url').value.trim();
-            if (!url) return;
-            cloudData.streamUrl = url; cloudData.streamActive = true;
-            document.getElementById('tiktok-url').value = '';
+            const input = document.getElementById('fb-url').value.trim();
+            if (!input) return;
+
+            const embedUrl = normalizeFacebookEmbedUrl(input);
+            if (!embedUrl) {
+                showToast('Masukkan pautan Facebook Live atau kod iframe yang sah', true);
+                return;
+            }
+
+            cloudData.streamUrl = embedUrl;
+            cloudData.streamActive = true;
+            document.getElementById('fb-url').value = '';
             syncToCloud();
         }
         function toggleStream() { cloudData.streamActive = !cloudData.streamActive; syncToCloud(); }
@@ -598,21 +1191,786 @@
             syncToCloud();
         }
 
-        function addResult() {
-            const p1 = document.getElementById('res-1').value.trim();
-            const acara = document.getElementById('res-acara').value.trim();
-            if (!acara || !p1) { showToast('⚠️ Nama Acara & Tempat 1 wajib', true); return; }
-            cloudData.results.push({
-                id: Date.now(), acara, p1,
-                p2: document.getElementById('res-2').value.trim(),
-                p3: document.getElementById('res-3').value.trim()
-            });
-            ['res-acara', 'res-1', 'res-2', 'res-3'].forEach(id => document.getElementById(id).value = '');
-            syncToCloud();
+        function parseHouse(str) {
+            if (!str) return null;
+            const s = String(str).toLowerCase();
+            if (s.includes('merah')) return 'merah';
+            if (s.includes('biru')) return 'biru';
+            if (s.includes('kuning')) return 'kuning';
+            if (s.includes('hijau')) return 'hijau';
+            return null;
         }
-        function deleteResult(id) {
-            cloudData.results = cloudData.results.filter(r => r.id !== id);
+
+        function getHouseLabel(house) {
+            return { merah: 'Merah', biru: 'Biru', kuning: 'Kuning', hijau: 'Hijau' }[house] || '';
+        }
+
+        function formatResultText(name, house) {
+            const cleanName = String(name || '').trim();
+            const cleanHouse = getHouseLabel(house);
+            if (!cleanName) return '';
+            return cleanHouse ? `${cleanName} (${cleanHouse})` : cleanName;
+        }
+
+        function getResultName(result, key) {
+            const direct = result?.[`${key}Name`];
+            if (direct) return String(direct).trim();
+            const value = result?.[key];
+            if (!value) return '';
+            return String(value).replace(/\s*\([^)]*\)\s*$/, '').trim();
+        }
+
+        let isSyncingDropdowns = false;
+        function syncDropdowns(eventId) {
+            if (isSyncingDropdowns) return;
+            isSyncingDropdowns = true;
+
+            try {
+                // Roster Event Dropdown
+                const rosterSel = document.getElementById('roster-event-select');
+                if (rosterSel) {
+                    const hasOption = [...rosterSel.options].some(o => o.value === eventId);
+                    if (hasOption) {
+                        rosterSel.value = eventId;
+                    } else {
+                        rosterSel.value = '';
+                    }
+                    renderRosterEditor();
+                }
+
+                // Results Event Dropdown
+                const resSel = document.getElementById('res-acara-select');
+                if (resSel) {
+                    const hasOption = [...resSel.options].some(o => o.value === eventId);
+                    if (hasOption) {
+                        resSel.value = eventId;
+                    } else {
+                        resSel.value = '';
+                    }
+                }
+
+                updateParticipantDatalist();
+                updateIndividualResultOptions();
+            } finally {
+                isSyncingDropdowns = false;
+            }
+        }
+
+        function onRosterEventChange() {
+            const val = document.getElementById('roster-event-select').value;
+            syncDropdowns(val);
+        }
+
+        function onResEventChange() {
+            const val = document.getElementById('res-acara-select').value;
+            syncDropdowns(val);
+        }
+
+        function getFirstRosterEventId() {
+            const rosterEventIds = Object.keys(cloudData.rosters || {});
+            return getAllEvents().find(ev => rosterEventIds.includes(ev.id))?.id || rosterEventIds[0] || '';
+        }
+
+        function resolvePreferredEventId(preferredId = '', allowedIds = null) {
+            const allowedSet = allowedIds ? new Set(allowedIds.filter(Boolean)) : null;
+            const candidates = [
+                preferredId,
+                document.getElementById('roster-event-select')?.value,
+                document.getElementById('res-acara-select')?.value,
+                getFirstRosterEventId()
+            ].filter(Boolean);
+
+            for (const candidate of candidates) {
+                if (!allowedSet || allowedSet.has(candidate)) return candidate;
+            }
+            return '';
+        }
+
+        function populateEventDropdown(preferredEventId = '') {
+            const sel = document.getElementById('res-acara-select');
+            if (!sel) return '';
+            const events = getAllEvents();
+            sel.innerHTML = '<option value="">-- Pilih Acara --</option>' +
+                events.map(ev => `<option value="${ev.id}">${ev.nama}</option>`).join('');
+            const nextId = resolvePreferredEventId(preferredEventId, events.map(ev => ev.id));
+            if (nextId) sel.value = nextId;
+            sel.onchange = onResEventChange;
+            return nextId;
+        }
+
+        function getActiveResultEventId() {
+            const rosterSel = document.getElementById('roster-event-select');
+            if (rosterSel?.value) return rosterSel.value;
+
+            const resSel = document.getElementById('res-acara-select');
+            if (resSel?.value) return resSel.value;
+
+            const rosterLabel = rosterSel?.selectedOptions?.[0]?.textContent?.trim();
+            if (rosterLabel && !rosterLabel.startsWith('--')) {
+                const matchedEvent = findEventByName(rosterLabel);
+                if (matchedEvent?.id) return matchedEvent.id;
+            }
+
+            return getFirstRosterEventId();
+        }
+
+        function updateParticipantDatalist() {
+            const eventId = getActiveResultEventId();
+            const dataList = document.getElementById('event-participants');
+            const countEl = document.getElementById('participant-count');
+            const items = (cloudData.participants && eventId ? cloudData.participants[eventId] : []) || [];
+            if (dataList) {
+                dataList.innerHTML = items.map(p => `<option value="${p.name}">`).join('');
+            }
+            if (countEl) {
+                countEl.textContent = eventId ? `${items.length} peserta dimuat naik untuk acara ini.` : 'Pilih acara untuk melihat peserta.';
+            }
+        }
+
+        function getEventParticipantOptions(eventId, house) {
+            const eventRosters = cloudData.rosters?.[eventId] || {};
+            const rosterMembers = house ? (eventRosters[house]?.members || []) : [];
+            const importedMembers = (cloudData.participants && eventId ? cloudData.participants[eventId] : []) || [];
+            const options = [];
+            if (rosterMembers.length) {
+                rosterMembers.forEach(member => {
+                    const normalized = normalizeMemberName(member);
+                    if (normalized && !options.includes(normalized)) options.push(normalized);
+                });
+            }
+            if (!options.length) {
+                importedMembers.forEach(member => {
+                    const normalized = normalizeMemberName(member?.name);
+                    if (normalized && !options.includes(normalized)) options.push(normalized);
+                });
+            }
+            return options;
+        }
+
+        function setIndividualHouse(place, house) {
+            const houseSelect = document.getElementById(`res-${place}-house`);
+            const nameSelect = document.getElementById(`res-${place}-name`);
+            if (!houseSelect || !nameSelect) return;
+            const nextHouse = houseSelect.value === house ? '' : house;
+            const houseChanged = houseSelect.value !== nextHouse;
+            houseSelect.value = nextHouse;
+            if (houseChanged) nameSelect.value = '';
+            updateIndividualResultOptions();
+        }
+
+        function setIndividualName(place, name) {
+            const nameSelect = document.getElementById(`res-${place}-name`);
+            if (!nameSelect) return;
+            const normalized = normalizeMemberName(name);
+            nameSelect.value = nameSelect.value === normalized ? '' : normalized;
+            renderIndividualResultButtons(place);
+        }
+
+        function setIndividualNameEncoded(place, encodedName) {
+            try {
+                setIndividualName(place, decodeURIComponent(encodedName));
+            } catch {
+                setIndividualName(place, encodedName);
+            }
+        }
+
+        function renderIndividualResultButtons(place) {
+            const houseButtons = document.getElementById(`res-${place}-house-buttons`);
+            const nameButtons = document.getElementById(`res-${place}-name-buttons`);
+            const houseSelect = document.getElementById(`res-${place}-house`);
+            const nameSelect = document.getElementById(`res-${place}-name`);
+            if (!houseButtons || !nameButtons || !houseSelect || !nameSelect) return;
+
+            const selectedHouse = houseSelect.value;
+            const selectedName = normalizeMemberName(nameSelect.value);
+            const houseMeta = [
+                { value: 'merah', label: 'Merah', cls: 'border-red-200 bg-red-50 text-red-700' },
+                { value: 'biru', label: 'Biru', cls: 'border-blue-200 bg-blue-50 text-blue-700' },
+                { value: 'kuning', label: 'Kuning', cls: 'border-yellow-200 bg-yellow-50 text-yellow-700' },
+                { value: 'hijau', label: 'Hijau', cls: 'border-green-200 bg-green-50 text-green-700' }
+            ];
+
+            houseButtons.innerHTML = houseMeta.map(item => {
+                const isActive = selectedHouse === item.value;
+                return `<button type="button" onclick="setIndividualHouse(${place}, '${item.value}')" class="rounded-xl border px-3 py-2 text-sm font-bold transition ${isActive ? 'border-green-700 bg-green-600 text-white' : item.cls}">${item.label}</button>`;
+            }).join('');
+
+            if (!selectedHouse) {
+                nameButtons.innerHTML = '<p class="text-xs text-gray-500">Pilih rumah dahulu.</p>';
+                return;
+            }
+
+            const options = getEventParticipantOptions(getActiveResultEventId(), selectedHouse);
+            if (!options.length) {
+                nameButtons.innerHTML = '<p class="text-xs text-gray-500">Tiada peserta untuk rumah ini.</p>';
+                return;
+            }
+
+            nameButtons.innerHTML = options.map(name => {
+                const normalized = normalizeMemberName(name);
+                const encodedName = encodeURIComponent(normalized);
+                const isActive = selectedName === normalized;
+                return `<button type="button" onclick="setIndividualNameEncoded(${place}, '${encodedName}')" class="rounded-xl border px-3 py-2 text-sm font-medium transition ${isActive ? 'border-green-700 bg-green-600 text-white' : 'border-gray-200 bg-white text-gray-700 hover:bg-green-50 hover:border-green-300'}">${escapeHtml(name)}</button>`;
+            }).join('');
+        }
+
+        function updateIndividualResultOptions() {
+            const eventId = getActiveResultEventId();
+            [1, 2, 3, 4].forEach(place => {
+                const houseSelect = document.getElementById(`res-${place}-house`);
+                const nameSelect = document.getElementById(`res-${place}-name`);
+                if (!houseSelect || !nameSelect) return;
+                const house = houseSelect.value;
+                const options = getEventParticipantOptions(eventId, house);
+                const currentValue = normalizeMemberName(nameSelect.value);
+                nameSelect.innerHTML = '<option value="">-- Pilih Nama Peserta --</option>' + options.map(name => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join('');
+                if (currentValue && [...nameSelect.options].some(o => o.value === currentValue)) {
+                    nameSelect.value = currentValue;
+                } else {
+                    nameSelect.value = '';
+                }
+                renderIndividualResultButtons(place);
+            });
+        }
+
+        function getHouseLabelFromValue(value) {
+            const normalized = String(value || '').toLowerCase();
+            if (!normalized) return '';
+            if (normalized.includes('merah')) return 'Merah';
+            if (normalized.includes('biru')) return 'Biru';
+            if (normalized.includes('kuning')) return 'Kuning';
+            if (normalized.includes('hijau')) return 'Hijau';
+            return '';
+        }
+
+        function isHouseLabel(value) {
+            const normalized = normalizeName(value);
+            return ['merah', 'biru', 'kuning', 'hijau', 'rumah merah', 'rumah biru', 'rumah kuning', 'rumah hijau'].includes(normalized);
+        }
+
+        function shouldUseNamedWinnersForGroupEvent(event) {
+            const eventName = normalizeEventName(event?.nama);
+            return event?.format === 'kumpulan' && event?.jenis === 'balapan' && ['4x100', 'relay', 'campuran'].some(keyword => eventName.includes(keyword));
+        }
+
+        function getTeamMembersForResult(eventId, house) {
+            const team = cloudData.rosters?.[eventId]?.[house] || {};
+            return (Array.isArray(team.members) ? team.members : []).map(member => normalizeMemberName(member)).filter(Boolean);
+        }
+
+        function shouldShowParticipantsInResults(result, event) {
+            if (Array.isArray(result?.peserta) && result.peserta.length && shouldUseNamedWinnersForGroupEvent(event)) return true;
+            return !['kumpulan', 'berpasukan'].includes(String(result?.eventFormat || event?.format || '').toLowerCase()) && Array.isArray(result?.peserta) && result.peserta.length;
+        }
+
+        function formatParticipantsForPlace(result, placeNumber, event) {
+            const participantKey = `p${placeNumber}Participants`;
+            const participants = Array.isArray(result?.[participantKey]) ? result[participantKey].filter(Boolean) : [];
+            if (participants.length) {
+                return participants.join(', ');
+            }
+
+            if (placeNumber === 1 && shouldShowParticipantsInResults(result, event) && Array.isArray(result?.peserta) && result.peserta.length) {
+                return result.peserta.join(' | ');
+            }
+
+            return '';
+        }
+
+        function formatResultCellHtml(value, participantsText) {
+            const safeValue = escapeHtml(value || '-');
+            if (!participantsText) return safeValue;
+            return `${safeValue}<br><span class="text-xs text-gray-500">${escapeHtml(participantsText)}</span>`;
+        }
+
+        function setGroupRank(place, house) {
+            const targetSelect = document.getElementById(`rank-${place}`);
+            if (!targetSelect) return;
+
+            const currentHouse = targetSelect.value;
+            [1, 2, 3, 4].forEach(otherPlace => {
+                const otherSelect = document.getElementById(`rank-${otherPlace}`);
+                if (!otherSelect) return;
+                if (otherPlace !== place && otherSelect.value === house) {
+                    otherSelect.value = '';
+                }
+            });
+
+            targetSelect.value = currentHouse === house ? '' : house;
+            updateGroupResultOptions();
+        }
+
+        function renderGroupRankingButtons() {
+            const grid = document.getElementById('match-house-ranking-grid');
+            const summary = document.getElementById('match-rank-summary');
+            const eventId = getActiveResultEventId();
+            const event = getAllEvents().find(e => e.id === eventId);
+            const useNamedWinners = shouldUseNamedWinnersForGroupEvent(event);
+            const rankMeta = {
+                1: { label: '🥇 Tempat Pertama', cls: 'border-yellow-200 bg-yellow-50 text-yellow-800' },
+                2: { label: '🥈 Tempat Kedua', cls: 'border-gray-200 bg-gray-50 text-gray-700' },
+                3: { label: '🥉 Tempat Ketiga', cls: 'border-orange-200 bg-orange-50 text-orange-700' },
+                4: { label: '🏅 Tempat Keempat', cls: 'border-green-200 bg-green-50 text-green-700' }
+            };
+
+            if (!grid || !summary || !eventId || !event || event.format !== 'kumpulan') {
+                if (grid) grid.innerHTML = '';
+                if (summary) summary.innerHTML = '';
+                return;
+            }
+
+            const eventRosters = cloudData.rosters?.[eventId] || {};
+            const houses = ['merah', 'biru', 'kuning', 'hijau'].filter(house => eventRosters[house]);
+            const selectedRanks = {
+                1: document.getElementById('rank-1')?.value || '',
+                2: document.getElementById('rank-2')?.value || '',
+                3: document.getElementById('rank-3')?.value || '',
+                4: document.getElementById('rank-4')?.value || ''
+            };
+
+            summary.innerHTML = [1, 2, 3, 4].map(place => {
+                const house = selectedRanks[place];
+                const houseLabel = house ? (eventRosters[house]?.name || `Rumah ${house.charAt(0).toUpperCase() + house.slice(1)}`) : 'Belum pilih';
+                return `<div class="rounded-xl border px-3 py-2 ${rankMeta[place].cls}"><span class="font-bold">${rankMeta[place].label}:</span> ${escapeHtml(houseLabel)}</div>`;
+            }).join('');
+
+            grid.innerHTML = houses.map(house => {
+                const members = getTeamMembersForResult(eventId, house);
+                const selectedPlace = [1, 2, 3, 4].find(place => selectedRanks[place] === house) || 0;
+                const houseTitle = eventRosters[house]?.name || `Rumah ${house.charAt(0).toUpperCase() + house.slice(1)}`;
+                return `
+                <div class="rounded-2xl border border-green-200 bg-white p-4">
+                    <div class="flex items-start justify-between gap-3 mb-3">
+                        <div>
+                            <h4 class="font-bold text-green-900">${escapeHtml(houseTitle)}</h4>
+                            <p class="text-xs text-gray-500 mt-1">Klik nombor untuk tetapkan kedudukan rumah ini.</p>
+                        </div>
+                        ${selectedPlace ? `<span class="rounded-full bg-green-100 px-2.5 py-1 text-xs font-bold text-green-700">Dipilih: ${selectedPlace}</span>` : ''}
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        ${[1, 2, 3, 4].map(place => {
+                            const isActive = selectedRanks[place] === house;
+                            return `<button type="button" onclick="setGroupRank(${place}, '${house}')" class="min-w-[2.5rem] rounded-xl border px-3 py-2 text-sm font-bold transition ${isActive ? 'border-green-700 bg-green-600 text-white' : 'border-gray-200 bg-gray-50 text-gray-700 hover:bg-green-50 hover:border-green-300'}">${place}</button>`;
+                        }).join('')}
+                    </div>
+                    ${useNamedWinners && members.length ? `<div class="rounded-xl bg-green-50 border border-green-100 px-3 py-2 text-xs text-gray-700"><span class="font-bold text-green-700">Peserta auto dipilih:</span> ${escapeHtml(members.join(', '))}</div>` : ''}
+                </div>`;
+            }).join('');
+        }
+
+        function updateGroupResultOptions() {
+            const eventId = getActiveResultEventId();
+            const event = getAllEvents().find(e => e.id === eventId);
+            const useNamedWinners = shouldUseNamedWinnersForGroupEvent(event);
+
+            [1, 2, 3, 4].forEach(place => {
+                const nameSelect = document.getElementById(`rank-${place}-name`);
+                const houseSelect = document.getElementById(`rank-${place}`);
+                if (!nameSelect || !houseSelect) return;
+
+                nameSelect.classList.add('hidden');
+                nameSelect.innerHTML = '<option value="">-- Pilih Nama Penerima Pingat --</option>';
+                nameSelect.value = '';
+
+                if (useNamedWinners && houseSelect.value) {
+                    const options = getTeamMembersForResult(eventId, houseSelect.value);
+                    nameSelect.innerHTML += options.map(name => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join('');
+                }
+            });
+
+            renderGroupRankingButtons();
+        }
+
+        function getPlaceNumber(placeKey) {
+            return { p1: 1, p2: 2, p3: 3, p4: 4 }[placeKey] || '';
+        }
+
+        function getLegacyPlaceKey(placeNumber) {
+            return {
+                1: 'tempatPertama',
+                2: 'tempatKedua',
+                3: 'tempatKetiga',
+                4: 'tempatKeempat'
+            }[placeNumber] || '';
+        }
+
+        function getExportWinnerName(result, placeKey) {
+            const placeNumber = getPlaceNumber(placeKey);
+            const legacyKey = getLegacyPlaceKey(placeNumber);
+            const directName = result?.[`${placeKey}Name`] || result?.[`tempat${placeNumber}Name`] || result?.[`tempat${placeNumber}Nama`] || result?.[`${legacyKey}Name`] || result?.[`${legacyKey}Nama`];
+            if (directName) return String(directName).trim();
+
+            const displayValue = result?.[`${placeKey}Display`] || result?.[`tempat${placeNumber}Display`] || result?.[placeKey] || result?.[`tempat${placeNumber}`] || result?.[legacyKey] || '';
+            const text = String(displayValue || '').trim();
+            if (!text) return '';
+
+            const cleaned = text.replace(/\s*\(([^)]*)\)\s*$/, '').trim();
+            return cleaned || text;
+        }
+
+        function getExportWinnerHouse(result, placeKey) {
+            const placeNumber = getPlaceNumber(placeKey);
+            const legacyKey = getLegacyPlaceKey(placeNumber);
+            const directHouse = result?.[`${placeKey}House`] || result?.[`tempat${placeNumber}House`] || result?.[`tempat${placeNumber}Rumah`] || result?.[`${legacyKey}House`] || result?.[`${legacyKey}Rumah`];
+            if (directHouse) return getHouseLabelFromValue(String(directHouse).trim()) || String(directHouse).trim();
+
+            const displayValue = result?.[`${placeKey}Display`] || result?.[`tempat${placeNumber}Display`] || result?.[placeKey] || result?.[`tempat${placeNumber}`] || result?.[legacyKey] || '';
+            const text = String(displayValue || '').trim();
+            if (!text) return '';
+
+            const match = text.match(/\(([^)]*)\)$/);
+            if (match) {
+                return getHouseLabelFromValue(match[1]) || match[1].trim();
+            }
+
+            const implicitHouse = getHouseLabelFromValue(text);
+            if (implicitHouse) return implicitHouse;
+
+            return '';
+        }
+
+        function shouldHideParticipantsInExport(result) {
+            const eventName = String(result?.acara || '').toLowerCase();
+            return ['futsal', 'badminton', 'bola jaring', 'bola baling'].some(keyword => eventName.includes(keyword));
+        }
+
+        function buildExportRows() {
+            return (cloudData.results || []).map(r => ({
+                id: r.id || '',
+                acara: r.acara || '',
+                eventId: r.eventId || '',
+                tempat1: getExportWinnerName(r, 'p1'),
+                rumah1: getExportWinnerHouse(r, 'p1'),
+                tempat2: getExportWinnerName(r, 'p2'),
+                rumah2: getExportWinnerHouse(r, 'p2'),
+                tempat3: getExportWinnerName(r, 'p3'),
+                rumah3: getExportWinnerHouse(r, 'p3'),
+                tempat4: getExportWinnerName(r, 'p4'),
+                rumah4: getExportWinnerHouse(r, 'p4'),
+                peserta: shouldHideParticipantsInExport(r) ? '' : (Array.isArray(r.peserta) ? r.peserta.join(' | ') : String(r.peserta || '').trim())
+            }));
+        }
+
+        function exportWinnerResultsToCsv() {
+            const rows = buildExportRows();
+            if (!rows.length) {
+                showToast('⚠️ Tiada keputusan untuk didownload', true);
+                return;
+            }
+
+            const columns = [
+                { key: 'acara', label: 'Nama Acara' },
+                { key: 'tempat1', label: 'Nama Tempat Pertama' },
+                { key: 'rumah1', label: 'Rumah Tempat Pertama' },
+                { key: 'tempat2', label: 'Nama Tempat Kedua' },
+                { key: 'rumah2', label: 'Rumah Tempat Kedua' },
+                { key: 'tempat3', label: 'Nama Tempat Ketiga' },
+                { key: 'rumah3', label: 'Rumah Tempat Ketiga' },
+                { key: 'tempat4', label: 'Nama Tempat Keempat' },
+                { key: 'rumah4', label: 'Rumah Tempat Keempat' },
+                { key: 'peserta', label: 'Catatan Peserta/Pasukan' }
+            ];
+            const lines = [
+                columns.map(column => column.label).join(','),
+                ...rows.map(row => columns.map(column => `"${String(row[column.key] || '').replace(/"/g, '""')}"`).join(','))
+            ];
+            const blob = new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'pemenang-acara.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function exportWinnerResultsToJson() {
+            const rows = buildExportRows();
+            if (!rows.length) {
+                showToast('⚠️ Tiada keputusan untuk didownload', true);
+                return;
+            }
+
+            const payload = {
+                exportedAt: new Date().toISOString(),
+                totalResults: rows.length,
+                results: rows
+            };
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'pemenang-acara.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function importParticipantsForEvent() {
+            const eventSelect = document.getElementById('res-acara-select');
+            const fileInput = document.getElementById('participant-file');
+            const eventId = eventSelect?.value;
+            if (!eventId) {
+                showToast('⚠️ Sila pilih acara terlebih dahulu', true);
+                return;
+            }
+            const file = fileInput?.files?.[0];
+            if (!file) {
+                showToast('⚠️ Sila pilih fail CSV untuk dimuat naik', true);
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const text = e.target.result || '';
+                const rows = text.split(/\r?\n/).map(r => r.trim()).filter(r => r.length);
+                if (!rows.length) {
+                    showToast('⚠️ Fail CSV kosong atau tidak sah', true);
+                    return;
+                }
+                const header = parseCsvRow(rows[0]).map(h => cleanCsvCell(h).toLowerCase());
+                let nameIdx = header.findIndex(h => h.includes('name') || h.includes('nama'));
+                let genderIdx = header.findIndex(h => h.includes('gender') || h.includes('jantina'));
+                let dataRows = rows;
+                if (nameIdx >= 0) {
+                    dataRows = rows.slice(1);
+                } else {
+                    nameIdx = 0;
+                    genderIdx = 1;
+                }
+                const parsed = dataRows.map(row => {
+                    const parts = parseCsvRow(row).map(p => cleanCsvCell(p));
+                    const name = normalizeMemberName(parts[nameIdx] || '');
+                    const rawGender = (genderIdx >= 0 ? parts[genderIdx] : '') || '';
+                    let gender = rawGender;
+                    const norm = rawGender.toLowerCase();
+                    if (norm.startsWith('l')) gender = 'Lelaki';
+                    else if (norm.startsWith('p')) gender = 'Perempuan';
+                    return { name: name.trim(), gender: gender.trim() };
+                }).filter(p => p.name);
+                if (!cloudData.participants) cloudData.participants = {};
+                cloudData.participants[eventId] = parsed;
+                if (fileInput) fileInput.value = '';
+                updateParticipantDatalist();
+                syncToCloud();
+                showToast(`✅ ${parsed.length} peserta dimuat naik`);
+            };
+            reader.readAsText(file);
+        }
+
+        function normalizeName(name) {
+            return String(name || '').trim().toLowerCase();
+        }
+
+        function isEligibleSportspersonEvent(result) {
+            const event = (cloudData.events || DEFAULT_EVENTS).find(ev => ev.id === result?.eventId || ev.nama === result?.acara) || {};
+            const eventName = String(result?.acara || event.nama || '').toLowerCase();
+            const blockedKeywords = ['futsal', 'bola baling', 'bola jaring', 'badminton'];
+            if (blockedKeywords.some(keyword => eventName.includes(keyword))) return false;
+
+            const relayWinners = Array.isArray(result?.p1Participants) ? result.p1Participants.filter(Boolean) : [];
+            if (relayWinners.length) return true;
+
+            const winnerName = getResultName(result, 'p1');
+            if (!winnerName || isHouseLabel(winnerName)) return false;
+            return true;
+        }
+
+        function inferGenderFromEvent(result) {
+            const event = (cloudData.events || DEFAULT_EVENTS).find(ev => ev.id === result?.eventId || ev.nama === result?.acara) || {};
+            const text = String(result?.acara || event.nama || '').toLowerCase();
+            if (text.includes('lelaki')) return 'Lelaki';
+            if (text.includes('perempuan')) return 'Perempuan';
+            return '';
+        }
+
+        function inferGenderFromName(name) {
+            const text = String(name || '').toLowerCase();
+            if (text.includes(' bin ')) return 'Lelaki';
+            if (text.includes(' binti ')) return 'Perempuan';
+            return '';
+        }
+
+        function printResults() {
+            window.print();
+        }
+
+        function computeSportspersons() {
+            const participants = cloudData.participants || {};
+            const athletes = {};
+
+            function resolveGender(name, result) {
+                const eventGender = inferGenderFromEvent(result);
+                if (eventGender) return eventGender;
+
+                const key = normalizeName(name);
+                for (const eventId in participants) {
+                    const found = (participants[eventId] || []).find(p => normalizeName(p.name) === key);
+                    if (found?.gender) return found.gender;
+                }
+
+                return inferGenderFromName(name);
+            }
+
+            function addGoldWinner(name, result) {
+                if (!name) return;
+                const cleanName = String(name || '').trim();
+                const key = normalizeName(cleanName);
+                if (!key || isHouseLabel(cleanName)) return;
+                if (!athletes[key]) {
+                    athletes[key] = { name: cleanName, gender: resolveGender(cleanName, result), gold: 0 };
+                }
+                athletes[key].gold += 1;
+                if (!athletes[key].gender) athletes[key].gender = resolveGender(cleanName, result);
+            }
+
+            (cloudData.results || []).forEach(r => {
+                if (!isEligibleSportspersonEvent(r)) return;
+                const relayWinners = Array.isArray(r?.p1Participants) ? r.p1Participants.filter(Boolean) : [];
+                if (relayWinners.length) {
+                    relayWinners.forEach(name => addGoldWinner(name, r));
+                    return;
+                }
+                addGoldWinner(getResultName(r, 'p1'), r);
+            });
+
+            function sortCandidates(list) {
+                return [...list].sort((a, b) => b.gold - a.gold || a.name.localeCompare(b.name));
+            }
+
+            function formatLeaderList(list, emptyText) {
+                if (!list.length) return emptyText;
+                const sorted = sortCandidates(list);
+                const topGold = sorted[0].gold;
+                const leaders = sorted.filter(a => a.gold === topGold);
+                return leaders.map(a => `${a.name} — ${a.gold} emas`).join('<br>');
+            }
+
+            function renderCandidates(el, list, emptyText) {
+                if (!el) return;
+                if (!list.length) {
+                    el.innerHTML = `<p class="text-gray-400">${emptyText}</p>`;
+                    return;
+                }
+                el.innerHTML = sortCandidates(list).slice(0, 5).map((a, index) => {
+                    const badge = index === 0
+                        ? { label: '🥇 Top 1', cls: 'bg-yellow-100 text-yellow-800 border-yellow-300' }
+                        : index === 1
+                            ? { label: '🥈 Top 2', cls: 'bg-slate-100 text-slate-700 border-slate-300' }
+                            : index === 2
+                                ? { label: '🥉 Top 3', cls: 'bg-amber-100 text-amber-800 border-amber-300' }
+                                : { label: `Top ${index + 1}`, cls: 'bg-green-100 text-green-700 border-green-200' };
+
+                    return `
+                    <div class="flex items-start justify-between gap-3 rounded-xl border border-gray-100 bg-gray-50 px-3 py-2">
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <p class="font-semibold text-gray-800">${index + 1}. ${a.name}</p>
+                                <span class="rounded-full border px-2.5 py-0.5 text-[11px] font-bold ${badge.cls}">${badge.label}</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Menang ${a.gold} pingat emas</p>
+                        </div>
+                        <span class="shrink-0 rounded-full bg-yellow-100 px-2.5 py-1 text-xs font-bold text-yellow-800">${a.gold} emas</span>
+                    </div>
+                `;
+                }).join('');
+            }
+
+            const male = Object.values(athletes).filter(a => String(a.gender || '').toLowerCase().startsWith('l') && a.gold > 0);
+            const female = Object.values(athletes).filter(a => String(a.gender || '').toLowerCase().startsWith('p') && a.gold > 0);
+            const maleEl = document.getElementById('sportsperson-male');
+            const femaleEl = document.getElementById('sportsperson-female');
+            const maleCandidatesEl = document.getElementById('sportsperson-male-candidates');
+            const femaleCandidatesEl = document.getElementById('sportsperson-female-candidates');
+
+            if (maleEl) {
+                maleEl.innerHTML = formatLeaderList(male, 'Tiada data pingat emas lelaki.');
+            }
+            if (femaleEl) {
+                femaleEl.innerHTML = formatLeaderList(female, 'Tiada data pingat emas wanita.');
+            }
+            renderCandidates(maleCandidatesEl, male, 'Tiada calon lelaki buat masa ini.');
+            renderCandidates(femaleCandidatesEl, female, 'Tiada calon wanita buat masa ini.');
+        }
+
+        function addResult() {
+            const eventId = getActiveResultEventId();
+            const firstName = normalizeMemberName(document.getElementById('res-1-name').value);
+
+            if (!eventId || !firstName) { showToast('⚠️ Sila pilih acara di bahagian atas dan pilih nama Tempat Pertama', true); return; }
+
+            const event = getAllEvents().find(e => e.id === eventId);
+            if (!event) {
+                showToast('⚠️ Acara tidak ditemui. Sila pilih semula acara.', true);
+                return;
+            }
+
+            const format = event.format || 'individu';
+            const points = format === 'kumpulan' ? [8, 6, 4, 2] : [4, 3, 2, 1];
+
+            const placements = [1, 2, 3, 4].map(place => ({
+                house: document.getElementById(`res-${place}-house`).value,
+                name: normalizeMemberName(document.getElementById(`res-${place}-name`).value)
+            }));
+
+            // Update scores
+            placements.forEach((entry, idx) => {
+                const house = entry.house;
+                if (house) cloudData.scores[house] = (cloudData.scores[house] || 0) + points[idx];
+            });
+
+            const displayValues = placements.map(entry => formatResultText(entry.name, entry.house));
+
+            // Store result
+            cloudData.results.push({
+                id: Date.now(),
+                acara: event.nama,
+                eventId: event.id,
+                p1: displayValues[0],
+                p2: displayValues[1],
+                p3: displayValues[2],
+                p4: displayValues[3],
+                p1Name: placements[0].name,
+                p1House: placements[0].house,
+                p2Name: placements[1].name,
+                p2House: placements[1].house,
+                p3Name: placements[2].name,
+                p3House: placements[2].house,
+                p4Name: placements[3].name,
+                p4House: placements[3].house
+            });
+
+            // Clear inputs
+            [1, 2, 3, 4].forEach(place => {
+                document.getElementById(`res-${place}-house`).value = '';
+                document.getElementById(`res-${place}-name`).value = '';
+            });
             syncToCloud();
+            showToast('✅ Rekod pemenang disimpan');
+        }
+
+        function deleteResult(id) {
+            if (confirm('Adakah anda pasti ingin memadam keputusan ini? Mata rumah sukan berkaitan akan ditolak semula.')) {
+                const res = cloudData.results.find(r => r.id === id);
+                if (res) {
+                    const event = (cloudData.events || DEFAULT_EVENTS).find(e => e.id === res.eventId || e.nama === res.acara);
+                    const format = (event && event.format) || 'individu';
+                    const points = format === 'kumpulan' ? [8, 6, 4, 2] : [4, 3, 2, 1];
+
+                    const h1 = res.p1House || parseHouse(res.p1);
+                    const h2 = res.p2House || parseHouse(res.p2);
+                    const h3 = res.p3House || parseHouse(res.p3);
+                    const h4 = res.p4House || parseHouse(res.p4);
+
+                    if (h1) cloudData.scores[h1] = Math.max(0, (cloudData.scores[h1] || 0) - points[0]);
+                    if (h2) cloudData.scores[h2] = Math.max(0, (cloudData.scores[h2] || 0) - points[1]);
+                    if (h3) cloudData.scores[h3] = Math.max(0, (cloudData.scores[h3] || 0) - points[2]);
+                    if (h4) cloudData.scores[h4] = Math.max(0, (cloudData.scores[h4] || 0) - points[3]);
+                }
+                cloudData.results = cloudData.results.filter(r => r.id !== id);
+                syncToCloud();
+            }
         }
 
         function resetAll() {
@@ -624,7 +1982,10 @@
                     eventStatus: {},
                     streamUrl: '',
                     streamActive: false,
-                    events: DEFAULT_EVENTS
+                    events: DEFAULT_EVENTS,
+                    participants: {},
+                    rosters: {},
+                    matchResults: []
                 };
                 syncToCloud();
             }
@@ -643,7 +2004,590 @@
         /* ═══════════════════════════════════════════════
            UI RENDERERS
         ═══════════════════════════════════════════════ */
+        function importRosterCsvText(text, sourceLabel = 'CSV') {
+            const firstLine = text.split(/\r?\n/)[0] || '';
+            const delimiter = firstLine.includes(';') ? ';' : ',';
+            const rows = text.split(/\r?\n/).map(r => r.trim()).filter(r => r.length);
+            if (!rows.length) {
+                throw new Error('Fail CSV kosong atau tidak sah');
+            }
+
+            const headers = parseCsvRow(rows[0], delimiter).map(h => cleanCsvCell(h));
+            const acaraIdx = headers.findIndex(h => h.toLowerCase() === 'acara');
+            const kategoriIdx = headers.findIndex(h => h.toLowerCase() === 'kategori');
+            if (acaraIdx < 0) {
+                throw new Error('Kolom "Acara" tidak ditemui dalam fail CSV');
+            }
+
+            let imported = 0;
+            let lastEventId = '';
+            const processedEvents = new Set();
+            const processedEventIds = new Set();
+
+            for (let i = 1; i < rows.length; i++) {
+                const cols = parseCsvRow(rows[i], delimiter).map(c => cleanCsvCell(c));
+                const acara = cleanPlainText(cols[acaraIdx]);
+                if (!acara) continue;
+
+                processedEvents.add(acara);
+
+                let event = findEventByName(acara);
+                const tahunIdx = headers.findIndex(h => h.toLowerCase() === 'tahun');
+                const tahunVal = (tahunIdx >= 0 ? cols[tahunIdx] : '') || '';
+                const kategoriVal = (kategoriIdx >= 0 ? cols[kategoriIdx] : '') || '';
+
+                const inferredMeta = inferEventMeta(acara, kategoriVal || tahunVal, sourceLabel);
+
+                if (!event) {
+                    const newId = 'imp' + Date.now().toString().slice(-6) + Math.random().toString(36).slice(2, 6);
+                    event = { id: newId, masa: 'TBD', nama: acara, kategori: kategoriVal || tahunVal || 'Semua', jenis: inferredMeta.jenis, format: inferredMeta.format };
+                    if (!cloudData.events) cloudData.events = [];
+                    cloudData.events.push(event);
+                    if (!cloudData.eventStatus) cloudData.eventStatus = {};
+                    cloudData.eventStatus[event.id] = 'akan-datang';
+                    if (!cloudData.participants) cloudData.participants = {};
+                    cloudData.participants[event.id] = cloudData.participants[event.id] || [];
+                } else {
+                    if (kategoriVal) event.kategori = cleanPlainText(kategoriVal);
+                    event.format = inferredMeta.format;
+                    event.jenis = inferredMeta.jenis;
+                }
+
+                lastEventId = event.id;
+                processedEventIds.add(event.id);
+                if (!cloudData.rosters[event.id]) cloudData.rosters[event.id] = {};
+
+                const houses = ['kuning', 'merah', 'biru', 'hijau'];
+                for (const house of houses) {
+                    const members = [];
+                    for (let j = 0; j < headers.length; j++) {
+                        const header = headers[j].toLowerCase();
+                        const houseLower = house.toLowerCase();
+                        const value = cleanCsvCell(cols[j]);
+                        if (!value) continue;
+
+                        const isClassicRosterColumn = header.includes(houseLower + '_wakil') || header.includes(houseLower + '_pemain') || header.includes(houseLower + '_pelari') || header.includes('wakil_' + houseLower) || header.includes('pemain_' + houseLower) || header.includes('pelari_' + houseLower);
+                        const isSimpleHouseColumn = header === houseLower || header === `rumah_${houseLower}` || header === `rumah ${houseLower}`;
+
+                        if (isClassicRosterColumn) {
+                            const cleanedValue = normalizeMemberName(value);
+                            if (cleanedValue) members.push(cleanedValue);
+                        } else if (isSimpleHouseColumn) {
+                            value.split('|').map(item => normalizeMemberName(item)).filter(Boolean).forEach(item => members.push(item));
+                        }
+                    }
+
+                    if (members.length > 0) {
+                        cloudData.rosters[event.id][house] = {
+                            name: 'Rumah ' + house.charAt(0).toUpperCase() + house.slice(1),
+                            members: [...new Set(members.filter(Boolean))]
+                        };
+                        imported++;
+                    }
+                }
+            }
+
+            sanitizeEventData();
+            sanitizeRosterData();
+            return { imported, processedEvents, processedEventIds, lastEventId, sourceLabel };
+        }
+
+        function importRosterFromCSV() {
+            const fileInput = document.getElementById('roster-csv-file');
+            const file = fileInput?.files?.[0];
+            if (!file) {
+                showToast('⚠️ Sila pilih fail CSV untuk dimuat naik', true);
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const text = e.target.result || '';
+                    const result = importRosterCsvText(text, 'CSV yang dipilih');
+                    if (result.imported > 0) {
+                        const preferredEventId = result.lastEventId || [...result.processedEventIds][0] || getFirstRosterEventId();
+                        populateEventDropdown(preferredEventId);
+                        populateRosterEventDropdown(preferredEventId);
+                        syncDropdowns(preferredEventId);
+                        syncToCloud();
+                        showToast(`✅ ${result.imported} pasukan berjaya dimuat naik dari ${result.processedEvents.size} acara`);
+                        fileInput.value = '';
+                    } else {
+                        showToast('⚠️ Tiada data roster ditemui dalam fail CSV', true);
+                    }
+                } catch (error) {
+                    console.error(error);
+                    showToast(`⚠️ ${error.message}`, true);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        async function importRosterFromWorkspaceCsv(fileName = 'balapan.csv', sourceLabel = fileName) {
+            try {
+                const response = await fetch(fileName);
+                if (!response.ok) {
+                    throw new Error(`Fail ${fileName} tidak dapat dibaca`);
+                }
+                const text = await response.text();
+                const result = importRosterCsvText(text, sourceLabel);
+                if (result.imported > 0) {
+                    const preferredEventId = result.lastEventId || [...result.processedEventIds][0] || getFirstRosterEventId();
+                    populateEventDropdown(preferredEventId);
+                    populateRosterEventDropdown(preferredEventId);
+                    syncDropdowns(preferredEventId);
+                    syncToCloud();
+                    showToast(`✅ ${result.imported} pasukan berjaya dimuat naik dari ${result.processedEvents.size} acara menggunakan ${sourceLabel}`);
+                } else {
+                    showToast(`⚠️ Tiada data roster ditemui dalam ${sourceLabel}`, true);
+                }
+            } catch (error) {
+                console.error(error);
+                showToast(`⚠️ ${fileName} tidak dapat diimport secara automatik. Sila buka laman ini melalui pelayan tempatan atau gunakan butang Import CSV.`, true);
+            }
+        }
+
+        async function importAllWorkspaceRosters() {
+            const imports = [
+                { fileName: 'balapan.csv', label: 'balapan.csv' },
+                { fileName: 'padang.csv', label: 'padang.csv' }
+            ];
+
+            let totalImported = 0;
+            let preferredEventId = '';
+            const touchedEvents = new Set();
+
+            for (const item of imports) {
+                try {
+                    const response = await fetch(item.fileName);
+                    if (!response.ok) continue;
+                    const text = await response.text();
+                    const result = importRosterCsvText(text, item.label);
+                    totalImported += result.imported;
+                    preferredEventId = preferredEventId || result.lastEventId || [...result.processedEventIds][0] || '';
+                    result.processedEvents.forEach(eventName => touchedEvents.add(eventName));
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            if (!totalImported) {
+                showToast('⚠️ Tiada data roster berjaya diimport dari balapan.csv atau padang.csv', true);
+                return;
+            }
+
+            preferredEventId = preferredEventId || getFirstRosterEventId();
+            populateEventDropdown(preferredEventId);
+            populateRosterEventDropdown(preferredEventId);
+            syncDropdowns(preferredEventId);
+            syncToCloud();
+            showToast(`✅ ${totalImported} pasukan berjaya dimuat naik dari ${touchedEvents.size} acara`);
+        }
+
+        function populateRosterEventDropdown(preferredEventId = '') {
+            const sel = document.getElementById('roster-event-select');
+            if (!sel) return '';
+            const events = getAllEvents();
+            const rosterEventIds = Object.keys(cloudData.rosters || {});
+            const eventsWithRoster = events.filter(e => rosterEventIds.includes(e.id));
+            sel.innerHTML = '<option value="">-- Pilih Acara --</option>' +
+                eventsWithRoster.map(ev => `<option value="${ev.id}">${ev.nama}</option>`).join('');
+            const nextId = resolvePreferredEventId(preferredEventId, eventsWithRoster.map(ev => ev.id));
+            if (nextId) sel.value = nextId;
+            return nextId;
+        }
+
+        function renderRosterEditor() {
+            const eventId = document.getElementById('roster-event-select')?.value;
+            const container = document.getElementById('roster-and-match-container');
+            const list = document.getElementById('roster-list');
+
+            if (!eventId) {
+                if (container) container.classList.add('hidden');
+                return;
+            }
+
+            if (container) container.classList.remove('hidden');
+            const eventRosters = cloudData.rosters[eventId] || {};
+            const houses = ['merah', 'biru', 'kuning', 'hijau'];
+
+            if (list) {
+                list.innerHTML = houses.map(house => {
+                    const team = eventRosters[house] || { name: '', members: [] };
+                    const teamName = escapeHtml(normalizeMemberName(team.name));
+                    const teamMembers = (Array.isArray(team.members) ? team.members : []).map(member => normalizeMemberName(member));
+                    return `
+                    <div class="border border-green-200 rounded-xl p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-bold text-${house === 'merah' ? 'red' : house === 'biru' ? 'blue' : house === 'kuning' ? 'yellow' : 'green'}-700 capitalize">🏠 Rumah ${house.charAt(0).toUpperCase() + house.slice(1)}</h4>
+                            <button onclick="deleteTeamRoster('${eventId}', '${house}')" class="text-red-400 hover:text-red-600 text-xs font-bold px-2 py-1 rounded hover:bg-red-50 transition">🗑 Padam</button>
+                        </div>
+                        <div class="mb-3">
+                            <label class="text-xs text-gray-600">Nama Pasukan</label>
+                            <input type="text" value="${teamName}" onchange="updateTeamName('${eventId}', '${house}', this.value)"
+                                placeholder="cth: Pasukan Merah A"
+                                class="w-full border border-gray-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-green-500 mt-1" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="text-xs text-gray-600 block mb-2">Senarai Pemain (${teamMembers.length})</label>
+                            <div class="space-y-2">
+                                ${teamMembers.map((member, idx) => `
+                                <div class="flex gap-2">
+                                    <input type="text" value="${escapeHtml(member)}"
+                                        onchange="updateTeamMember('${eventId}', '${house}', ${idx}, this.value)"
+                                        placeholder="Nama pemain"
+                                        class="flex-1 border border-gray-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none" />
+                                    <button onclick="deleteTeamMember('${eventId}', '${house}', ${idx})"
+                                        class="text-red-400 hover:text-red-600 text-xs font-bold px-2 py-1 rounded hover:bg-red-50 transition">🗑</button>
+                                </div>
+                                `).join('')}
+                            </div>
+                            <button onclick="addTeamMember('${eventId}', '${house}')"
+                                class="mt-2 text-xs bg-green-100 text-green-700 font-bold px-3 py-1.5 rounded-lg hover:bg-green-200 transition">+ Tambah Pemain</button>
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+
+            // Update decision section visibility and options
+            updateMatchTeams();
+        }
+
+        function updateTeamName(eventId, house, name) {
+            if (!cloudData.rosters[eventId]) cloudData.rosters[eventId] = {};
+            if (!cloudData.rosters[eventId][house]) cloudData.rosters[eventId][house] = { name: '', members: [] };
+            cloudData.rosters[eventId][house].name = normalizeMemberName(name);
+            syncToCloud();
+        }
+
+        function addTeamMember(eventId, house) {
+            if (!cloudData.rosters[eventId]) cloudData.rosters[eventId] = {};
+            if (!cloudData.rosters[eventId][house]) cloudData.rosters[eventId][house] = { name: '', members: [] };
+            cloudData.rosters[eventId][house].members.push('');
+            renderRosterEditor();
+            syncToCloud();
+        }
+
+        function updateTeamMember(eventId, house, idx, name) {
+            if (!cloudData.rosters[eventId]) cloudData.rosters[eventId] = {};
+            if (!cloudData.rosters[eventId][house]) cloudData.rosters[eventId][house] = { name: '', members: [] };
+            cloudData.rosters[eventId][house].members[idx] = normalizeMemberName(name);
+            syncToCloud();
+        }
+
+        function deleteTeamMember(eventId, house, idx) {
+            if (!cloudData.rosters[eventId] || !cloudData.rosters[eventId][house]) return;
+            cloudData.rosters[eventId][house].members.splice(idx, 1);
+            renderRosterEditor();
+            syncToCloud();
+        }
+
+        function addNewTeamRoster() {
+            const eventId = document.getElementById('roster-event-select')?.value;
+            if (!eventId) {
+                showToast('⚠️ Sila pilih acara terlebih dahulu', true);
+                return;
+            }
+            if (!cloudData.rosters[eventId]) cloudData.rosters[eventId] = {};
+            const houses = ['merah', 'biru', 'kuning', 'hijau'];
+            for (const house of houses) {
+                if (!cloudData.rosters[eventId][house]) {
+                    cloudData.rosters[eventId][house] = { name: '', members: [] };
+                    break;
+                }
+            }
+            renderRosterEditor();
+            syncToCloud();
+        }
+
+        function deleteTeamRoster(eventId, house) {
+            if (!confirm('Adakah anda pasti ingin memadam pasukan ini?')) return;
+            if (!cloudData.rosters[eventId]) return;
+            delete cloudData.rosters[eventId][house];
+            renderRosterEditor();
+            syncToCloud();
+        }
+
+        function resetCurrentEventRoster() {
+            const eventId = document.getElementById('roster-event-select')?.value;
+            if (!eventId) {
+                showToast('⚠️ Sila pilih acara terlebih dahulu', true);
+                return;
+            }
+            if (!confirm('Reset roster untuk acara ini sahaja? Data keputusan acara lain tidak akan dipadam.')) return;
+
+            if (cloudData.rosters && cloudData.rosters[eventId]) {
+                delete cloudData.rosters[eventId];
+            }
+            if (cloudData.participants && cloudData.participants[eventId]) {
+                delete cloudData.participants[eventId];
+            }
+
+            populateRosterEventDropdown();
+            const rosterSel = document.getElementById('roster-event-select');
+            if (rosterSel) rosterSel.value = '';
+            const container = document.getElementById('roster-and-match-container');
+            if (container) container.classList.add('hidden');
+            updateParticipantDatalist();
+            updateIndividualResultOptions();
+            syncToCloud();
+            showToast('✅ Roster acara semasa telah direset');
+        }
+
+        /* ═══════════════════════════════════════════════
+           MATCH RESULTS FUNCTIONS
+        ═══════════════════════════════════════════════ */
+        function updateMatchTeams() {
+            const eventId = document.getElementById('roster-event-select')?.value;
+            const rank1Sel = document.getElementById('rank-1');
+            const rank2Sel = document.getElementById('rank-2');
+            const rank3Sel = document.getElementById('rank-3');
+            const rank4Sel = document.getElementById('rank-4');
+            const inputsDiv = document.getElementById('match-inputs');
+            const matchSection = document.getElementById('match-section');
+            const individualSection = document.getElementById('individual-section');
+            const notAppDiv = document.getElementById('match-not-applicable');
+
+            if (!eventId) {
+                if (inputsDiv) inputsDiv.classList.add('hidden');
+                if (matchSection) matchSection.classList.add('hidden');
+                if (individualSection) individualSection.classList.add('hidden');
+                if (notAppDiv) notAppDiv.classList.add('hidden');
+                updateGroupResultOptions();
+                return;
+            }
+
+            const event = (cloudData.events || DEFAULT_EVENTS).find(e => e.id === eventId);
+            const isGroupEvent = event?.format === 'kumpulan';
+
+            if (!isGroupEvent) {
+                if (matchSection) matchSection.classList.add('hidden');
+                if (individualSection) individualSection.classList.remove('hidden');
+                if (inputsDiv) inputsDiv.classList.add('hidden');
+                if (notAppDiv) notAppDiv.classList.add('hidden');
+                updateGroupResultOptions();
+                updateParticipantDatalist();
+                updateIndividualResultOptions();
+                return;
+            }
+
+            if (matchSection) matchSection.classList.remove('hidden');
+            if (individualSection) individualSection.classList.add('hidden');
+            if (notAppDiv) notAppDiv.classList.add('hidden');
+            if (inputsDiv) inputsDiv.classList.remove('hidden');
+
+            const eventRosters = cloudData.rosters[eventId] || {};
+            const houses = Object.keys(eventRosters);
+
+            const options = houses.map(h => `<option value="${h}">${eventRosters[h].name || 'Rumah ' + h.charAt(0).toUpperCase() + h.slice(1)}</option>`).join('');
+
+            const currentRankValues = {
+                1: rank1Sel?.value || '',
+                2: rank2Sel?.value || '',
+                3: rank3Sel?.value || '',
+                4: rank4Sel?.value || ''
+            };
+
+            if (rank1Sel) rank1Sel.innerHTML = '<option value="">-- Pilih Rumah --</option>' + options;
+            if (rank2Sel) rank2Sel.innerHTML = '<option value="">-- Pilih Rumah --</option>' + options;
+            if (rank3Sel) rank3Sel.innerHTML = '<option value="">-- Pilih Rumah --</option>' + options;
+            if (rank4Sel) rank4Sel.innerHTML = '<option value="">-- Pilih Rumah --</option>' + options;
+
+            [1, 2, 3, 4].forEach(place => {
+                const rankSel = document.getElementById(`rank-${place}`);
+                const currentValue = currentRankValues[place];
+                if (rankSel && currentValue && [...rankSel.options].some(o => o.value === currentValue)) {
+                    rankSel.value = currentValue;
+                }
+            });
+
+            const points = { 1: 8, 2: 6, 3: 4, 4: 2 };
+
+            const l1 = document.getElementById('rank-1-label');
+            const l2 = document.getElementById('rank-2-label');
+            const l3 = document.getElementById('rank-3-label');
+            const l4 = document.getElementById('rank-4-label');
+
+            if (l1) l1.textContent = `🥇 Tempat Pertama (${points[1]} mata)`;
+            if (l2) l2.textContent = `🥈 Tempat Kedua (${points[2]} mata)`;
+            if (l3) l3.textContent = `🥉 Tempat Ketiga (${points[3]} mata)`;
+            if (l4) l4.textContent = `🏅 Tempat Keempat (${points[4]} mata)`;
+            updateGroupResultOptions();
+        }
+
+        function recordMatchResult() {
+            const eventId = getActiveResultEventId();
+            const rank1 = document.getElementById('rank-1')?.value;
+            const rank2 = document.getElementById('rank-2')?.value;
+            const rank3 = document.getElementById('rank-3')?.value;
+            const rank4 = document.getElementById('rank-4')?.value;
+
+            if (!eventId) {
+                showToast('⚠️ Sila pilih acara', true);
+                return;
+            }
+
+            if (!rank1) {
+                showToast('⚠️ Sila pilih rumah Tempat Pertama dahulu', true);
+                return;
+            }
+
+            // Check for duplicates
+            const ranks = [rank1, rank2, rank3, rank4].filter(r => r);
+            const uniqueRanks = new Set(ranks);
+            if (ranks.length !== uniqueRanks.size) {
+                showToast('⚠️ Setiap rumah hanya boleh mendapat satu tempat', true);
+                return;
+            }
+
+            const event = getAllEvents().find(e => e.id === eventId);
+            if (!event) {
+                showToast('⚠️ Acara tidak ditemui. Sila pilih semula acara.', true);
+                return;
+            }
+
+            // Points system based on event format
+            const isGroupEvent = event.format === 'kumpulan';
+            const useNamedWinners = shouldUseNamedWinnersForGroupEvent(event);
+            const pointsMap = isGroupEvent ? { 1: 8, 2: 6, 3: 4, 4: 2 } : { 1: 4, 2: 3, 3: 2, 4: 1 };
+            const rankings = { 1: rank1, 2: rank2, 3: rank3, 4: rank4 };
+            const rankingParticipants = {
+                1: useNamedWinners ? getTeamMembersForResult(eventId, rank1) : [],
+                2: useNamedWinners ? getTeamMembersForResult(eventId, rank2) : [],
+                3: useNamedWinners ? getTeamMembersForResult(eventId, rank3) : [],
+                4: useNamedWinners ? getTeamMembersForResult(eventId, rank4) : []
+            };
+            const rankingNames = { 1: '', 2: '', 3: '', 4: '' };
+
+            // Update house scores
+            for (let place = 1; place <= 4; place++) {
+                const house = rankings[place];
+                if (house && cloudData.scores) {
+                    cloudData.scores[house] = (cloudData.scores[house] || 0) + pointsMap[place];
+                }
+            }
+
+            // Save match result with rankings
+            if (!cloudData.matchResults) cloudData.matchResults = [];
+            cloudData.matchResults.push({
+                id: Date.now(),
+                eventId,
+                eventName: event.nama,
+                eventFormat: event.format,
+                rankings: rankings,
+                rankingNames: rankingNames,
+                rankingParticipants: rankingParticipants,
+                points: pointsMap,
+                timestamp: new Date().toISOString()
+            });
+
+            // Also add to results for "Rekod Keputusan Acara" tab
+            const houseNames = { merah: 'Merah', biru: 'Biru', kuning: 'Kuning', hijau: 'Hijau' };
+            const participantSummary = useNamedWinners
+                ? [1, 2, 3, 4].map(place => {
+                    const house = rankings[place];
+                    const members = getTeamMembersForResult(eventId, house);
+                    if (!house || !members.length) return '';
+                    return `${place}. ${houseNames[house] || house}: ${members.join(', ')}`;
+                }).filter(Boolean)
+                : [];
+            const formatGroupDisplay = (house) => {
+                if (!house) return '';
+                return houseNames[house] || house;
+            };
+            cloudData.results.push({
+                id: Date.now(),
+                acara: event.nama,
+                eventId: event.id,
+                p1: formatGroupDisplay(rankings[1]),
+                p2: formatGroupDisplay(rankings[2]),
+                p3: formatGroupDisplay(rankings[3]),
+                p4: formatGroupDisplay(rankings[4]),
+                p1Name: rankingNames[1] || '',
+                p1House: rankings[1] || '',
+                p1Participants: rankingParticipants[1],
+                p2Name: rankingNames[2] || '',
+                p2House: rankings[2] || '',
+                p2Participants: rankingParticipants[2],
+                p3Name: rankingNames[3] || '',
+                p3House: rankings[3] || '',
+                p3Participants: rankingParticipants[3],
+                p4Name: rankingNames[4] || '',
+                p4House: rankings[4] || '',
+                p4Participants: rankingParticipants[4],
+                peserta: participantSummary,
+                eventFormat: event.format
+            });
+
+            // Clear inputs
+            document.getElementById('rank-1').value = '';
+            document.getElementById('rank-2').value = '';
+            document.getElementById('rank-3').value = '';
+            document.getElementById('rank-4').value = '';
+            if (document.getElementById('rank-1-name')) document.getElementById('rank-1-name').value = '';
+            if (document.getElementById('rank-2-name')) document.getElementById('rank-2-name').value = '';
+            if (document.getElementById('rank-3-name')) document.getElementById('rank-3-name').value = '';
+            if (document.getElementById('rank-4-name')) document.getElementById('rank-4-name').value = '';
+            updateGroupResultOptions();
+
+            syncToCloud();
+            renderMatchResults();
+            showToast(`✅ Keputusan direkodkan (${isGroupEvent ? 'Acara Kumpulan' : 'Acara Individu'})`);
+        }
+
+        function renderMatchResults() {
+            const list = document.getElementById('match-results-list');
+            if (!list) return;
+
+            const results = cloudData.matchResults || [];
+            if (!results.length) {
+                list.innerHTML = '<p class="text-center text-gray-400 text-sm py-4">Tiada keputusan direkodkan</p>';
+                return;
+            }
+
+            list.innerHTML = results.map(r => {
+                const rankLabels = { 1: '🥇 Pertama', 2: '🥈 Kedua', 3: '🥉 Ketiga', 4: '🏅 Keempat' };
+                const rankDetails = [1, 2, 3, 4].map(place => {
+                    const house = r.rankings[place];
+                    if (!house) return '';
+                    return `<span class="text-xs">${rankLabels[place]}: <strong>${house.charAt(0).toUpperCase() + house.slice(1)}</strong> (${r.points[place]} mata)</span>`;
+                }).filter(d => d).join(' | ');
+
+                return `
+                <div class="bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between">
+                    <div class="flex-1">
+                        <p class="font-bold text-gray-800 text-sm">${r.eventName}</p>
+                        <p class="text-xs text-gray-500 mt-1">${rankDetails}</p>
+                    </div>
+                    <button onclick="deleteMatchResult(${r.id})" class="text-red-400 hover:text-red-600 text-xs font-bold px-2 py-1 rounded hover:bg-red-50 transition">🗑</button>
+                </div>`;
+            }).join('');
+        }
+
+        function deleteMatchResult(id) {
+            if (!confirm('Adakah anda pasti ingin memadam keputusan ini? Mata rumah sukan berkaitan akan ditolak semula.')) return;
+
+            const result = cloudData.matchResults?.find(r => r.id === id);
+            if (result && cloudData.scores) {
+                // Deduct points based on rankings
+                const pointsMap = result.points || { 1: 8, 2: 5, 3: 3, 4: 1 };
+                for (let place = 1; place <= 4; place++) {
+                    const house = result.rankings[place];
+                    if (house) {
+                        cloudData.scores[house] = Math.max(0, (cloudData.scores[house] || 0) - pointsMap[place]);
+                    }
+                }
+            }
+
+            cloudData.matchResults = cloudData.matchResults.filter(r => r.id !== id);
+            syncToCloud();
+            renderMatchResults();
+        }
+
         function renderAll() {
+            const preferredEventId = getActiveResultEventId();
+
             // Scores
             const max = Math.max(...Object.values(cloudData.scores));
             ['merah', 'biru', 'kuning', 'hijau'].forEach(h => {
@@ -681,10 +2625,25 @@
                 empty.style.display = 'none';
                 cloudData.results.forEach(r => {
                     const tr = document.createElement('tr'); tr.className = 'res-row hover:bg-green-50 transition';
-                    tr.innerHTML = `<td class="py-2.5 px-4 font-semibold text-gray-800">${r.acara}</td><td class="py-2.5 px-4 text-gray-700">${r.p1 || '-'}</td><td class="py-2.5 px-4 text-gray-500 hidden sm:table-cell">${r.p2 || '-'}</td><td class="py-2.5 px-4 text-gray-500 hidden sm:table-cell">${r.p3 || '-'}</td><td class="py-2.5 px-4 text-center"><button onclick="deleteResult(${r.id})" class="text-red-400 hover:text-red-600 text-xs font-bold px-2 py-1 rounded hover:bg-red-50 transition">🗑</button></td>`;
+                    const event = (cloudData.events || []).find(ev => ev.id === r.eventId || ev.nama === r.acara) || {};
+                    const place1Value = r.p1 || '-';
+                    const place2Value = r.p2 || '-';
+                    const place3Value = r.p3 || '-';
+                    const place4Value = r.p4 || '-';
+                    const place1Participants = formatParticipantsForPlace(r, 1, event);
+                    const place2Participants = formatParticipantsForPlace(r, 2, event);
+                    const place3Participants = formatParticipantsForPlace(r, 3, event);
+                    const place4Participants = formatParticipantsForPlace(r, 4, event);
+                    tr.innerHTML = `<td class="py-2.5 px-4 font-semibold text-gray-800">${escapeHtml(r.acara)}</td><td class="py-2.5 px-4 text-gray-700 align-top">${formatResultCellHtml(place1Value, place1Participants)}</td><td class="py-2.5 px-4 text-gray-500 hidden sm:table-cell align-top">${formatResultCellHtml(place2Value, place2Participants)}</td><td class="py-2.5 px-4 text-gray-500 hidden sm:table-cell align-top">${formatResultCellHtml(place3Value, place3Participants)}</td><td class="py-2.5 px-4 text-gray-500 hidden md:table-cell align-top">${formatResultCellHtml(place4Value, place4Participants)}</td><td class="py-2.5 px-4 text-center"><button onclick="deleteResult(${r.id})" class="text-red-400 hover:text-red-600 text-xs font-bold px-2 py-1 rounded hover:bg-red-50 transition">🗑</button></td>`;
                     tbody.appendChild(tr);
                 });
             }
+            const syncedEventId = populateRosterEventDropdown(preferredEventId) || populateEventDropdown(preferredEventId) || getFirstRosterEventId();
+            populateEventDropdown(syncedEventId);
+            syncDropdowns(syncedEventId);
+            renderMatchResults();
+            computeSportspersons();
+            renderScheduleEditor();
         }
 
         function switchEventTab(tab) {
@@ -721,6 +2680,7 @@
             const masa = document.getElementById('new-ev-masa').value.trim();
             const kategori = document.getElementById('new-ev-kategori').value.trim();
             const jenis = document.getElementById('new-ev-jenis').value;
+            const format = (document.getElementById('new-ev-format') && document.getElementById('new-ev-format').value) ? document.getElementById('new-ev-format').value : 'individu';
 
             if (!nama || !masa || !kategori) {
                 showToast('⚠️ Nama, Masa & Kategori wajib diisi', true);
@@ -734,7 +2694,11 @@
                 cloudData.events = [];
             }
 
-            cloudData.events.push({ id: newId, masa, nama, kategori, jenis });
+            cloudData.events.push({ id: newId, masa, nama, kategori, jenis, format });
+            if (!cloudData.participants) {
+                cloudData.participants = {};
+            }
+            cloudData.participants[newId] = [];
 
             if (!cloudData.eventStatus) {
                 cloudData.eventStatus = {};
@@ -744,6 +2708,7 @@
             document.getElementById('new-ev-nama').value = '';
             document.getElementById('new-ev-masa').value = '';
             document.getElementById('new-ev-kategori').value = '';
+            if (document.getElementById('new-ev-format')) document.getElementById('new-ev-format').value = 'individu';
 
             syncToCloud();
             switchEventTab('status');
@@ -756,6 +2721,9 @@
                 }
                 if (cloudData.eventStatus) {
                     delete cloudData.eventStatus[id];
+                }
+                if (cloudData.participants) {
+                    delete cloudData.participants[id];
                 }
                 syncToCloud();
             }
@@ -780,6 +2748,98 @@
       </td>
     </tr>`;
             }).join('');
+        }
+
+        function currentScheduleDayName() {
+            const today = new Date().getDay();
+            const map = {
+                1: 'Isnin 13 Julai 2026',
+                2: 'Selasa 14 Julai 2026',
+                3: 'Rabu 15 Julai 2026',
+                4: 'Khamis 16 Julai 2026'
+            };
+            return map[today] || 'Isnin 13 Julai 2026';
+        }
+
+        function currentScheduleDayIndex() {
+            const schedule = cloudData.schedule || DEFAULT_SCHEDULE;
+            const todayName = currentScheduleDayName();
+            const idx = schedule.findIndex(d => d.hari === todayName);
+            return idx >= 0 ? idx : 0;
+        }
+
+        function switchScheduleDay(day) {
+            ['day-1', 'day-2', 'day-3', 'day-4'].forEach(d => {
+                const tab = document.getElementById('schedule-tab-' + d.split('-')[1]);
+                const content = document.getElementById('schedule-content-' + d);
+                if (d === day) {
+                    if (tab) tab.classList.add('bg-white', 'shadow', 'text-green-dark');
+                    if (tab) tab.classList.remove('text-green-700');
+                    if (content) content.classList.remove('hidden');
+                } else {
+                    if (tab) tab.classList.remove('bg-white', 'shadow', 'text-green-dark');
+                    if (tab) tab.classList.add('text-green-700');
+                    if (content) content.classList.add('hidden');
+                }
+            });
+            renderScheduleEditor();
+        }
+
+        function renderScheduleEditor() {
+            const schedule = cloudData.schedule || DEFAULT_SCHEDULE;
+            const dayNames = ['Isnin 13 Julai 2026', 'Selasa 14 Julai 2026', 'Rabu 15 Julai 2026', 'Khamis 16 Julai 2026'];
+
+            dayNames.forEach((dayName, dayNum) => {
+                const dayIndex = dayNum + 1;
+                const day = schedule.find(d => d.hari === dayName) || { hari: dayName, items: [] };
+                const table = document.getElementById('schedule-table-day-' + dayIndex);
+                if (!table) return;
+                table.innerHTML = `
+      <thead class="bg-green-primary text-white"><tr><th class="py-3 px-4 text-left">Masa</th><th class="py-3 px-4 text-left">Acara / Aktiviti</th><th class="py-3 px-4 text-left">Kategori</th><th class="py-3 px-4 text-center">Aksi</th></tr></thead>
+      <tbody class="divide-y divide-green-50">
+        ${day.items.map((item, itemIdx) => `<tr class="hover:bg-green-xlight"><td class="py-2.5 px-3"><input type="text" value="${item.masa}" onchange="updateScheduleItem('${day.hari}', ${itemIdx}, 'masa', this.value)" class="w-full border border-gray-200 rounded-xl px-2 py-2 text-sm focus:outline-none" /></td><td class="py-2.5 px-3"><input type="text" value="${item.nama}" onchange="updateScheduleItem('${day.hari}', ${itemIdx}, 'nama', this.value)" class="w-full border border-gray-200 rounded-xl px-2 py-2 text-sm focus:outline-none" /></td><td class="py-2.5 px-3"><input type="text" value="${item.kategori}" onchange="updateScheduleItem('${day.hari}', ${itemIdx}, 'kategori', this.value)" class="w-full border border-gray-200 rounded-xl px-2 py-2 text-sm focus:outline-none" /></td><td class="py-2.5 px-3 text-center"><button onclick="deleteScheduleItem('${day.hari}', ${itemIdx})" class="text-red-400 hover:text-red-600 text-xs font-bold px-2 py-1 rounded hover:bg-red-50 transition">Padam</button></td></tr>`).join('')}
+      </tbody>`;
+            });
+        }
+
+        function addScheduleItem() {
+            const schedule = cloudData.schedule || DEFAULT_SCHEDULE;
+            // Find which day tab is currently visible
+            const dayNames = ['Isnin 13 Julai 2026', 'Selasa 14 Julai 2026', 'Rabu 15 Julai 2026', 'Khamis 16 Julai 2026'];
+            let visibleDay = dayNames[0]; // default to first day
+
+            for (let i = 1; i <= 4; i++) {
+                const content = document.getElementById('schedule-content-day-' + i);
+                if (content && !content.classList.contains('hidden')) {
+                    visibleDay = dayNames[i - 1];
+                    break;
+                }
+            }
+
+            const dayObj = schedule.find(d => d.hari === visibleDay);
+            if (!dayObj) return;
+
+            dayObj.items.push({ masa: 'TBD', nama: 'Nama Acara Baru', kategori: 'Keterangan' });
+            renderScheduleEditor();
+            syncToCloud();
+        }
+
+        function updateScheduleItem(hari, itemIdx, field, value) {
+            cloudData.schedule = cloudData.schedule || DEFAULT_SCHEDULE;
+            const day = cloudData.schedule.find(d => d.hari === hari);
+            if (!day) return;
+            day.items[itemIdx][field] = value;
+            syncToCloud();
+        }
+
+        function deleteScheduleItem(hari, itemIdx) {
+            if (!confirm('Padam item jadual ini?')) return;
+            cloudData.schedule = cloudData.schedule || DEFAULT_SCHEDULE;
+            const day = cloudData.schedule.find(d => d.hari === hari);
+            if (!day) return;
+            day.items.splice(itemIdx, 1);
+            renderScheduleEditor();
+            syncToCloud();
         }
     </script>
 </body>
